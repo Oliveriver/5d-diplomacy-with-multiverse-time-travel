@@ -1,28 +1,28 @@
 public class Province
 {
-    private final String name;
+    private final ProvinceName name;
     private Army occupyingArmy;
     private Player controllingPlayer;
 
-    public Province(String name)
+    public Province(ProvinceName name)
     {
         this.name = name;
         controllingPlayer = Player.NONE;
     }
 
-    public Province(String name, Army army)
+    public Province(ProvinceName name, Army army)
     {
         this(name);
         occupyingArmy = army;
     }
 
-    public Province(String name, Army army, Player player)
+    public Province(ProvinceName name, Army army, Player player)
     {
         this(name, army);
         controllingPlayer = player;
     }
 
-    public String getName()
+    public ProvinceName getName()
     {
         return name;
     }
