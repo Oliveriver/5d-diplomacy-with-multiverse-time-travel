@@ -18,7 +18,7 @@ It's also horrendously ugly. I might fix that in the future, I might not. I cons
 
 ### How to Play
 
-Compile the source code and run `GameRunner` from the command line or an IDE with built-in terminal.
+Compile the source code and run `processing.GameRunner` from the command line or similar.
 
 You'll be prompted to enter orders. You must submit an order for every unit of either colour on an active board (shown as more opaque) and cannot submit orders for units on inactive boards.
 
