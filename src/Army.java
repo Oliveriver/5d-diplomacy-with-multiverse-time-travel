@@ -29,4 +29,9 @@ public class Army {
     {
         return owner;
     }
+
+    public String toString()
+    {
+        return owner + " army at (" + xPos + "," + yPos + "," + zPos + ")";
+    }
 }

@@ -20,7 +20,7 @@ public class GameRunner {
                 order = input.nextLine();
             }
             ArrayList<Order> parsedOrders = game.parseOrders(orders);
-            game.resolveOrders(parsedOrders);
+            game.resolveOrders(parsedOrders, false);
             game.display();
             if (game.isRetreatNeeded())
             {

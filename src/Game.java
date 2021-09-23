@@ -94,7 +94,7 @@ public class Game {
         return retreats;
     }
 
-    public void resolveOrders(ArrayList<Order> orders)
+    public void resolveOrders(ArrayList<Order> orders, boolean isRetreat)
     {
         retreatingArmies = new ArrayList<>();
         // LOGIC FOR PROCESSING ORDERS GOES HERE
@@ -153,11 +153,7 @@ public class Game {
         // Set the player for each order (for now, assuming the requisite army exists).
         for (Order order : orders)
         {
-            if (order instanceof Retreat)
-            {
-                // Ignore retreats here as these are handled elsewhere.
-            }
-            else
+            if (order.getPlayer() == null)
             {
                 Optional<Army> armyStream = armies.stream().filter(army -> Arrays.equals(army.getLocation(), order.getLocation())).findFirst();
                 armyStream.ifPresent(army -> order.setPlayer(army.getOwner()));
@@ -291,24 +287,41 @@ public class Game {
             }
         }
 
-        // Make an army one space in the future for all holds on active boards, unless something's already there, in which case flag for a retreat.
-        for (Hold hold : holdOrders)
+        if (isRetreat)
         {
-            int[] location = hold.getLocation();
-            if (getBoard(location).isActive())
+            // Add armies on the new board created by a retreat.
+            for (Move move : successfulMoves)
             {
-                Army army = new Army(location[0] + 1, location[1], location[2], hold.getPlayer());
-                Stream<Army> overlapArmies = armies.stream().filter(existingArmy -> Arrays.equals(existingArmy.getLocation(), location));
-                if (overlapArmies.count() > 1)
+                ArrayList<Army> armiesToDuplicate = new ArrayList<>();
+                armies.stream().filter(army -> army.getLocation()[0] == move.getDestination()[0] && army.getLocation()[1] == move.getDestination()[1]).forEach(army -> {
+                    armiesToDuplicate.add(new Army(army.getLocation()[0] + 1, army.getLocation()[1], army.getLocation()[2], army.getOwner()));
+                });
+                armies.addAll(armiesToDuplicate);
+            }
+        }
+        else
+        {
+            // Make an army one space in the future for all holds on active boards, unless something's already there, in which case flag for a retreat.
+            for (Hold hold : holdOrders)
+            {
+                int[] location = hold.getLocation();
+                if (getBoard(location).isActive())
                 {
-                    retreatingArmies.add(army);
-                }
-                else
-                {
-                    armies.add(army);
+                    Army army = new Army(location[0] + 1, location[1], location[2], hold.getPlayer());
+                    Stream<Army> overlapArmies = armies.stream().filter(existingArmy -> Arrays.equals(existingArmy.getLocation(), location));
+                    if (overlapArmies.count() > 1)
+                    {
+                        retreatingArmies.add(army);
+                    }
+                    else
+                    {
+                        armies.add(army);
+                    }
                 }
             }
         }
+
+        // TODO: Fix the bit below for retreats as well?
 
         // For each move to an inactive board, make a new army at that position one higher/lower than the highest/lowest
         // y position, then duplicate everything at the destination x position to that y position, unless something's
@@ -393,11 +406,15 @@ public class Game {
                 move.setLocation(retreatMove.getLocation());
                 move.setDestination(retreatMove.getDestination());
                 moveOrders.add(move);
+
+                Army matchingRetreat = retreatingArmies.stream()
+                        .filter(army -> Arrays.equals(army.getLocation(), move.getLocation())).findFirst().orElseThrow();
+                move.setPlayer(matchingRetreat.getOwner());
                 // SET PLAYER???
             }
         }
         // STILL DOESN'T WORK!!!
-        resolveOrders(moveOrders);
+        resolveOrders(moveOrders, true);
 
         retreatingArmies.clear();
     }
