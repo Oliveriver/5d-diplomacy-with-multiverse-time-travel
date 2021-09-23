@@ -3,6 +3,8 @@ Based on [Diplomacy](https://en.wikipedia.org/wiki/Diplomacy_(game)) and [5D Che
 
 The current code takes the simplest non-trivial Diplomacy board and turns it into the starting point of time travel shenanigans.
 
+See this video for more information: LINK TBA
+
 ### Disclaimer
 
 The code is likely rather buggy, especially around retreats, and isn't resistant to badly formed inputs at all.
