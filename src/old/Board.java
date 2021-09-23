@@ -36,7 +36,7 @@ public class Board
         }
     }
 
-    // TODO: old.Move to old.Game rather than old.Board to create a new old.Board using the old old.Board's parameters
+    // TODO: old.processing.Move to old.processing.Game rather than old.processing.Board to create a new old.processing.Board using the old old.processing.Board's parameters
     public void advanceTurn(ArrayList<String> ordersText)
     {
         turn++;

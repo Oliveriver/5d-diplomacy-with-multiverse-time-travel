@@ -1,3 +1,5 @@
+package processing;
+
 public class Army {
     private final int xPos;
     private final int yPos;

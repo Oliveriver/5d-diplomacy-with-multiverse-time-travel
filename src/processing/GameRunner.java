@@ -1,3 +1,6 @@
+package processing;
+
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -6,8 +9,15 @@ public class GameRunner {
     {
         Scanner input = new Scanner(System.in);
 
+        JFrame frame = new JFrame();
+        frame.setSize(1920, 1080);
+        frame.setTitle("5D Diplomacy With Multiverse Time Travel");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+
         Game game = new Game();
-        game.display();
+        game.displayText();
+        game.displayGraphics(frame);
 
         while (true)
         {
@@ -21,7 +31,8 @@ public class GameRunner {
             }
             ArrayList<Order> parsedOrders = game.parseOrders(orders);
             game.resolveOrders(parsedOrders, false);
-            game.display();
+            game.displayText();
+            game.displayGraphics(frame);
             if (game.isRetreatNeeded())
             {
                 System.out.println("\nEnter retreats:");
@@ -34,7 +45,8 @@ public class GameRunner {
                 }
                 ArrayList<Retreat> parsedRetreats = game.parseRetreats(retreats);
                 game.resolveRetreats(parsedRetreats);
-                game.display();
+                game.displayText();
+                game.displayGraphics(frame);
             }
         }
     }

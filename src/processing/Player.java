@@ -1,3 +1,5 @@
+package processing;
+
 public enum Player {
     BLUE,
     ORANGE,

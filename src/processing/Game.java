@@ -1,3 +1,8 @@
+package processing;
+
+import graphics.GameDisplay;
+
+import javax.swing.*;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -5,6 +10,7 @@ public class Game {
     private ArrayList<Army> armies = new ArrayList<>();
     private ArrayList<Board> boards = new ArrayList<>();
     private ArrayList<Army> retreatingArmies = new ArrayList<>();
+    private ArrayList<Order> displayedOrders = new ArrayList<>();
 
     public Game()
     {
@@ -140,9 +146,7 @@ public class Game {
             if (order instanceof Support)
             {
                 Support support = (Support) order;
-                return Math.abs(support.getLocation()[0] - support.getSupportLocation()[0]) > 1 ||
-                        Math.abs(support.getLocation()[1] - support.getSupportLocation()[1]) > 1 ||
-                        Math.abs(support.getLocation()[0] - support.getSupportDestination()[0]) > 1 ||
+                return Math.abs(support.getLocation()[0] - support.getSupportDestination()[0]) > 1 ||
                         Math.abs(support.getLocation()[1] - support.getSupportDestination()[1]) > 1;
             }
             return false;
@@ -189,14 +193,19 @@ public class Game {
             holdOrders.add(hold);
         }
 
-        // Find supports that should be cut and cut them (but not units of the same player!).
+        displayedOrders.addAll(supportOrders);
+        displayedOrders.addAll(moveOrders);
+
+        // Find supports that should be cut and cut them (but not units of the same player or units attacking support against themselves!).
         ArrayList<Support> filteredSupportOrders = new ArrayList<>();
         for (Support support : supportOrders)
         {
             boolean keepSupport = true;
             for (Move move : moveOrders)
             {
-                if (Arrays.equals(move.getDestination(), support.getLocation()) && move.getPlayer() != support.getPlayer())
+                if (Arrays.equals(move.getDestination(), support.getLocation())
+                        && move.getPlayer() != support.getPlayer()
+                        && !Arrays.equals(move.getLocation(), support.getSupportDestination()))
                 {
                     keepSupport = false;
                 }
@@ -289,15 +298,30 @@ public class Game {
 
         if (isRetreat)
         {
+            ArrayList<Army> armiesToDuplicate = new ArrayList<>();
             // Add armies on the new board created by a retreat.
             for (Move move : successfulMoves)
             {
-                ArrayList<Army> armiesToDuplicate = new ArrayList<>();
                 armies.stream().filter(army -> army.getLocation()[0] == move.getDestination()[0] && army.getLocation()[1] == move.getDestination()[1]).forEach(army -> {
                     armiesToDuplicate.add(new Army(army.getLocation()[0] + 1, army.getLocation()[1], army.getLocation()[2], army.getOwner()));
                 });
-                armies.addAll(armiesToDuplicate);
             }
+
+            // Add armies on the new board created by the retreat's departure, except for the retreating unit itself. UNLESS it's moving on the same board, in which case we've already dealt with it above.
+            for (Move move : successfulMoves)
+            {
+                if (move.getLocation()[0] != move.getDestination()[0] || move.getLocation()[1] != move.getDestination()[1])
+                {
+                    armies.stream().filter(army -> army.getLocation()[0] == move.getLocation()[0] && army.getLocation()[1] == move.getLocation()[1] &&
+                            !(army.getLocation()[2] == move.getLocation()[2] && army.getOwner() == move.getPlayer()))
+                            .forEach(army -> {
+                                armiesToDuplicate.add(new Army(army.getLocation()[0] + 1, army.getLocation()[1], army.getLocation()[2], army.getOwner()));
+                            });
+                }
+            }
+
+            armies.addAll(armiesToDuplicate);
+
         }
         else
         {
@@ -308,7 +332,8 @@ public class Game {
                 if (getBoard(location).isActive())
                 {
                     Army army = new Army(location[0] + 1, location[1], location[2], hold.getPlayer());
-                    Stream<Army> overlapArmies = armies.stream().filter(existingArmy -> Arrays.equals(existingArmy.getLocation(), location));
+                    Stream<Army> overlapArmies = armies.stream().filter(existingArmy ->
+                            Arrays.equals(existingArmy.getLocation(), army.getLocation()));
                     if (overlapArmies.count() > 1)
                     {
                         retreatingArmies.add(army);
@@ -336,7 +361,7 @@ public class Game {
                     case BLUE:
                         int yPosMin = getExtremeYPosition(false) - 1;
                         armies.add(new Army(move.getDestination()[0] + 1, yPosMin, move.getDestination()[2], Player.BLUE));
-                        Stream<Army> armiesToDuplicateBelow = armies.stream().filter(army -> army.getLocation()[0] == move.getDestination()[0]);
+                        Stream<Army> armiesToDuplicateBelow = armies.stream().filter(army -> army.getLocation()[0] == move.getDestination()[0] && army.getLocation()[1] == move.getDestination()[1]);
                         ArrayList<Army> duplicatedArmiesBelow = new ArrayList<>();
                         armiesToDuplicateBelow.forEach(army -> {
                             Army newArmy = new Army(army.getLocation()[0] + 1, yPosMin, army.getLocation()[2], army.getOwner());
@@ -355,7 +380,7 @@ public class Game {
                     case ORANGE:
                         int yPosMax = getExtremeYPosition(true) + 1;
                         armies.add(new Army(move.getDestination()[0] + 1, yPosMax, move.getDestination()[2], Player.ORANGE));
-                        Stream<Army> armiesToDuplicateAbove = armies.stream().filter(army -> army.getLocation()[0] == move.getDestination()[0]);
+                        Stream<Army> armiesToDuplicateAbove = armies.stream().filter(army -> army.getLocation()[0] == move.getDestination()[0] && army.getLocation()[1] == move.getDestination()[1]);
                         ArrayList<Army> duplicatedArmiesAbove = new ArrayList<>();
                         armiesToDuplicateAbove.forEach(army -> {
                             Army newArmy = new Army(army.getLocation()[0] + 1, yPosMax, army.getLocation()[2], army.getOwner());
@@ -391,7 +416,7 @@ public class Game {
 
     public void resolveRetreats(ArrayList<Retreat> retreats)
     {
-        // Do disbands, then construct a list of Move objects with properties matching RetreatMove objects, then call resolveOrders.
+        // Do disbands, then construct a list of processing.Move objects with properties matching processing.RetreatMove objects, then call resolveOrders.
         ArrayList<Order> moveOrders = new ArrayList<>();
         for (Retreat reatreat : retreats)
         {
@@ -410,10 +435,8 @@ public class Game {
                 Army matchingRetreat = retreatingArmies.stream()
                         .filter(army -> Arrays.equals(army.getLocation(), move.getLocation())).findFirst().orElseThrow();
                 move.setPlayer(matchingRetreat.getOwner());
-                // SET PLAYER???
             }
         }
-        // STILL DOESN'T WORK!!!
         resolveOrders(moveOrders, true);
 
         retreatingArmies.clear();
@@ -505,7 +528,7 @@ public class Game {
         }
     }
 
-    public void display()
+    public void displayText()
     {
         for (Board board : boards)
         {
@@ -534,5 +557,14 @@ public class Game {
                 System.out.println("  " + army.getOwner() + " army at " + "(" + army.getLocation()[0] + "," + army.getLocation()[1] + "," + army.getLocation()[2] + ")");
             }
         }
+    }
+
+    public void displayGraphics(JFrame frame)
+    {
+        SwingUtilities.invokeLater(() -> {
+            GameDisplay display = new GameDisplay(boards, armies, displayedOrders);
+            frame.add(display);
+            frame.setVisible(true);
+        });
     }
 }

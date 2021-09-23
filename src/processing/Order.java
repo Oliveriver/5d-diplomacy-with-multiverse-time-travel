@@ -1,3 +1,5 @@
+package processing;
+
 public class Order {
     protected int locationX;
     protected int locationY;
