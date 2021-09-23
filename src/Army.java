@@ -1,15 +1,32 @@
 public class Army {
+    private final int xPos;
+    private final int yPos;
+    private final int zPos;
+    private final Player owner;
 
-    private final Player player;
-
-    public Army(Player player)
+    public Army(int x, int y, int z, Player player)
     {
-        this.player = player;
+        xPos = x;
+        yPos = y;
+        zPos = z;
+        owner = player;
     }
 
-    public Player getPlayer()
+    public Army(int[] location, Player player)
     {
-        return player;
+        xPos = location[0];
+        yPos = location[1];
+        zPos = location[2];
+        owner = player;
     }
 
+    public int[] getLocation()
+    {
+        return new int[] {xPos, yPos, zPos};
+    }
+
+    public Player getOwner()
+    {
+        return owner;
+    }
 }

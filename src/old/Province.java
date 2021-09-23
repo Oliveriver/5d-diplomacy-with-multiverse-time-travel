@@ -1,3 +1,5 @@
+package old;
+
 public class Province
 {
     private final ProvinceName name;
