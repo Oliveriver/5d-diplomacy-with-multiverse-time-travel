@@ -1,0 +1,413 @@
+[
+  {
+    "id": "ADR",
+    "name": "Adriatic Sea",
+    "type": "Sea"
+  },
+  {
+    "id": "AEG",
+    "name": "Aegean Sea",
+    "type": "Sea"
+  },
+  {
+    "id": "Alb",
+    "name": "Albania",
+    "type": "Coast"
+  },
+  {
+    "id": "Ank",
+    "name": "Ankara",
+    "type": "Coast"
+  },
+  {
+    "id": "Apu",
+    "name": "Apulia",
+    "type": "Coast"
+  },
+  {
+    "id": "Arm",
+    "name": "Armenia",
+    "type": "Coast"
+  },
+  {
+    "id": "BAL",
+    "name": "Baltic Sea",
+    "type": "Sea"
+  },
+  {
+    "id": "BAR",
+    "name": "Barents Sea",
+    "type": "Sea"
+  },
+  {
+    "id": "Bel",
+    "name": "Belgium",
+    "type": "Coast"
+  },
+  {
+    "id": "Ber",
+    "name": "Berlin",
+    "type": "Coast"
+  },
+  {
+    "id": "BLA",
+    "name": "Black Sea",
+    "type": "Sea"
+  },
+  {
+    "id": "Boh",
+    "name": "Bohemia",
+    "type": "Land"
+  },
+  {
+    "id": "BOT",
+    "name": "Gulf of Bothnia",
+    "type": "Sea"
+  },
+  {
+    "id": "Bre",
+    "name": "Brest",
+    "type": "Coast"
+  },
+  {
+    "id": "Bud",
+    "name": "Budapest",
+    "type": "Land"
+  },
+  {
+    "id": "Bul",
+    "name": "Bulgaria",
+    "type": "Land"
+  },
+  {
+    "id": "Bul_E",
+    "name": "Bulgaria (east coast)",
+    "type": "Coast",
+    "parentId": "Bul"
+  },
+  {
+    "id": "Bul_S",
+    "name": "Bulgaria (south coast)",
+    "type": "Coast",
+    "parentId": "Bul"
+  },
+  {
+    "id": "Bur",
+    "name": "Burgandy",
+    "type": "Land"
+  },
+  {
+    "id": "Con",
+    "name": "Constantinople",
+    "type": "Coast"
+  },
+  {
+    "id": "Cly",
+    "name": "Clyde",
+    "type": "Coast"
+  },
+  {
+    "id": "Den",
+    "name": "Denmark",
+    "type": "Coast"
+  },
+  {
+    "id": "EAS",
+    "name": "Eastern Mediterranean",
+    "type": "Sea"
+  },
+  {
+    "id": "Edi",
+    "name": "Edinburgh",
+    "type": "Coast"
+  },
+  {
+    "id": "ENG",
+    "name": "English Channel",
+    "type": "Sea"
+  },
+  {
+    "id": "Fin",
+    "name": "Finland",
+    "type": "Coast"
+  },
+  {
+    "id": "Gal",
+    "name": "Galicia",
+    "type": "Land"
+  },
+  {
+    "id": "Gas",
+    "name": "Gascony",
+    "type": "Coast"
+  },
+  {
+    "id": "Gre",
+    "name": "Greece",
+    "type": "Coast"
+  },
+  {
+    "id": "HEL",
+    "name": "Heligoland Bight",
+    "type": "Sea"
+  },
+  {
+    "id": "Hol",
+    "name": "Holland",
+    "type": "Coast"
+  },
+  {
+    "id": "ION",
+    "name": "Ionian Sea",
+    "type": "Sea"
+  },
+  {
+    "id": "IRI",
+    "name": "Irish Sea",
+    "type": "Sea"
+  },
+  {
+    "id": "Kie",
+    "name": "Kiel",
+    "type": "Coast"
+  },
+  {
+    "id": "Lon",
+    "name": "London",
+    "type": "Coast"
+  },
+  {
+    "id": "Lvn",
+    "name": "Livonia",
+    "type": "Coast"
+  },
+  {
+    "id": "Lvp",
+    "name": "Liverpool",
+    "type": "Coast"
+  },
+  {
+    "id": "LYO",
+    "name": "Gulf of Lyon",
+    "type": "Sea"
+  },
+  {
+    "id": "MAO",
+    "name": "Mid-Atlantic Ocean",
+    "type": "Sea"
+  },
+  {
+    "id": "Mar",
+    "name": "Marseilles",
+    "type": "Coast"
+  },
+  {
+    "id": "Mos",
+    "name": "Moscow",
+    "type": "Land"
+  },
+  {
+    "id": "Mun",
+    "name": "Munich",
+    "type": "Land"
+  },
+  {
+    "id": "Naf",
+    "name": "North Africa",
+    "type": "Coast"
+  },
+  {
+    "id": "NAO",
+    "name": "North Atlantic Ocean",
+    "type": "Sea"
+  },
+  {
+    "id": "Nap",
+    "name": "Naples",
+    "type": "Coast"
+  },
+  {
+    "id": "NTH",
+    "name": "North Sea",
+    "type": "Sea"
+  },
+  {
+    "id": "NWG",
+    "name": "Norwegian Sea",
+    "type": "Sea"
+  },
+  {
+    "id": "Nwy",
+    "name": "Norway",
+    "type": "Coast"
+  },
+  {
+    "id": "Par",
+    "name": "Paris",
+    "type": "Land"
+  },
+  {
+    "id": "Pic",
+    "name": "Picardy",
+    "type": "Coast"
+  },
+  {
+    "id": "Pie",
+    "name": "Piedmont",
+    "type": "Coast"
+  },
+  {
+    "id": "Por",
+    "name": "Portugal",
+    "type": "Coast"
+  },
+  {
+    "id": "Pru",
+    "name": "Prussia",
+    "type": "Coast"
+  },
+  {
+    "id": "Rom",
+    "name": "Rome",
+    "type": "Coast"
+  },
+  {
+    "id": "Ruh",
+    "name": "Ruhr",
+    "type": "Land"
+  },
+  {
+    "id": "Rum",
+    "name": "Rumania",
+    "type": "Coast"
+  },
+  {
+    "id": "Ser",
+    "name": "Serbia",
+    "type": "Land"
+  },
+  {
+    "id": "Sev",
+    "name": "Sevastopol",
+    "type": "Coast"
+  },
+  {
+    "id": "Sil",
+    "name": "Silesia",
+    "type": "Land"
+  },
+  {
+    "id": "SKA",
+    "name": "Skagerrak",
+    "type": "Sea"
+  },
+  {
+    "id": "Smy",
+    "name": "Smyrna",
+    "type": "Coast"
+  },
+  {
+    "id": "Spa",
+    "name": "Spain",
+    "type": "Land"
+  },
+  {
+    "id": "Spa_N",
+    "name": "Spain (north coast)",
+    "type": "Coast",
+    "parentId": "Spa"
+  },
+  {
+    "id": "Spa_S",
+    "name": "Spain (south coast)",
+    "type": "Coast",
+    "parentId": "Spa"
+  },
+  {
+    "id": "Stp",
+    "name": "St Petersburg",
+    "type": "Land"
+  },
+  {
+    "id": "Stp_N",
+    "name": "St Petersburg (north coast)",
+    "type": "Coast",
+    "parentId": "Stp"
+  },
+  {
+    "id": "Stp_S",
+    "name": "St Petersburg (south coast)",
+    "type": "Coast",
+    "parentId": "Stp"
+  },
+  {
+    "id": "Swe",
+    "name": "Sweden",
+    "type": "Coast"
+  },
+  {
+    "id": "Syr",
+    "name": "Syria",
+    "type": "Coast"
+  },
+  {
+    "id": "Tri",
+    "name": "Trieste",
+    "type": "Coast"
+  },
+  {
+    "id": "Tun",
+    "name": "Tunis",
+    "type": "Coast"
+  },
+  {
+    "id": "Tus",
+    "name": "Tuscany",
+    "type": "Coast"
+  },
+  {
+    "id": "Tyr",
+    "name": "Tyrolia",
+    "type": "Land"
+  },
+  {
+    "id": "TYS",
+    "name": "Tyrhennian Sea",
+    "type": "Sea"
+  },
+  {
+    "id": "Ukr",
+    "name": "Ukraine",
+    "type": "Land"
+  },
+  {
+    "id": "Ven",
+    "name": "Venice",
+    "type": "Coast"
+  },
+  {
+    "id": "Vie",
+    "name": "Vienna",
+    "type": "Land"
+  },
+  {
+    "id": "Wal",
+    "name": "Wales",
+    "type": "Coast"
+  },
+  {
+    "id": "War",
+    "name": "Warsaw",
+    "type": "Land"
+  },
+  {
+    "id": "WES",
+    "name": "Western Mediterranean",
+    "type": "Sea"
+  },
+  {
+    "id": "Yor",
+    "name": "York",
+    "type": "Coast"
+  }
+]

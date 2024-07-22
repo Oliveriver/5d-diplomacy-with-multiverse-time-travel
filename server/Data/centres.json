@@ -1,0 +1,126 @@
+[
+  {
+    "location": { "regionId": "Ank" },
+    "owner": "Turkey"
+  },
+  {
+    "location": { "regionId": "Bel" }
+  },
+  {
+    "location": { "regionId": "Ber" },
+    "owner": "Germany"
+  },
+  {
+    "location": { "regionId": "Bre" },
+    "owner": "France"
+  },
+  {
+    "location": { "regionId": "Bud" },
+    "owner": "Austria"
+  },
+  {
+    "location": { "regionId": "Bul" }
+  },
+  {
+    "location": { "regionId": "Con" },
+    "owner": "Turkey"
+  },
+  {
+    "location": { "regionId": "Den" }
+  },
+  {
+    "location": { "regionId": "Edi" },
+    "owner": "England"
+  },
+  {
+    "location": { "regionId": "Gre" }
+  },
+  {
+    "location": { "regionId": "Hol" }
+  },
+  {
+    "location": { "regionId": "Kie" },
+    "owner": "Germany"
+  },
+  {
+    "location": { "regionId": "Lon" },
+    "owner": "England"
+  },
+  {
+    "location": { "regionId": "Lvp" },
+    "owner": "England"
+  },
+  {
+    "location": { "regionId": "Mar" },
+    "owner": "France"
+  },
+  {
+    "location": { "regionId": "Mos" },
+    "owner": "Russia"
+  },
+  {
+    "location": { "regionId": "Mun" },
+    "owner": "Germany"
+  },
+  {
+    "location": { "regionId": "Nap" },
+    "owner": "Italy"
+  },
+  {
+    "location": { "regionId": "Nwy" }
+  },
+  {
+    "location": { "regionId": "Par" },
+    "owner": "France"
+  },
+  {
+    "location": { "regionId": "Por" }
+  },
+  {
+    "location": { "regionId": "Rom" },
+    "owner": "Italy"
+  },
+  {
+    "location": { "regionId": "Rum" }
+  },
+  {
+    "location": { "regionId": "Ser" }
+  },
+  {
+    "location": { "regionId": "Sev" },
+    "owner": "Russia"
+  },
+  {
+    "location": { "regionId": "Smy" },
+    "owner": "Turkey"
+  },
+  {
+    "location": { "regionId": "Spa" }
+  },
+  {
+    "location": { "regionId": "Stp" },
+    "owner": "Russia"
+  },
+  {
+    "location": { "regionId": "Swe" }
+  },
+  {
+    "location": { "regionId": "Tri" },
+    "owner": "Austria"
+  },
+  {
+    "location": { "regionId": "Tun" }
+  },
+  {
+    "location": { "regionId": "Ven" },
+    "owner": "Italy"
+  },
+  {
+    "location": { "regionId": "Vie" },
+    "owner": "Austria"
+  },
+  {
+    "location": { "regionId": "War" },
+    "owner": "Russia"
+  }
+]

@@ -1,0 +1,874 @@
+[
+  {
+    "id": "ADR-Alb",
+    "type": "Sea"
+  },
+  {
+    "id": "ADR-Apu",
+    "type": "Sea"
+  },
+  {
+    "id": "ADR-ION",
+    "type": "Sea"
+  },
+  {
+    "id": "ADR-Tri",
+    "type": "Sea"
+  },
+  {
+    "id": "ADR-Ven",
+    "type": "Sea"
+  },
+  {
+    "id": "AEG-Bul_S",
+    "type": "Sea"
+  },
+  {
+    "id": "AEG-Con",
+    "type": "Sea"
+  },
+  {
+    "id": "AEG-EAS",
+    "type": "Sea"
+  },
+  {
+    "id": "AEG-Gre",
+    "type": "Sea"
+  },
+  {
+    "id": "AEG-ION",
+    "type": "Sea"
+  },
+  {
+    "id": "AEG-Smy",
+    "type": "Sea"
+  },
+  {
+    "id": "Alb-Gre",
+    "type": "Coast"
+  },
+  {
+    "id": "Alb-ION",
+    "type": "Sea"
+  },
+  {
+    "id": "Alb-Ser",
+    "type": "Land"
+  },
+  {
+    "id": "Alb-Tri",
+    "type": "Coast"
+  },
+  {
+    "id": "Ank-Arm",
+    "type": "Coast"
+  },
+  {
+    "id": "Ank-BLA",
+    "type": "Sea"
+  },
+  {
+    "id": "Ank-Con",
+    "type": "Coast"
+  },
+  {
+    "id": "Ank-Smy",
+    "type": "Land"
+  },
+  {
+    "id": "Apu-ION",
+    "type": "Sea"
+  },
+  {
+    "id": "Apu-Nap",
+    "type": "Coast"
+  },
+  {
+    "id": "Apu-Rom",
+    "type": "Land"
+  },
+  {
+    "id": "Apu-Ven",
+    "type": "Land"
+  },
+  {
+    "id": "Arm-BLA",
+    "type": "Sea"
+  },
+  {
+    "id": "Arm-Sev",
+    "type": "Coast"
+  },
+  {
+    "id": "Arm-Smy",
+    "type": "Land"
+  },
+  {
+    "id": "Arm-Syr",
+    "type": "Land"
+  },
+  {
+    "id": "BAL-BOT",
+    "type": "Sea"
+  },
+  {
+    "id": "BAL-Ber",
+    "type": "Sea"
+  },
+  {
+    "id": "BAL-Den",
+    "type": "Sea"
+  },
+  {
+    "id": "BAL-Kie",
+    "type": "Sea"
+  },
+  {
+    "id": "BAL-Lvn",
+    "type": "Sea"
+  },
+  {
+    "id": "BAL-Pru",
+    "type": "Sea"
+  },
+  {
+    "id": "BAL-Swe",
+    "type": "Sea"
+  },
+  {
+    "id": "BAR-NWG",
+    "type": "Sea"
+  },
+  {
+    "id": "BAR-Nwy",
+    "type": "Sea"
+  },
+  {
+    "id": "BAR-Stp_N",
+    "type": "Sea"
+  },
+  {
+    "id": "Bel-Bur",
+    "type": "Land"
+  },
+  {
+    "id": "Bel-ENG",
+    "type": "Sea"
+  },
+  {
+    "id": "Bel-Hol",
+    "type": "Coast"
+  },
+  {
+    "id": "Bel-NTH",
+    "type": "Sea"
+  },
+  {
+    "id": "Bel-Pic",
+    "type": "Coast"
+  },
+  {
+    "id": "Bel-Ruh",
+    "type": "Land"
+  },
+  {
+    "id": "Ber-Kie",
+    "type": "Coast"
+  },
+  {
+    "id": "Ber-Mun",
+    "type": "Land"
+  },
+  {
+    "id": "Ber-Pru",
+    "type": "Coast"
+  },
+  {
+    "id": "Ber-Sil",
+    "type": "Land"
+  },
+  {
+    "id": "BLA-Bul_E",
+    "type": "Sea"
+  },
+  {
+    "id": "BLA-Con",
+    "type": "Sea"
+  },
+  {
+    "id": "BLA-Rum",
+    "type": "Sea"
+  },
+  {
+    "id": "BLA-Sev",
+    "type": "Sea"
+  },
+  {
+    "id": "Boh-Gal",
+    "type": "Land"
+  },
+  {
+    "id": "Boh-Mun",
+    "type": "Land"
+  },
+  {
+    "id": "Boh-Sil",
+    "type": "Land"
+  },
+  {
+    "id": "Boh-Tyr",
+    "type": "Land"
+  },
+  {
+    "id": "Boh-Vie",
+    "type": "Land"
+  },
+  {
+    "id": "BOT-Fin",
+    "type": "Sea"
+  },
+  {
+    "id": "BOT-Lvn",
+    "type": "Sea"
+  },
+  {
+    "id": "BOT-Stp_S",
+    "type": "Sea"
+  },
+  {
+    "id": "BOT-Swe",
+    "type": "Sea"
+  },
+  {
+    "id": "Bre-ENG",
+    "type": "Sea"
+  },
+  {
+    "id": "Bre-Gas",
+    "type": "Coast"
+  },
+  {
+    "id": "Bre-MAO",
+    "type": "Sea"
+  },
+  {
+    "id": "Bre-Par",
+    "type": "Land"
+  },
+  {
+    "id": "Bre-Pic",
+    "type": "Coast"
+  },
+  {
+    "id": "Bud-Gal",
+    "type": "Land"
+  },
+  {
+    "id": "Bud-Rum",
+    "type": "Land"
+  },
+  {
+    "id": "Bud-Ser",
+    "type": "Land"
+  },
+  {
+    "id": "Bud-Tri",
+    "type": "Land"
+  },
+  {
+    "id": "Bud-Vie",
+    "type": "Land"
+  },
+  {
+    "id": "Bul-Con",
+    "type": "Land"
+  },
+  {
+    "id": "Bul-Gre",
+    "type": "Land"
+  },
+  {
+    "id": "Bul-Rum",
+    "type": "Land"
+  },
+  {
+    "id": "Bul-Ser",
+    "type": "Land"
+  },
+  {
+    "id": "Bul_E-Con",
+    "type": "Sea"
+  },
+  {
+    "id": "Bul_E-Rum",
+    "type": "Sea"
+  },
+  {
+    "id": "Bul_S-Con",
+    "type": "Sea"
+  },
+  {
+    "id": "Bul_S-Gre",
+    "type": "Sea"
+  },
+  {
+    "id": "Bur-Gas",
+    "type": "Land"
+  },
+  {
+    "id": "Bur-Mar",
+    "type": "Land"
+  },
+  {
+    "id": "Bur-Mun",
+    "type": "Land"
+  },
+  {
+    "id": "Bur-Par",
+    "type": "Land"
+  },
+  {
+    "id": "Bur-Pic",
+    "type": "Land"
+  },
+  {
+    "id": "Bur-Ruh",
+    "type": "Land"
+  },
+  {
+    "id": "Con-Smy",
+    "type": "Coast"
+  },
+  {
+    "id": "Cly-Edi",
+    "type": "Coast"
+  },
+  {
+    "id": "Cly-Lvp",
+    "type": "Coast"
+  },
+  {
+    "id": "Cly-NAO",
+    "type": "Sea"
+  },
+  {
+    "id": "Cly-NWG",
+    "type": "Sea"
+  },
+  {
+    "id": "Den-HEL",
+    "type": "Sea"
+  },
+  {
+    "id": "Den-Kie",
+    "type": "Coast"
+  },
+  {
+    "id": "Den-NTH",
+    "type": "Sea"
+  },
+  {
+    "id": "Den-SKA",
+    "type": "Sea"
+  },
+  {
+    "id": "Den-Swe",
+    "type": "Coast"
+  },
+  {
+    "id": "EAS-ION",
+    "type": "Sea"
+  },
+  {
+    "id": "EAS-Smy",
+    "type": "Sea"
+  },
+  {
+    "id": "EAS-Syr",
+    "type": "Sea"
+  },
+  {
+    "id": "Edi-Lvp",
+    "type": "Land"
+  },
+  {
+    "id": "Edi-NTH",
+    "type": "Sea"
+  },
+  {
+    "id": "Edi-NWG",
+    "type": "Sea"
+  },
+  {
+    "id": "Edi-Yor",
+    "type": "Coast"
+  },
+  {
+    "id": "ENG-IRI",
+    "type": "Sea"
+  },
+  {
+    "id": "ENG-Lon",
+    "type": "Sea"
+  },
+  {
+    "id": "ENG-MAO",
+    "type": "Sea"
+  },
+  {
+    "id": "ENG-NTH",
+    "type": "Sea"
+  },
+  {
+    "id": "ENG-Pic",
+    "type": "Sea"
+  },
+  {
+    "id": "ENG-Wal",
+    "type": "Sea"
+  },
+  {
+    "id": "Fin-Nwy",
+    "type": "Coast"
+  },
+  {
+    "id": "Fin-Stp",
+    "type": "Land"
+  },
+  {
+    "id": "Fin-Stp_S",
+    "type": "Sea"
+  },
+  {
+    "id": "Fin-Swe",
+    "type": "Coast"
+  },
+  {
+    "id": "Gal-Rum",
+    "type": "Land"
+  },
+  {
+    "id": "Gal-Sil",
+    "type": "Land"
+  },
+  {
+    "id": "Gal-Ukr",
+    "type": "Land"
+  },
+  {
+    "id": "Gal-Vie",
+    "type": "Land"
+  },
+  {
+    "id": "Gal-War",
+    "type": "Land"
+  },
+  {
+    "id": "Gas-MAO",
+    "type": "Sea"
+  },
+  {
+    "id": "Gas-Mar",
+    "type": "Land"
+  },
+  {
+    "id": "Gas-Par",
+    "type": "Land"
+  },
+  {
+    "id": "Gas-Spa",
+    "type": "Land"
+  },
+  {
+    "id": "Gas-Spa_N",
+    "type": "Sea"
+  },
+  {
+    "id": "Gas-Spa_S",
+    "type": "Sea"
+  },
+  {
+    "id": "Gre-Ser",
+    "type": "Land"
+  },
+  {
+    "id": "Gre-ION",
+    "type": "Sea"
+  },
+  {
+    "id": "HEL-Hol",
+    "type": "Sea"
+  },
+  {
+    "id": "HEL-Kie",
+    "type": "Sea"
+  },
+  {
+    "id": "HEL-NTH",
+    "type": "Sea"
+  },
+  {
+    "id": "Hol-Kie",
+    "type": "Coast"
+  },
+  {
+    "id": "Hol-NTH",
+    "type": "Sea"
+  },
+  {
+    "id": "Hol-Ruh",
+    "type": "Land"
+  },
+  {
+    "id": "ION-Nap",
+    "type": "Sea"
+  },
+  {
+    "id": "ION-Tun",
+    "type": "Sea"
+  },
+  {
+    "id": "ION-TYS",
+    "type": "Sea"
+  },
+  {
+    "id": "IRI-Lvp",
+    "type": "Sea"
+  },
+  {
+    "id": "IRI-MAO",
+    "type": "Sea"
+  },
+  {
+    "id": "IRI-NAO",
+    "type": "Sea"
+  },
+  {
+    "id": "IRI-Wal",
+    "type": "Sea"
+  },
+  {
+    "id": "Kie-Mun",
+    "type": "Land"
+  },
+  {
+    "id": "Kie-Ruh",
+    "type": "Land"
+  },
+  {
+    "id": "Lon-NTH",
+    "type": "Sea"
+  },
+  {
+    "id": "Lon-Wal",
+    "type": "Coast"
+  },
+  {
+    "id": "Lon-Yor",
+    "type": "Coast"
+  },
+  {
+    "id": "Lvn-Mos",
+    "type": "Land"
+  },
+  {
+    "id": "Lvn-Pru",
+    "type": "Coast"
+  },
+  {
+    "id": "Lvn-Stp",
+    "type": "Land"
+  },
+  {
+    "id": "Lvn-Stp_S",
+    "type": "Sea"
+  },
+  {
+    "id": "Lvn-War",
+    "type": "Land"
+  },
+  {
+    "id": "Lvp-NAO",
+    "type": "Sea"
+  },
+  {
+    "id": "Lvp-Wal",
+    "type": "Coast"
+  },
+  {
+    "id": "Lvp-Yor",
+    "type": "Land"
+  },
+  {
+    "id": "LYO-Mar",
+    "type": "Sea"
+  },
+  {
+    "id": "LYO-Pie",
+    "type": "Sea"
+  },
+  {
+    "id": "LYO-Spa_S",
+    "type": "Sea"
+  },
+  {
+    "id": "LYO-Tus",
+    "type": "Sea"
+  },
+  {
+    "id": "LYO-TYS",
+    "type": "Sea"
+  },
+  {
+    "id": "LYO-WES",
+    "type": "Sea"
+  },
+  {
+    "id": "MAO-Naf",
+    "type": "Sea"
+  },
+  {
+    "id": "MAO-Por",
+    "type": "Sea"
+  },
+  {
+    "id": "MAO-Spa_N",
+    "type": "Sea"
+  },
+  {
+    "id": "MAO-Spa_S",
+    "type": "Sea"
+  },
+  {
+    "id": "MAO-WES",
+    "type": "Sea"
+  },
+  {
+    "id": "Mar-Pie",
+    "type": "Coast"
+  },
+  {
+    "id": "Mar-Spa",
+    "type": "Land"
+  },
+  {
+    "id": "Mar-Spa_S",
+    "type": "Sea"
+  },
+  {
+    "id": "Mos-Sev",
+    "type": "Land"
+  },
+  {
+    "id": "Mos-Stp",
+    "type": "Land"
+  },
+  {
+    "id": "Mos-Ukr",
+    "type": "Land"
+  },
+  {
+    "id": "Mos-War",
+    "type": "Land"
+  },
+  {
+    "id": "Mun-Ruh",
+    "type": "Land"
+  },
+  {
+    "id": "Mun-Sil",
+    "type": "Land"
+  },
+  {
+    "id": "Mun-Tyr",
+    "type": "Land"
+  },
+  {
+    "id": "Naf-Tun",
+    "type": "Coast"
+  },
+  {
+    "id": "Naf-WES",
+    "type": "Sea"
+  },
+  {
+    "id": "NAO-NWG",
+    "type": "Sea"
+  },
+  {
+    "id": "Nap-Rom",
+    "type": "Coast"
+  },
+  {
+    "id": "Nap-TYS",
+    "type": "Sea"
+  },
+  {
+    "id": "NTH-NWG",
+    "type": "Sea"
+  },
+  {
+    "id": "NTH-Nwy",
+    "type": "Sea"
+  },
+  {
+    "id": "NTH-SKA",
+    "type": "Sea"
+  },
+  {
+    "id": "NTH-Yor",
+    "type": "Sea"
+  },
+  {
+    "id": "NWG-Nwy",
+    "type": "Sea"
+  },
+  {
+    "id": "Nwy-SKA",
+    "type": "Sea"
+  },
+  {
+    "id": "Nwy-Stp",
+    "type": "Land"
+  },
+  {
+    "id": "Nwy-Stp_N",
+    "type": "Sea"
+  },
+  {
+    "id": "Nwy-Swe",
+    "type": "Coast"
+  },
+  {
+    "id": "Par-Pic",
+    "type": "Land"
+  },
+  {
+    "id": "Pie-Tus",
+    "type": "Coast"
+  },
+  {
+    "id": "Pie-Tyr",
+    "type": "Land"
+  },
+  {
+    "id": "Pie-Ven",
+    "type": "Land"
+  },
+  {
+    "id": "Por-Spa",
+    "type": "Land"
+  },
+  {
+    "id": "Por-Spa_N",
+    "type": "Sea"
+  },
+  {
+    "id": "Por-Spa_S",
+    "type": "Sea"
+  },
+  {
+    "id": "Pru-Sil",
+    "type": "Land"
+  },
+  {
+    "id": "Pru-War",
+    "type": "Land"
+  },
+  {
+    "id": "Rom-Tus",
+    "type": "Coast"
+  },
+  {
+    "id": "Rom-TYS",
+    "type": "Sea"
+  },
+  {
+    "id": "Rom-Ven",
+    "type": "Land"
+  },
+  {
+    "id": "Rum-Ser",
+    "type": "Land"
+  },
+  {
+    "id": "Rum-Sev",
+    "type": "Coast"
+  },
+  {
+    "id": "Rum-Ukr",
+    "type": "Land"
+  },
+  {
+    "id": "Ser-Tri",
+    "type": "Land"
+  },
+  {
+    "id": "Sev-Ukr",
+    "type": "Land"
+  },
+  {
+    "id": "Sil-War",
+    "type": "Land"
+  },
+  {
+    "id": "SKA-Swe",
+    "type": "Sea"
+  },
+  {
+    "id": "Smy-Syr",
+    "type": "Coast"
+  },
+  {
+    "id": "Spa_S-WES",
+    "type": "Sea"
+  },
+  {
+    "id": "Tri-Tyr",
+    "type": "Land"
+  },
+  {
+    "id": "Tri-Ven",
+    "type": "Coast"
+  },
+  {
+    "id": "Tri-Vie",
+    "type": "Land"
+  },
+  {
+    "id": "Tun-TYS",
+    "type": "Sea"
+  },
+  {
+    "id": "Tun-WES",
+    "type": "Sea"
+  },
+  {
+    "id": "Tus-TYS",
+    "type": "Sea"
+  },
+  {
+    "id": "Tus-Ven",
+    "type": "Land"
+  },
+  {
+    "id": "Tyr-Ven",
+    "type": "Land"
+  },
+  {
+    "id": "Tyr-Vie",
+    "type": "Land"
+  },
+  {
+    "id": "TYS-WES",
+    "type": "Sea"
+  },
+  {
+    "id": "Ukr-War",
+    "type": "Land"
+  },
+  {
+    "id": "Wal-Yor",
+    "type": "Land"
+  }
+]
