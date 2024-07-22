@@ -1,0 +1,4 @@
+<svg width="16" height="16">
+  <rect x="1" y="4" width="10" height="10" stroke="black" fill="white" rx="2"/>
+  <rect x="4" y="1" width="10" height="10" stroke="black" fill="white" rx="2"/>
+</svg>
