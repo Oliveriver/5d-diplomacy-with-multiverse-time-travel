@@ -25,7 +25,7 @@ Requirements:
 Steps:
 
 * Navigate to the `server` directory.
-* Copy `appsettings.json` to a new file, `appsettings.Development.json`, and inside the new file, replace `DATABASE_CONNECTION_STRING` with the connection string for your active database instance.
+* Copy `appsettings.json` to a new file, `appsettings.Development.json`, and inside the new file, replace `DATABASE_CONNECTION_STRING` with the connection string for the active database instance.
 * Run `dotnet build`.
 * Run `dotnet ef database update`.
 * Run `dotnet run` to start the server.
@@ -41,6 +41,6 @@ Requirements:
 Steps:
 
 * Navigate to the `client` directory.
-* Copy `.env` to a new file, `.env.local`, and replace `SERVER_URL` with the base domain of the server.
+* Copy `.env` to a new file, `.env.local`, and inside the new file, replace `SERVER_URL` with the base domain of the active server instance.
 * Run `yarn install`.
 * Run `yarn dev` to start the client, then open the printed URL in a browser.
