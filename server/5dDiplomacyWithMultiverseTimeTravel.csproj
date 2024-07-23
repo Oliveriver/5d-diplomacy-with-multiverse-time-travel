@@ -5,7 +5,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>false</InvariantGlobalization>
-    <RootNamespace>_5dDiplomacyWithMultiverseTimeTravel</RootNamespace>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
@@ -26,11 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EditorConfigFiles Remove="D:\Users\olive\OneDrive\Documents\Code\5d-diplomacy-with-multiverse-time-travel\server\.editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="D:\Users\olive\OneDrive\Documents\Code\5d-diplomacy-with-multiverse-time-travel\server\.editorconfig" />
+    <None Include=".editorconfig" />
   </ItemGroup>
 
 </Project>

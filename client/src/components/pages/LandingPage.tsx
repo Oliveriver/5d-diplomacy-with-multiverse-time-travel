@@ -39,11 +39,11 @@ const LandingPage = ({ setViewOption }: LandingPageProps) => (
       links={[
         {
           text: 'Diplomacy',
-          href: 'https://boardgamegeek.com/boardgame/483/diplomacy',
+          href: 'https://shop.hasbro.com/en-us/product/avalon-hill-diplomacy-cooperative-strategy-board-game-ages-12-and-up-2-7-players/09A402C7-4CA2-4E9D-9449-4592B2066011',
         },
         {
           text: '5D Chess With Multiverse Time Travel',
-          href: 'https://store.steampowered.com/app/1349230/5D_Chess_With_Multiverse_Time_Travel/',
+          href: 'https://www.5dchesswithmultiversetimetravel.com/',
         },
       ]}
     />
