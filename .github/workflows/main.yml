@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  check_client:
+  check_server:
     runs-on: windows-latest
     steps:
     - name: Checkout
@@ -20,7 +20,7 @@ jobs:
         dotnet-version: 8.0.x
     - name: Build
       run: cd server && dotnet build
-  check_server:
+  check_client:
     runs-on: windows-latest
     steps:
     - name: Checkout
@@ -31,7 +31,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 20.x
-        cache: 'npm'
     - name: Install yarn
       run: npm install --global yarn
     - name: Install packages
