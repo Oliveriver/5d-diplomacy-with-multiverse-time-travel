@@ -1,0 +1,42 @@
+name: Checks
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  check_client:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Install .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Build
+      run: cd server && dotnet build
+  check_server:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20.x
+        cache: 'npm'
+    - name: Install yarn
+      run: npm install --global yarn
+    - name: Install packages
+      run: cd client && yarn install
+    - name: Lint
+      run: cd client && yarn lint
+    - name: Compile
+      run: cd client && npx tsc
