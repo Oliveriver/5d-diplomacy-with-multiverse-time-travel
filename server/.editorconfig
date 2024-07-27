@@ -53,6 +53,14 @@ csharp_style_var_for_built_in_types = true:error
 csharp_style_var_when_type_is_apparent = true:error
 csharp_style_var_elsewhere = true:error
 csharp_space_around_binary_operators = before_and_after
+dotnet_diagnostic.IDE0051.severity = error
+dotnet_diagnostic.IDE0052.severity = error
+dotnet_diagnostic.IDE0064.severity = error
+dotnet_diagnostic.IDE0076.severity = error
+dotnet_diagnostic.IDE0077.severity = error
+dotnet_diagnostic.IDE0043.severity = error
+dotnet_diagnostic.IDE0059.severity = error
+dotnet_diagnostic.IDE0058.severity = none
 
 # Xml files
 [*.xml]
@@ -114,7 +122,7 @@ dotnet_style_null_propagation = true:error
 dotnet_style_prefer_is_null_check_over_reference_equality_method = true:error
 dotnet_style_prefer_auto_properties = true:error
 dotnet_style_object_initializer = true:error
-dotnet_style_prefer_collection_expression = true:error
+dotnet_style_prefer_collection_expression = when_types_exactly_match:error
 dotnet_style_collection_initializer = true:error
 dotnet_style_prefer_simplified_boolean_expressions = true:error
 dotnet_style_prefer_conditional_expression_over_assignment = true:error
@@ -141,3 +149,7 @@ dotnet_style_qualification_for_property = false:error
 dotnet_style_qualification_for_method = false:error
 dotnet_style_qualification_for_event = false:error
 insert_final_newline = true
+
+dotnet_analyzer_diagnostic.category-Style.severity = error
+dotnet_analyzer_diagnostic.category-Design.severity = error
+dotnet_analyzer_diagnostic.category-Naming.severity = error

@@ -28,7 +28,7 @@ public class GameController(
 
         if (isSandbox && player != null)
         {
-            logger.LogError("Attempted to create sandbox game with nation {player} specified", player);
+            logger.LogError("Attempted to create sandbox game with nation {Player} specified", player);
             return BadRequest("Sandbox must be created with no player specified");
         }
 
@@ -49,7 +49,7 @@ public class GameController(
     public async Task<ActionResult<Game>> JoinGame([FromRoute] int gameId, [FromBody] GameJoinRequest request)
     {
         var player = request.Player;
-        logger.LogInformation("Requesting to join game {gameId} as {player}", gameId, player);
+        logger.LogInformation("Requesting to join game {GameId} as {Player}", gameId, player);
 
         try
         {
@@ -58,12 +58,12 @@ public class GameController(
         }
         catch (KeyNotFoundException)
         {
-            logger.LogError("Attempted to join non-existent game {gameId}", gameId);
+            logger.LogError("Attempted to join non-existent game {GameId}", gameId);
             return NotFound($"No game with ID {gameId} found");
         }
         catch (InvalidOperationException)
         {
-            logger.LogWarning("Failed to join game {gameId}", gameId);
+            logger.LogWarning("Failed to join game {GameId}", gameId);
             return BadRequest("Unable to join in-progress game as random nation");
         }
     }
@@ -72,7 +72,7 @@ public class GameController(
     [Route("{gameId}")]
     public async Task<ActionResult<World>> GetWorld([FromRoute] int gameId)
     {
-        logger.LogInformation("Fetching world for game {gameId}", gameId);
+        logger.LogInformation("Fetching world for game {GameId}", gameId);
 
         try
         {
@@ -81,7 +81,7 @@ public class GameController(
         }
         catch (KeyNotFoundException)
         {
-            logger.LogWarning("Failed to find world with ID {gameId}", gameId);
+            logger.LogWarning("Failed to find world with ID {GameId}", gameId);
             return NotFound($"No world with game ID {gameId} found");
         }
     }
@@ -92,7 +92,7 @@ public class GameController(
     {
         var players = request.Players;
         var orders = request.Orders;
-        logger.LogInformation("Adding submitted orders as player {players} for game {gameId}", players, gameId);
+        logger.LogInformation("Adding submitted orders as player {Players} for game {GameId}", players, gameId);
 
         if (players.Length == 0)
         {
@@ -114,7 +114,7 @@ public class GameController(
         }
         catch (KeyNotFoundException)
         {
-            logger.LogWarning("Failed to find world with ID {gameId}", gameId);
+            logger.LogWarning("Failed to find world with ID {GameId}", gameId);
             return NotFound($"No world with game ID {gameId} found");
         }
     }

@@ -15,7 +15,7 @@ public class GameRepository(ILogger<GameRepository> logger, GameContext context,
 
     public async Task<(Game game, Nation player)> CreateNormalGame(Nation? player)
     {
-        logger.LogInformation("Creating game as {player}", player);
+        logger.LogInformation("Creating game as {Player}", player);
 
         var defaultWorld = defaultWorldFactory.CreateWorld();
 
@@ -54,7 +54,7 @@ public class GameRepository(ILogger<GameRepository> logger, GameContext context,
 
     public async Task<(Game game, Nation player)> JoinGame(int id, Nation? player)
     {
-        logger.LogInformation("Joining game {id} as player {player}", id, player);
+        logger.LogInformation("Joining game {Id} as player {Player}", id, player);
 
         var game = await context.Games.FindAsync(id) ?? throw new KeyNotFoundException("Game not found");
 
@@ -77,7 +77,7 @@ public class GameRepository(ILogger<GameRepository> logger, GameContext context,
     private Nation GetRandomNation()
     {
         var player = Constants.Nations.ElementAt(random.Next(Constants.Nations.Count));
-        logger.LogInformation("Selected random nation {player}", player);
+        logger.LogInformation("Selected random nation {Player}", player);
         return player;
     }
 }

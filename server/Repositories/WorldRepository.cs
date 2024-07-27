@@ -15,7 +15,7 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
 
     public async Task<World> GetWorld(int gameId)
     {
-        logger.LogInformation("Querying world for game {gameId}", gameId);
+        logger.LogInformation("Querying world for game {GameId}", gameId);
 
         var world = await context.Worlds
             .Include(w => w.Boards).ThenInclude(b => b.Centres)
@@ -29,7 +29,7 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
 
     public async Task AddOrders(int gameId, Nation[] players, IEnumerable<Order> orders)
     {
-        logger.LogInformation("Submitting orders for game {gameId}", gameId);
+        logger.LogInformation("Submitting orders for game {GameId}", gameId);
 
         var game = await context.Games.FindAsync(gameId)
             ?? throw new KeyNotFoundException("Game not found");
@@ -41,7 +41,7 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
 
         if (game.PlayersSubmitted.Count == Constants.Nations.Count)
         {
-            logger.LogInformation("Adjudicating game {gameId}", gameId);
+            logger.LogInformation("Adjudicating game {GameId}", gameId);
 
             game.PlayersSubmitted = [];
 
@@ -53,7 +53,7 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
             adjudicator.Adjudicate(world, map);
             world.Iteration++;
 
-            logger.LogInformation("Adjudicated game {gameId}", gameId);
+            logger.LogInformation("Adjudicated game {GameId}", gameId);
         }
 
         await context.SaveChangesAsync();
