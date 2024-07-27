@@ -56,7 +56,7 @@ const LandingPage = ({ setViewOption }: LandingPageProps) => (
         },
       ]}
     />
-    <Link text="Source code" href="TBA" />
+    <Link text="Source code" href="https://github.com/Oliveriver/5d-diplomacy-with-multiverse-time-travel" />
   </div>
 );
 
