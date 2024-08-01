@@ -1,7 +1,7 @@
 ﻿using Entities;
 using Enums;
 using System.Text.Json;
-using Utils;
+using Utilities;
 
 namespace Factories;
 
@@ -22,7 +22,7 @@ public class DefaultWorldFactory
         return world;
     }
 
-    private Board CreateBoard() => new()
+    public Board CreateBoard() => new()
     {
         Timeline = 1,
         Year = 1901,
@@ -32,7 +32,7 @@ public class DefaultWorldFactory
         Units = CreateUnits(),
     };
 
-    private List<Centre> CreateCentres()
+    public List<Centre> CreateCentres()
     {
         var centresFile = File.ReadAllText(CentresFilePath);
         var centres = JsonSerializer.Deserialize<List<Centre>>(centresFile, Constants.JsonOptions)
@@ -48,7 +48,7 @@ public class DefaultWorldFactory
         return centres;
     }
 
-    private List<Unit> CreateUnits()
+    public List<Unit> CreateUnits()
     {
         var unitsFile = File.ReadAllText(UnitsFilePath);
         var units = JsonSerializer.Deserialize<List<Unit>>(unitsFile, Constants.JsonOptions)

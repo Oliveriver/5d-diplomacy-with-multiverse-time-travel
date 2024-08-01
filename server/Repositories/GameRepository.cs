@@ -2,7 +2,7 @@
 using Entities;
 using Enums;
 using Factories;
-using Utils;
+using Utilities;
 
 namespace Repositories;
 

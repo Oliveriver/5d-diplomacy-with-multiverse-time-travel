@@ -1,4 +1,5 @@
 ﻿using Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities;
 
@@ -11,6 +12,9 @@ public abstract class Order
 
     public OrderStatus Status { get; set; }
     public int? UnitId { get; set; }
-    public virtual Unit? Unit { get; set; }
+    public virtual Unit? Unit { get; set; } // Nullability of this is annoying...
     public Location Location { get; set; } = null!;
+
+    [NotMapped]
+    public virtual bool NeedsValidation => Status == OrderStatus.New;
 }

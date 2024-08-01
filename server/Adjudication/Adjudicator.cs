@@ -1,27 +1,21 @@
 ﻿using Entities;
 using Enums;
+using Utilities;
 
 namespace Adjudication;
 
-public class Adjudicator
+public class Adjudicator(Validator validator)
 {
-    public void Adjudicate(World world, List<Region> map)
+    private readonly Validator validator = validator;
+
+    public void Adjudicate(World world, List<Region> regions)
     {
-        foreach (var order in world.Orders.Where(o => o.Status == OrderStatus.New))
-        {
-            order.Status = OrderStatus.Failure;
-        }
+        validator.Validate(world, regions);
 
         var previousBoard = world.Boards.Last();
 
         var year = previousBoard.Phase == Phase.Winter ? previousBoard.Year + 1 : previousBoard.Year;
-        var phase = previousBoard.Phase switch
-        {
-            Phase.Spring => Phase.Fall,
-            Phase.Fall => Phase.Winter,
-            Phase.Winter => Phase.Spring,
-            _ => throw new ArgumentOutOfRangeException("Phase not found")
-        };
+        var phase = previousBoard.Phase.NextPhase();
 
         world.Boards.Add(new Board
         {
@@ -54,5 +48,7 @@ public class Adjudicator
                 },
             }).ToList(),
         });
+
+        world.Iteration++;
     }
 }

@@ -61,6 +61,7 @@ dotnet_diagnostic.IDE0077.severity = error
 dotnet_diagnostic.IDE0043.severity = error
 dotnet_diagnostic.IDE0059.severity = error
 dotnet_diagnostic.IDE0058.severity = none
+dotnet_diagnostic.IDE0048.severity = none
 
 # Xml files
 [*.xml]
@@ -142,7 +143,7 @@ dotnet_style_allow_statement_immediately_after_block_experimental = false:error
 dotnet_code_quality_unused_parameters = all:error
 dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:error
 dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:error
-dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:error
+dotnet_style_parentheses_in_other_binary_operators = never_if_unnecessary:error
 dotnet_style_parentheses_in_other_operators = never_if_unnecessary:error
 dotnet_style_qualification_for_field = false:error
 dotnet_style_qualification_for_property = false:error

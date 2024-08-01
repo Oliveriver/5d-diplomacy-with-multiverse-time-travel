@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Utils;
+namespace Utilities;
 
 public static class Constants
 {
@@ -16,5 +16,7 @@ public static class Constants
     };
 
     public static readonly List<Nation> Nations = Enum.GetValues(typeof(Nation)).OfType<Nation>().ToList();
+
+    public static readonly bool UseStrictAdjacencies = true; // TODO allow specified per game?
 }
 

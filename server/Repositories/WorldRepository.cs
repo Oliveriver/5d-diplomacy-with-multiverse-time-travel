@@ -3,7 +3,7 @@ using Context;
 using Entities;
 using Enums;
 using Microsoft.EntityFrameworkCore;
-using Utils;
+using Utilities;
 
 namespace Repositories;
 
@@ -45,13 +45,11 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
 
             game.PlayersSubmitted = [];
 
-            var map = await context.Regions
-                .AsNoTracking()
-                .Include(r => r.Connections)
+            var regions = await context.Regions
+                .Include(r => r.Connections).ThenInclude(c => c.Regions)
                 .ToListAsync();
 
-            adjudicator.Adjudicate(world, map);
-            world.Iteration++;
+            adjudicator.Adjudicate(world, regions);
 
             logger.LogInformation("Adjudicated game {GameId}", gameId);
         }

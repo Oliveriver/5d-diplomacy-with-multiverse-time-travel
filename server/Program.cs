@@ -20,6 +20,7 @@ builder.Services.AddScoped<WorldRepository>();
 builder.Services.AddScoped<MapFactory>();
 builder.Services.AddScoped<DefaultWorldFactory>();
 builder.Services.AddScoped<Adjudicator>();
+builder.Services.AddScoped<Validator>();
 
 var app = builder.Build();
 

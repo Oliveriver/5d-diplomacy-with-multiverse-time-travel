@@ -39,7 +39,7 @@ public class ModelMapper(GameContext context)
                 Midpoint = MapLocation(support.SupportLocation),
                 Destination = MapLocation(support.Destination),
             },
-            Models.Convoy convoy => new Entities.Support
+            Models.Convoy convoy => new Entities.Convoy
             {
                 Status = status,
                 Unit = unit,
