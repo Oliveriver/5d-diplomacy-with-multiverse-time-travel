@@ -39,6 +39,7 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
         var newPlayersSubmitted = players.Where(p => !game.PlayersSubmitted.Contains(p));
         game.PlayersSubmitted = [.. game.PlayersSubmitted, .. newPlayersSubmitted];
 
+        // TODO figure out how to deal with player elimination (and resurrection?)
         if (game.PlayersSubmitted.Count == Constants.Nations.Count)
         {
             logger.LogInformation("Adjudicating game {GameId}", gameId);

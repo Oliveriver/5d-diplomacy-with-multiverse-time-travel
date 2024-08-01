@@ -14,8 +14,6 @@ const OrderList = () => {
   const timelines = filterUnique(orders.map(({ location }) => location.timeline)).sort();
 
   const maxHeight = window.innerHeight - 168;
-  const scrollBehaviour =
-    scrollRef.current && scrollRef.current.scrollHeight > maxHeight ? 'scroll' : 'hidden';
 
   return (
     <div
@@ -23,7 +21,7 @@ const OrderList = () => {
       className="absolute right-10 bottom-32 flex flex-col gap-4 items-end"
       style={{
         maxHeight,
-        overflowY: scrollBehaviour,
+        overflowY: 'auto',
       }}
     >
       {timelines.map((timeline) => (

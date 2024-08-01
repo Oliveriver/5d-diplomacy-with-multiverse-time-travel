@@ -11,7 +11,7 @@ const RemoveButton = ({ isDisabled, remove }: RemoveButtonProps) => (
     onClick={remove}
     className="relative w-3.5 h-3.5 rounded-full ml-3 opacity-30 hover:opacity-100 cursor-pointer"
     style={{ backgroundColor: colours.iconDelete, pointerEvents: isDisabled ? 'none' : 'all' }}
-    aria-label="Delete order"
+    aria-label="Delete item"
     disabled={isDisabled}
   >
     <div

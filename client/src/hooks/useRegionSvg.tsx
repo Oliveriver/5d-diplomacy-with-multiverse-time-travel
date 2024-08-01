@@ -79,7 +79,6 @@ import War from '../assets/map/War.svg?react';
 import WES from '../assets/map/WES.svg?react';
 import Yor from '../assets/map/Yor.svg?react';
 
-// TODO add license for use
 const useRegionSvg = (id: string) =>
   ({
     ADR,

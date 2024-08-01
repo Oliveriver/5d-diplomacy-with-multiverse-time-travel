@@ -1,65 +1,67 @@
-import { useContext } from 'react';
-import regions from '../../data/regions';
-import Nation, { getNationColour } from '../../types/enums/nation';
-import { getLatestPhase } from '../../types/enums/phase';
+import { useContext, useRef, useState } from 'react';
+import Nation from '../../types/enums/nation';
 import colours from '../../utils/colours';
-import { filterUnique } from '../../utils/listUtils';
 import WorldContext from '../context/WorldContext';
 import GameDetails from './GameDetails';
+import { getActiveBoards } from '../../types/board';
+import { filterUnique } from '../../utils/listUtils';
+import PlayerListItem from './PlayerListItem';
 
 const PlayerList = () => {
   const { world } = useContext(WorldContext);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [expandedPlayers, setExpandedPlayers] = useState<Nation[]>([]);
+
   if (!world) return null;
+  const { winner } = world;
 
-  const timelines = filterUnique(world.boards.map(({ timeline }) => timeline));
-  const activeBoards = timelines.map((timeline) =>
-    world.boards
-      .filter((board) => board.timeline === timeline)
-      .reduce((board1, board2) => {
-        if (board1.year > board2.year) return board1;
-        if (board2.year > board1.year) return board2;
+  const activeBoards = getActiveBoards(world.boards);
+  const playerCentres = Object.values(Nation)
+    .map((nation) => ({
+      player: nation,
+      centres: filterUnique(
+        activeBoards.flatMap((board) =>
+          Object.keys(board.centres)
+            .filter((region) => board.centres[region] === nation)
+            .sort(),
+        ),
+      ),
+    }))
+    .sort((player1, player2) => player2.centres.length - player1.centres.length);
 
-        return getLatestPhase(board1.phase, board2.phase) === board1.phase ? board1 : board2;
-      }),
-  );
-
-  // TODO sort out new win condition
-  const totalCentres =
-    activeBoards.length * Object.values(regions).filter((region) => region.isSupplyCentre).length;
-
-  const winPercentages = Object.values(Nation)
-    .map((nation) => {
-      const centreCount = activeBoards.flatMap((board) =>
-        Object.values(board.centres).filter((owner) => owner === nation),
-      ).length;
-
-      return {
-        nation,
-        percentage: 100 * (centreCount / totalCentres),
-      };
-    })
-    .sort((player1, player2) => player2.percentage - player1.percentage);
+  const maxHeight = window.innerHeight - 272;
 
   return (
     <div className="absolute left-10 top-10 flex flex-col gap-4">
       <GameDetails />
       <div
+        ref={scrollRef}
         className="flex flex-col gap-2 p-4 rounded w-max"
-        style={{ backgroundColor: colours.uiOverlay }}
+        style={{
+          backgroundColor: colours.uiOverlay,
+          maxHeight,
+          overflowY: 'auto',
+        }}
       >
-        {winPercentages.map(({ nation, percentage }) => (
-          <div
-            key={nation}
-            className="text-lg flex"
-            style={{
-              opacity: percentage > 0 ? 1 : 0.3,
-              color: getNationColour(nation),
-            }}
-          >
-            <p className="min-w-14 font-bold">{`${Math.round(percentage)}%`}</p>
-            <p>{nation}</p>
-          </div>
-        ))}
+        {playerCentres.map(({ player, centres }) => {
+          const isExpanded = expandedPlayers.includes(player);
+          return (
+            <PlayerListItem
+              key={player}
+              player={player}
+              centres={centres}
+              winner={winner}
+              isExpanded={isExpanded}
+              toggleExpand={() =>
+                setExpandedPlayers(
+                  isExpanded
+                    ? expandedPlayers.filter((nation) => nation !== player)
+                    : [...expandedPlayers, player],
+                )
+              }
+            />
+          );
+        })}
       </div>
     </div>
   );
