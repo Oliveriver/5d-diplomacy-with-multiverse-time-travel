@@ -63,8 +63,18 @@ public class Validator(DefaultWorldFactory defaultWorldFactory)
         foreach (var convoy in convoys)
         {
             // TODO fix for convoying to/from land regions with child coasts
-            var convoysFromCoast = regions.First(r => r.Id == convoy.Midpoint.RegionId);
-            var convoysToCoast = regions.First(r => r.Id == convoy.Destination.RegionId);
+            var locationRegion = regions.First(r => r.Id == convoy.Location.RegionId);
+            var midpointRegion = regions.First(r => r.Id == convoy.Midpoint.RegionId);
+            var destinationRegion = regions.First(r => r.Id == convoy.Destination.RegionId);
+
+            if (locationRegion.Type != RegionType.Sea
+                || midpointRegion.Type != RegionType.Coast
+                || destinationRegion.Type != RegionType.Coast)
+            {
+                convoy.Status = OrderStatus.Invalid;
+                continue;
+            }
+
             var hasMatchingMove = world.Orders
                 .OfType<Move>()
                 .Any(m => m.Location == convoy.Midpoint && m.Destination == convoy.Destination);

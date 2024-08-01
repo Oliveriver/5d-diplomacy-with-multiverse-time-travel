@@ -52,6 +52,7 @@ public class GameRepository(ILogger<GameRepository> logger, GameContext context,
         return game;
     }
 
+    // TODO allow re-joining sandbox game
     public async Task<(Game game, Nation player)> JoinGame(int id, Nation? player)
     {
         logger.LogInformation("Joining game {Id} as player {Player}", id, player);
