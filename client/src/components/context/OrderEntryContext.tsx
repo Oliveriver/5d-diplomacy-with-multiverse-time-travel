@@ -11,6 +11,8 @@ export const OrderEntryContextProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
+      if (document.activeElement?.tagName === 'INPUT') return;
+
       switch (event.key) {
         case '1':
           dispatch({ $type: OrderEntryActionType.SetMode, mode: InputMode.Hold });

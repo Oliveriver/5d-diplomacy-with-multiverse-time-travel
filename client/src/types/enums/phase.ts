@@ -14,6 +14,16 @@ export const getNextPhase = (year: number, phase: Phase) => {
   return { year: nextYear, phase: nextPhase };
 };
 
+export const getNextMajorPhase = (year: number, phase: Phase) => {
+  const nextYear = phase === Phase.Winter || phase === Phase.Fall ? year + 1 : year;
+  const nextPhase = {
+    [Phase.Spring]: Phase.Fall,
+    [Phase.Fall]: Phase.Spring,
+    [Phase.Winter]: Phase.Spring,
+  }[phase];
+  return { year: nextYear, phase: nextPhase };
+};
+
 export const getPhaseIndex = (phase: Phase) =>
   ({
     [Phase.Spring]: 1,

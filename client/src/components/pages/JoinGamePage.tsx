@@ -5,6 +5,8 @@ import Button from '../user-interface/common/Button';
 import NationSelect from '../user-interface/NationSelect';
 import GameContext from '../context/GameContext';
 import Error from '../user-interface/common/Error';
+import TextInput from '../user-interface/common/TextInput';
+import { isInteger } from '../../utils/numberUtils';
 
 type JoinGameProps = {
   setViewOption: (option: SetupViewOption) => void;
@@ -17,15 +19,12 @@ const JoinGamePage = ({ setViewOption }: JoinGameProps) => {
   const [player, setPlayer] = useState<Nation>();
 
   const onGameIdChanged = (value: string) => {
-    const parsedValue = parseInt(value, 10);
-    if (
-      parsedValue.toString() !== value ||
-      Number.isNaN(parsedValue) ||
-      !Number.isInteger(parsedValue)
-    ) {
+    if (!isInteger(value)) {
       setGameId(undefined);
       return;
     }
+
+    const parsedValue = parseInt(value, 10);
     setGameId(parsedValue);
   };
 
@@ -42,12 +41,7 @@ const JoinGamePage = ({ setViewOption }: JoinGameProps) => {
   return (
     <div className="flex flex-col w-screen h-screen items-center gap-4 pt-24">
       <img alt="Logo" src="./logo.png" className="w-64 pb-8" />
-      <input
-        type="text"
-        className="w-64 h-16 p-4 border-4 rounded-xl text-lg"
-        placeholder="Game ID"
-        onChange={(event) => onGameIdChanged(event.target.value)}
-      />
+      <TextInput placeholder="Game ID" onChange={onGameIdChanged} />
       <NationSelect selectedNation={player} setSelectedNation={setPlayer} />
       <Button
         text="Join"

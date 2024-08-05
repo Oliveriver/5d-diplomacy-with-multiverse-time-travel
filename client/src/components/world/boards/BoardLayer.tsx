@@ -1,12 +1,16 @@
 import { useContext } from 'react';
-import { getNextPhase } from '../../../types/enums/phase';
+import { getNextMajorPhase, getNextPhase } from '../../../types/enums/phase';
 import { filterUnique } from '../../../utils/listUtils';
 import Board from './Board';
 import BoardSkip from './BoardSkip';
 import WorldContext from '../../context/WorldContext';
+import BoardGhost from './BoardGhost';
+import OrderEntryContext from '../../context/OrderEntryContext';
+import InputMode from '../../../types/enums/inputMode';
 
 const BoardLayer = () => {
   const { world } = useContext(WorldContext);
+  const { currentMode, currentOrder } = useContext(OrderEntryContext);
   if (!world) return null;
 
   const timelines = filterUnique(world.boards.map(({ timeline }) => timeline));
@@ -15,6 +19,17 @@ const BoardLayer = () => {
   const { winner } = world;
   const hasRetreats = world.boards.some((board) =>
     Object.values(board.units).some((unit) => unit.mustRetreat),
+  );
+
+  const selectedLocation = currentOrder?.location;
+  const showGhostBoard =
+    (currentMode === InputMode.Support || currentMode === InputMode.Convoy) && selectedLocation;
+  const ghostBoard = showGhostBoard && (
+    <BoardGhost
+      initialTimeline={selectedLocation.timeline}
+      initialYear={getNextMajorPhase(selectedLocation.year, selectedLocation.phase).year}
+      initialPhase={getNextMajorPhase(selectedLocation.year, selectedLocation.phase).phase}
+    />
   );
 
   return (
@@ -50,6 +65,7 @@ const BoardLayer = () => {
               <BoardSkip key={key} board={{ ...board, timeline }} />
             );
           })}
+          {timeline === selectedLocation?.timeline && ghostBoard}
         </div>
       ))}
     </div>

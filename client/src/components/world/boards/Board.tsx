@@ -6,7 +6,7 @@ import {
   minorBoardWidth,
 } from '../../../utils/constants';
 import Map from './Map';
-import BoardData, { getBoardKey, getBoardName } from '../../../types/board';
+import BoardData, { getBoardName } from '../../../types/board';
 import Adjustment from './Adjustment';
 import Nation, { getNationColour } from '../../../types/enums/nation';
 import colours from '../../../utils/colours';
@@ -22,7 +22,6 @@ const Board = ({ board, isActive, winner }: BoardProps) => {
   const showWinner = isActive && winner;
 
   const width = phase === Phase.Winter ? minorBoardWidth : majorBoardWidth;
-  const key = getBoardKey(board);
 
   return (
     <div
@@ -34,7 +33,6 @@ const Board = ({ board, isActive, winner }: BoardProps) => {
       }}
     >
       <div
-        id={key}
         className="relative rounded-xl"
         style={{
           backgroundColor: colours.boardBackground,
