@@ -6,9 +6,10 @@ type OrderPathProps = {
   endType: 'arrow' | 'ring' | 'none';
   dashPattern?: string;
   width?: number;
-  status: OrderStatus;
+  status?: OrderStatus;
   isHighlighted?: boolean;
   zIndex?: number;
+  position?: 'fixed' | 'relative';
 };
 
 const markerDefinitions = (
@@ -128,9 +129,10 @@ const OrderPath = ({
   endType,
   dashPattern,
   width = 4,
-  status,
+  status = OrderStatus.New,
   isHighlighted,
   zIndex = 10,
+  position = 'fixed',
 }: OrderPathProps) => {
   const newMarkerId = {
     arrow: 'newArrowHead',
@@ -169,7 +171,12 @@ const OrderPath = ({
       }[status];
 
   return (
-    <svg className="fixed overflow-visible pointer-events-none" style={{ zIndex }}>
+    <svg
+      className="overflow-visible pointer-events-none"
+      style={{ zIndex, position }}
+      height={1}
+      width={1}
+    >
       {markerDefinitions}
       <path
         stroke={getOrderColour(status, isHighlighted)}

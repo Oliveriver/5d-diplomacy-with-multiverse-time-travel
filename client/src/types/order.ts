@@ -1,4 +1,4 @@
-import Unit, { displayUnit } from './unit';
+import Unit from './unit';
 import Location, { displayLocation, getLocationKey } from './location';
 import colours from '../utils/colours';
 
@@ -82,23 +82,23 @@ export const getOrderColour = (order: Order | OrderStatus, isHighlighted: boolea
   }[typeof order === 'object' ? order.status : order];
 };
 
-export const displayOrder = (order: Order) => {
-  const unit = displayUnit(order?.unit);
+export const getOrderText = (order: Order) => {
+  const unit = order.unit?.type;
   const location = displayLocation(order.location);
 
   switch (order.$type) {
     case OrderType.Move:
-      return `${unit} ${location} => ${displayLocation(order.destination)}`;
+      return `MOVE\n${unit} ${location} moves to ${displayLocation(order.destination)}`;
     case OrderType.Support:
-      return `${unit} ${location} S ${displayLocation(order.supportLocation)} => ${displayLocation(order.destination)}`;
+      return `SUPPORT\n${unit} ${location} supports ${displayLocation(order.supportLocation)} to ${displayLocation(order.destination)}`;
     case OrderType.Convoy:
-      return `${unit} ${location} C ${displayLocation(order.convoyLocation)} => ${displayLocation(order.destination)}`;
+      return `CONVOY\n${unit} ${location} convoys ${displayLocation(order.convoyLocation)} to ${displayLocation(order.destination)}`;
     case OrderType.Build:
-      return `+ ${unit} ${location}`;
+      return `BUILD\n${unit} ${location}`;
     case OrderType.Disband:
-      return `- ${unit} ${location}`;
+      return `DISBAND\n${unit} ${location}`;
     default:
-      return `${unit} ${location} H`;
+      return `HOLD\n${unit} ${location}`;
   }
 };
 

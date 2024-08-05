@@ -6,7 +6,7 @@ import {
   minorBoardWidth,
 } from '../../../utils/constants';
 import Map from './Map';
-import BoardData, { getBoardKey } from '../../../types/board';
+import BoardData, { getBoardKey, getBoardName } from '../../../types/board';
 import Adjustment from './Adjustment';
 import Nation, { getNationColour } from '../../../types/enums/nation';
 import colours from '../../../utils/colours';
@@ -18,11 +18,10 @@ type BoardProps = {
 };
 
 const Board = ({ board, isActive, winner }: BoardProps) => {
-  const { timeline, year, phase } = board;
+  const { phase } = board;
   const showWinner = isActive && winner;
 
   const width = phase === Phase.Winter ? minorBoardWidth : majorBoardWidth;
-  const name = `(${timeline}) ${phase} ${year}`;
   const key = getBoardKey(board);
 
   return (
@@ -48,7 +47,7 @@ const Board = ({ board, isActive, winner }: BoardProps) => {
           boxShadow: showWinner ? `0px 0px 100px 50px ${getNationColour(winner)}` : '',
         }}
       >
-        <p className="text-md -mt-7">{name}</p>
+        <p className="text-md -mt-7">{getBoardName(board)}</p>
         <Map board={board} isActive={isActive && !winner} />
       </div>
       {phase === Phase.Winter && <Adjustment board={board} />}

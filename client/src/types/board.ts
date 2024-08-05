@@ -15,6 +15,14 @@ export const getBoardKey = (board: Board | Omit<Location, 'region'>) => {
   return getLocationKey({ timeline, year, phase, region: '' });
 };
 
+export const getBoardName = ({ timeline, year, phase }: Omit<Location, 'region'>) =>
+  `Timeline ${timeline} - ${phase} ${year}`;
+
+export const compareBoards = (board1: Omit<Location, 'region'>, board2: Omit<Location, 'region'>) =>
+  board1.timeline === board2.timeline &&
+  board1.year === board2.year &&
+  board1.phase === board2.phase;
+
 export const getActiveBoards = (boards: Board[]) => {
   const timelines = filterUnique(boards.map(({ timeline }) => timeline));
   return timelines.map((timeline) =>
