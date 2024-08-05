@@ -8,11 +8,18 @@ const SetupRoot = () => {
   const [option, setOption] = useState(SetupViewOption.None);
 
   return (
-    <>
+    <div
+      style={{
+        backgroundImage: 'url(landing-image-background.png)',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
       {option === SetupViewOption.None && <LandingPage setViewOption={setOption} />}
       {option === SetupViewOption.New && <NewGamePage setViewOption={setOption} />}
       {option === SetupViewOption.Join && <JoinGamePage setViewOption={setOption} />}
-    </>
+    </div>
   );
 };
 

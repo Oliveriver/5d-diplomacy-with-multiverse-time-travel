@@ -15,7 +15,7 @@ const Select = <T extends string | number | undefined>({
   setValue,
   selectedValue,
 }: SelectProps<T>) => (
-  <div className="w-64 pr-4 border-4 rounded-xl">
+  <div className="w-64 pr-4 bg-white border-4 rounded-xl">
     <select
       className="text-lg w-full bg-transparent p-4"
       style={{
