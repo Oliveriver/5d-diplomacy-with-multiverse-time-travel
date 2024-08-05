@@ -2,7 +2,7 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { useContext } from 'react';
 import BoardLayer from './world/boards/BoardLayer';
 import { boardSeparation, initialScale, majorBoardWidth } from '../utils/constants';
-import Overlay from './interface/Overlay';
+import Overlay from './user-interface/Overlay';
 import { OrderEntryContextProvider } from './context/OrderEntryContext';
 import OrderLayer from './world/orders/OrderLayer';
 import WorldLoading from './world/WorldLoading';

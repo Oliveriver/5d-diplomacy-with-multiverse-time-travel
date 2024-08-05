@@ -1,10 +1,10 @@
 import { useContext, useState } from 'react';
 import SetupViewOption from '../../types/enums/setupViewOption';
 import Nation from '../../types/enums/nation';
-import Button from '../interface/common/Button';
-import NationSelect from '../interface/NationSelect';
+import Button from '../user-interface/common/Button';
+import NationSelect from '../user-interface/NationSelect';
 import GameContext from '../context/GameContext';
-import Error from '../interface/common/Error';
+import Error from '../user-interface/common/Error';
 
 type JoinGameProps = {
   setViewOption: (option: SetupViewOption) => void;

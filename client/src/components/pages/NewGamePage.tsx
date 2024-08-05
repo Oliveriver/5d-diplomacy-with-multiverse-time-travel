@@ -1,11 +1,11 @@
 import { useContext, useState } from 'react';
 import Nation from '../../types/enums/nation';
 import SetupViewOption from '../../types/enums/setupViewOption';
-import Button from '../interface/common/Button';
-import NationSelect from '../interface/NationSelect';
+import Button from '../user-interface/common/Button';
+import NationSelect from '../user-interface/NationSelect';
 import GameContext from '../context/GameContext';
-import Error from '../interface/common/Error';
-import Select from '../interface/common/Select';
+import Error from '../user-interface/common/Error';
+import Select from '../user-interface/common/Select';
 
 type NewGamePageProps = {
   setViewOption: (option: SetupViewOption) => void;

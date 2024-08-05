@@ -1,7 +1,7 @@
 import SetupViewOption from '../../types/enums/setupViewOption';
-import Button from '../interface/common/Button';
-import Link from '../interface/common/Link';
-import LinkGroup from '../interface/common/LinkGroup';
+import Button from '../user-interface/common/Button';
+import Link from '../user-interface/common/Link';
+import LinkGroup from '../user-interface/common/LinkGroup';
 
 type LandingPageProps = {
   setViewOption: (option: SetupViewOption) => void;
@@ -56,7 +56,10 @@ const LandingPage = ({ setViewOption }: LandingPageProps) => (
         },
       ]}
     />
-    <Link text="Source code" href="https://github.com/Oliveriver/5d-diplomacy-with-multiverse-time-travel" />
+    <Link
+      text="Source code"
+      href="https://github.com/Oliveriver/5d-diplomacy-with-multiverse-time-travel"
+    />
   </div>
 );
 

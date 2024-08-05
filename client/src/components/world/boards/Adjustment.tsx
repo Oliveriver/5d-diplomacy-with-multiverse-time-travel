@@ -1,7 +1,7 @@
 import Nation, { getNationColour } from '../../../types/enums/nation';
 import Board from '../../../types/board';
 import { boardBorderWidth } from '../../../utils/constants';
-import SignIcon from '../../interface/common/SignIcon';
+import SignIcon from '../../user-interface/common/SignIcon';
 
 type AdjustmentProps = {
   board: Board;

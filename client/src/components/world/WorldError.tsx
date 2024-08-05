@@ -1,6 +1,6 @@
 import colours from '../../utils/colours';
-import Button from '../interface/common/Button';
-import Error from '../interface/common/Error';
+import Button from '../user-interface/common/Button';
+import Error from '../user-interface/common/Error';
 
 type WorldErrorProps = {
   error: Error;

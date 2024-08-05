@@ -10,7 +10,7 @@ import { boardBorderWidth, majorBoardWidth, minorBoardWidth } from '../../../uti
 import UnitIcon from './UnitIcon';
 import { compareLocations, getLocationKey } from '../../../types/location';
 import { OrderType } from '../../../types/order';
-import BuildOptions from '../../interface/BuildOption';
+import BuildOptions from '../../user-interface/BuildOption';
 import InputMode from '../../../types/enums/inputMode';
 import colours from '../../../utils/colours';
 import RegionType from '../../../types/enums/regionType';
