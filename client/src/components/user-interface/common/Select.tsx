@@ -21,6 +21,7 @@ const Select = <T extends string | number | undefined>({
       style={{
         color: options.find((v) => v.value === selectedValue)?.color ?? colours.uiForeground,
       }}
+      value={selectedValue}
       onChange={(event) => setValue(event.target.value as T)}
     >
       {options.map((option) => (
