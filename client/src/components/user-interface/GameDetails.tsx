@@ -18,7 +18,7 @@ const GameDetails = () => {
       style={{ backgroundColor: colours.uiOverlay }}
     >
       <div className="flex flex-row items-center text-sm">
-        <p>Game ID:</p>
+        <p title={JSON.stringify(game)}>Game ID:</p>
         <p className="ml-3 mr-1">{id}</p>
         <button
           type="button"

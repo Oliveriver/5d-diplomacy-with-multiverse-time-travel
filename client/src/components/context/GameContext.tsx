@@ -35,9 +35,13 @@ export const GameContextProvider = ({ children }: PropsWithChildren) => {
   const contextValue = useMemo(
     () => ({
       game: created ?? joined,
-      createGame: async (isSandbox: boolean, player: Nation | null) =>
-        createGame({ isSandbox, player }),
-      joinGame: async (gameId: number, player: Nation | null) => joinGame({ gameId, player }),
+      createGame: async (
+        isSandbox: boolean,
+        player: Nation | null,
+        hasStrictAdjacencies: boolean,
+      ) => createGame({ isSandbox, player, hasStrictAdjacencies }),
+      joinGame: async (gameId: number, isSandbox: boolean, player: Nation | null) =>
+        joinGame({ gameId, isSandbox, player }),
       exitGame: () => {
         queryClient.removeQueries();
         resetCreate();

@@ -25,6 +25,7 @@ public class GameController(
     {
         var isSandbox = request.IsSandbox;
         var player = request.Player;
+        var hasStrictAdjacencies = request.HasStrictAdjacencies;
 
         if (isSandbox && player != null)
         {
@@ -34,13 +35,13 @@ public class GameController(
 
         if (isSandbox)
         {
-            var game = await gameRepository.CreateSandboxGame();
-            return Ok(new Game(game.Id));
+            var game = await gameRepository.CreateSandboxGame(hasStrictAdjacencies);
+            return Ok(new Game(game.Id, game.HasStrictAdjacencies));
         }
         else
         {
-            var (game, chosenPlayer) = await gameRepository.CreateNormalGame(player);
-            return Ok(new Game(game.Id, chosenPlayer));
+            var (game, chosenPlayer) = await gameRepository.CreateNormalGame(player, hasStrictAdjacencies);
+            return Ok(new Game(game.Id, game.HasStrictAdjacencies, chosenPlayer));
         }
     }
 
@@ -49,22 +50,30 @@ public class GameController(
     public async Task<ActionResult<Game>> JoinGame([FromRoute] int gameId, [FromBody] GameJoinRequest request)
     {
         var player = request.Player;
-        logger.LogInformation("Requesting to join game {GameId} as {Player}", gameId, player);
+        var isSandbox = request.IsSandbox;
 
         try
         {
-            var (game, chosenPlayer) = await gameRepository.JoinGame(gameId, player);
-            return Ok(new Game(game.Id, chosenPlayer));
+            if (isSandbox)
+            {
+                var game = await gameRepository.JoinSandboxGame(gameId);
+                return Ok(new Game(game.Id, game.HasStrictAdjacencies));
+            }
+            else
+            {
+                var (game, chosenPlayer) = await gameRepository.JoinNormalGame(gameId, player);
+                return Ok(new Game(game.Id, game.HasStrictAdjacencies, chosenPlayer));
+            }
         }
         catch (KeyNotFoundException)
         {
             logger.LogError("Attempted to join non-existent game {GameId}", gameId);
             return NotFound($"No game with ID {gameId} found");
         }
-        catch (InvalidOperationException)
+        catch (InvalidOperationException error)
         {
             logger.LogWarning("Failed to join game {GameId}", gameId);
-            return BadRequest("Unable to join in-progress game as random nation");
+            return BadRequest(error.Message);
         }
     }
 

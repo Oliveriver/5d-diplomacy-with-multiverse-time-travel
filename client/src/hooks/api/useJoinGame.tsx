@@ -6,12 +6,14 @@ import routes from '../../api/routes';
 
 type JoinRequest = {
   gameId: number;
+  isSandbox: boolean;
   player: Nation | null;
 };
 
-const joinGame = async ({ gameId, player }: JoinRequest): Promise<Game> => {
+const joinGame = async ({ gameId, isSandbox, player }: JoinRequest): Promise<Game> => {
   const route = routes.joinGame(gameId);
   const response = await axios.put<Game>(route, {
+    isSandbox,
     player,
   });
   return response.data;

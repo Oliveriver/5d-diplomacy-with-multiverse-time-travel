@@ -7,13 +7,19 @@ import routes from '../../api/routes';
 type CreationRequest = {
   isSandbox: boolean;
   player: Nation | null;
+  hasStrictAdjacencies: boolean;
 };
 
-const createGame = async ({ isSandbox, player }: CreationRequest): Promise<Game> => {
+const createGame = async ({
+  isSandbox,
+  player,
+  hasStrictAdjacencies,
+}: CreationRequest): Promise<Game> => {
   const route = routes.createGame();
   const response = await axios.post<Game>(route, {
     isSandbox,
     player,
+    hasStrictAdjacencies,
   });
   return response.data;
 };

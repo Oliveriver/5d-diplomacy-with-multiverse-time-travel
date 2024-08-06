@@ -16,8 +16,9 @@ const NewGamePage = ({ setViewOption }: NewGamePageProps) => {
 
   const [isSandbox, setIsSandbox] = useState(false);
   const [player, setPlayer] = useState<Nation>();
+  const [hasStrictAdjacencies, setHasStrictAdjacencies] = useState(true);
 
-  const onCreatePressed = () => createGame(isSandbox, player ?? null);
+  const onCreatePressed = () => createGame(isSandbox, player ?? null, hasStrictAdjacencies);
 
   const onBackPressed = () => {
     exitGame();
@@ -42,6 +43,20 @@ const NewGamePage = ({ setViewOption }: NewGamePageProps) => {
         selectedValue={isSandbox ? 'true' : 'false'}
       />
       {!isSandbox && <NationSelect selectedNation={player} setSelectedNation={setPlayer} />}
+      <Select
+        options={[
+          {
+            value: 'true',
+            text: 'Strict adjacencies',
+          },
+          {
+            value: 'false',
+            text: 'Loose adjacencies',
+          },
+        ]}
+        setValue={(value) => setHasStrictAdjacencies(value === 'true')}
+        selectedValue={hasStrictAdjacencies ? 'true' : 'false'}
+      />
       <Button text="Create" minWidth={256} onClick={onCreatePressed} isBusy={isLoading} />
       {error && <Error error={error} />}
       <div className="absolute bottom-10">
