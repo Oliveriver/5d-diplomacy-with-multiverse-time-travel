@@ -4,8 +4,17 @@ namespace Mappers;
 
 public class EntityMapper
 {
-    public Models.World MapWorld(Entities.World world)
-        => new(world.Iteration, [.. world.Boards.Select(MapBoard)], [.. world.Orders.Select(MapOrder)], world.Winner);
+    public Models.World MapWorld(Entities.World world, Nation? player = null)
+    {
+        var visibleOrders = player == null
+            ? world.Orders
+            : world.Orders.Where(o => o.Status != OrderStatus.New || o.Unit?.Owner == player);
+
+        return new(world.Iteration,
+            [.. world.Boards.Select(MapBoard)],
+            [.. visibleOrders.Select(MapOrder)],
+            world.Winner);
+    }
 
     public Models.Board MapBoard(Entities.Board board)
         => new(board.Timeline, board.Year, board.Phase, [.. board.ChildTimelines], MapCentres(board.Centres), MapUnits(board.Units));

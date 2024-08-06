@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 import World from '../../types/world';
-import Order from '../../types/order';
+import Order, { OrderStatus } from '../../types/order';
 import useGetWorld from '../../hooks/api/useGetWorld';
 import useSubmitOrders from '../../hooks/api/useSubmitOrders';
 import { refetchAttempts, refetchInterval } from '../../utils/constants';
@@ -40,6 +40,9 @@ export const WorldContextProvider = ({ children }: PropsWithChildren) => {
 
   const [isRefetching, setIsRefetching] = useState(false);
 
+  const isWaitingForAdjudication =
+    world?.orders.some((order) => order.status === OrderStatus.New) ?? false;
+
   const refetchUntilUpdate = useCallback(
     async (attempts: number) => {
       setIsRefetching(true);
@@ -68,7 +71,7 @@ export const WorldContextProvider = ({ children }: PropsWithChildren) => {
         submitOrders({ gameId: game.id, players, orders });
         await refetchUntilUpdate(refetchAttempts);
       },
-      isLoading: isLoading || isSubmitting || isRefetching,
+      isLoading: isLoading || isSubmitting || isRefetching || isWaitingForAdjudication,
       error: worldError || submissionError,
       retry: () => refetchUntilUpdate(refetchAttempts),
     }),
@@ -79,6 +82,7 @@ export const WorldContextProvider = ({ children }: PropsWithChildren) => {
       isLoading,
       isSubmitting,
       isRefetching,
+      isWaitingForAdjudication,
       worldError,
       submissionError,
       refetchUntilUpdate,

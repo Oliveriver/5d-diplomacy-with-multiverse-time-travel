@@ -8,9 +8,12 @@ import routes from '../../api/routes';
 
 const getWorld = async (game: Game | null): Promise<World | null> => {
   if (!game) return null;
+  const { id, player } = game;
 
-  const route = routes.getWorld(game.id);
-  const response = await axios.get<World>(route);
+  const route = routes.getWorld(id);
+  const response = await axios.get<World>(route, {
+    params: { player },
+  });
   return response.data;
 };
 

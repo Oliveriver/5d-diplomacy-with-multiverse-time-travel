@@ -11,6 +11,7 @@ type OrderEntryState = {
   highlightedOrder: Order | null;
   availableModes: InputMode[];
   dispatch: (action: OrderEntryAction) => void;
+  isDisabled: boolean;
 };
 
 export default OrderEntryState;

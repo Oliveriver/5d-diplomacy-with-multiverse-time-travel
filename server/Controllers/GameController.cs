@@ -1,3 +1,4 @@
+using Enums;
 using Mappers;
 using Microsoft.AspNetCore.Mvc;
 using Models;
@@ -79,14 +80,14 @@ public class GameController(
 
     [HttpGet]
     [Route("{gameId}")]
-    public async Task<ActionResult<World>> GetWorld([FromRoute] int gameId)
+    public async Task<ActionResult<World>> GetWorld([FromRoute] int gameId, [FromQuery] Nation player)
     {
-        logger.LogInformation("Fetching world for game {GameId}", gameId);
+        logger.LogInformation("Fetching world for game {GameId} as {Player}", gameId, player);
 
         try
         {
             var world = await worldRepository.GetWorld(gameId);
-            return Ok(entityMapper.MapWorld(world));
+            return Ok(entityMapper.MapWorld(world, player));
         }
         catch (KeyNotFoundException)
         {

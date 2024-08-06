@@ -371,6 +371,7 @@ const orderEntryReducer = (
   state: Omit<OrderEntryState, 'dispatch'>,
   action: OrderEntryAction,
 ): Omit<OrderEntryState, 'dispatch'> => {
+  // Actions available when entry is disabled
   switch (action.$type) {
     case OrderEntryActionType.LoadWorld:
       return {
@@ -379,12 +380,7 @@ const orderEntryReducer = (
         player: action.player,
         currentMode: InputMode.None,
         currentOrder: null,
-      };
-    case OrderEntryActionType.Submit:
-      return {
-        ...state,
-        currentMode: InputMode.None,
-        currentOrder: null,
+        isDisabled: action.isLoading,
       };
     case OrderEntryActionType.SetMode:
       return handleInputModeChange(state, action);
@@ -394,16 +390,6 @@ const orderEntryReducer = (
         availableModes: action.modes,
         currentMode: action.modes.includes(state.currentMode) ? state.currentMode : InputMode.None,
       };
-    case OrderEntryActionType.Remove:
-      return {
-        ...state,
-        orders: state.orders.filter((order) => !compareLocations(order.location, action.location)),
-        highlightedOrder: null,
-      };
-    case OrderEntryActionType.Add:
-      return action.location.phase === Phase.Winter
-        ? handleAdjustmentOrderCreation(state, action)
-        : handleBasicOrderCreation(state, action);
     case OrderEntryActionType.HighlightStart:
       return {
         ...state,
@@ -419,6 +405,30 @@ const orderEntryReducer = (
         highlightedOrder: null,
       };
     default:
+      break;
+  }
+
+  if (state.isDisabled) return state;
+
+  // Actions available only when entry is enabled
+  switch (action.$type) {
+    case OrderEntryActionType.Remove:
+      return {
+        ...state,
+        orders: state.orders.filter((order) => !compareLocations(order.location, action.location)),
+        highlightedOrder: null,
+      };
+    case OrderEntryActionType.Add:
+      return action.location.phase === Phase.Winter
+        ? handleAdjustmentOrderCreation(state, action)
+        : handleBasicOrderCreation(state, action);
+    case OrderEntryActionType.Submit:
+      return {
+        ...state,
+        currentMode: InputMode.None,
+        currentOrder: null,
+      };
+    default:
       return state;
   }
 };
@@ -431,20 +441,22 @@ export const initialOrderEntryState: OrderEntryState = {
   highlightedOrder: null,
   availableModes: [InputMode.None],
   dispatch: () => {},
+  isDisabled: true,
 };
 
 const useOrderEntryReducer = () => {
   const [state, dispatch] = useReducer(orderEntryReducer, initialOrderEntryState);
   const { game } = useContext(GameContext);
-  const { world } = useContext(WorldContext);
+  const { world, isLoading } = useContext(WorldContext);
 
   useEffect(
     () =>
       dispatch({
         $type: OrderEntryActionType.LoadWorld,
         player: game?.player ?? null,
+        isLoading,
       }),
-    [world?.iteration, game?.player],
+    [world?.iteration, game?.player, isLoading],
   );
 
   return useMemo(() => ({ ...state, dispatch }), [state, dispatch]);
