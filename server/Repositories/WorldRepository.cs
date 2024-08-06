@@ -39,8 +39,13 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
         var newPlayersSubmitted = players.Where(p => !game.PlayersSubmitted.Contains(p));
         game.PlayersSubmitted = [.. game.PlayersSubmitted, .. newPlayersSubmitted];
 
-        // TODO figure out how to deal with player elimination (and resurrection?)
-        if (game.PlayersSubmitted.Count == Constants.Nations.Count)
+        var activeBoards = world.Boards
+            .GroupBy(b => b.Timeline)
+            .Select(t => t.MaxBy(b => b.Year + (int)b.Phase));
+        var livingPlayers = Constants.Nations
+            .Where(n => activeBoards.Any(b => b?.Centres.Any(c => c.Owner == n) ?? false));
+
+        if (livingPlayers.Count() <= game.PlayersSubmitted.Count)
         {
             logger.LogInformation("Adjudicating game {GameId}", gameId);
 
