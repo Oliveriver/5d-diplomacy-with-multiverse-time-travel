@@ -13,11 +13,11 @@ public class Validator(DefaultWorldFactory defaultWorldFactory)
     private World world = null!;
     private List<Region> regions = null!;
 
-    public void Validate(World world, List<Region> regions)
+    public void Validate(World world, List<Region> regions, bool hasStrictAdjacencies)
     {
         this.world = world;
         this.regions = regions;
-        adjacencyValidator = new(regions);
+        adjacencyValidator = new(regions, hasStrictAdjacencies);
         convoyPathValidator = new(world, regions, adjacencyValidator);
 
         ValidateMoves();

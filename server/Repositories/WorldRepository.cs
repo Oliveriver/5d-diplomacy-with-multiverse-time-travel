@@ -50,7 +50,7 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
                 .Include(r => r.Connections).ThenInclude(c => c.Regions)
                 .ToListAsync();
 
-            adjudicator.Adjudicate(world, regions);
+            adjudicator.Adjudicate(world, regions, game.HasStrictAdjacencies);
 
             logger.LogInformation("Adjudicated game {GameId}", gameId);
         }

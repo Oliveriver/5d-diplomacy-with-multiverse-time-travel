@@ -48,10 +48,12 @@ const NewGamePage = ({ setViewOption }: NewGamePageProps) => {
           {
             value: 'true',
             text: 'Strict adjacencies',
+            hint: 'Multiverse moves must arrive at the equivalent region to the one they left',
           },
           {
             value: 'false',
             text: 'Loose adjacencies',
+            hint: 'Multiverse moves can arrive at the equivalent region to the one they left or any adjacent region in that board',
           },
         ]}
         setValue={(value) => setHasStrictAdjacencies(value === 'true')}

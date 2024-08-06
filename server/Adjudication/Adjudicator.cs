@@ -8,9 +8,9 @@ public class Adjudicator(Validator validator)
 {
     private readonly Validator validator = validator;
 
-    public void Adjudicate(World world, List<Region> regions)
+    public void Adjudicate(World world, List<Region> regions, bool hasStrictAdjacencies)
     {
-        validator.Validate(world, regions);
+        validator.Validate(world, regions, hasStrictAdjacencies);
 
         var previousBoard = world.Boards.Last();
 

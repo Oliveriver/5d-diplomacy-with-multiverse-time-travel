@@ -1,12 +1,12 @@
 ﻿using Entities;
 using Enums;
-using Utilities;
 
 namespace Adjudication;
 
-public class AdjacencyValidator(List<Region> regions)
+public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
 {
     private readonly List<Region> regions = regions;
+    private readonly bool hasStrictAdjacencies = hasStrictAdjacencies;
 
     public bool IsValidDirectMove(Unit unit, Location location, Location destination)
     {
@@ -29,7 +29,7 @@ public class AdjacencyValidator(List<Region> regions)
         var locationId = location.RegionId;
         var destinationId = destination.RegionId;
 
-        if (Constants.UseStrictAdjacencies ? locationId != destinationId : !IsValidIntraBoardMove(unit, location, destination))
+        if (hasStrictAdjacencies ? locationId != destinationId : !IsValidIntraBoardMove(unit, location, destination))
         {
             return false;
         }
