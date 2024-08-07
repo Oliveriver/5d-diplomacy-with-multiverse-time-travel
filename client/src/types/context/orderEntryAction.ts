@@ -17,7 +17,6 @@ export enum OrderEntryActionType {
 export type LoadWorldAction = {
   $type: OrderEntryActionType.LoadWorld;
   player: Nation | null;
-  isLoading: boolean;
 };
 
 export type AddOrderAction = {
