@@ -10,7 +10,7 @@ import World from '../../types/world';
 import Order, { OrderStatus } from '../../types/order';
 import useGetWorld from '../../hooks/api/useGetWorld';
 import useSubmitOrders from '../../hooks/api/useSubmitOrders';
-import { refetchAttempts, refetchInterval } from '../../utils/constants';
+import { refetchInterval } from '../../utils/constants';
 import GameContext from './GameContext';
 import Nation from '../../types/enums/nation';
 
@@ -43,24 +43,21 @@ export const WorldContextProvider = ({ children }: PropsWithChildren) => {
   const isWaitingForAdjudication =
     world?.orders.some((order) => order.status === OrderStatus.New) ?? false;
 
-  const refetchUntilUpdate = useCallback(
-    async (attempts: number) => {
-      setIsRefetching(true);
-      const currentIteration = world?.iteration;
-      const refetched = await refetch();
-      if (attempts <= 1 || refetched.error || currentIteration !== refetched.data?.iteration) {
-        setIsRefetching(false);
-        return refetched;
-      }
+  const refetchUntilUpdate = useCallback(async () => {
+    setIsRefetching(true);
+    const currentIteration = world?.iteration;
+    const refetched = await refetch();
+    if (refetched.error || currentIteration !== refetched.data?.iteration) {
+      setIsRefetching(false);
+      return refetched;
+    }
 
-      await new Promise((resolve) => {
-        setTimeout(resolve, refetchInterval);
-      });
+    await new Promise((resolve) => {
+      setTimeout(resolve, refetchInterval);
+    });
 
-      return refetchUntilUpdate(attempts - 1);
-    },
-    [world?.iteration, refetch],
-  );
+    return refetchUntilUpdate();
+  }, [world?.iteration, refetch]);
 
   const contextValue = useMemo(
     () => ({
@@ -69,11 +66,11 @@ export const WorldContextProvider = ({ children }: PropsWithChildren) => {
         if (!game || !world) return;
         const players = game.player ? [game.player] : Object.values(Nation);
         submitOrders({ gameId: game.id, players, orders });
-        await refetchUntilUpdate(refetchAttempts);
+        await refetchUntilUpdate();
       },
       isLoading: isLoading || isSubmitting || isRefetching || isWaitingForAdjudication,
       error: worldError || submissionError,
-      retry: () => refetchUntilUpdate(refetchAttempts),
+      retry: () => refetchUntilUpdate(),
     }),
     [
       game,

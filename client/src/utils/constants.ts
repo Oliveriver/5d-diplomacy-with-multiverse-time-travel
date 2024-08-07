@@ -18,6 +18,4 @@ export const orderArrowEndSeparation = 10;
 
 // API
 
-// TODO change both of these for production
 export const refetchInterval = 2000;
-export const refetchAttempts = 3;
