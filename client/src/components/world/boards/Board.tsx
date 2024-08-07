@@ -13,13 +13,11 @@ import colours from '../../../utils/colours';
 
 type BoardProps = {
   board: BoardData;
-  isActive: boolean;
   winner: Nation | null;
 };
 
-const Board = ({ board, isActive, winner }: BoardProps) => {
+const Board = ({ board, winner }: BoardProps) => {
   const { phase } = board;
-  const showWinner = isActive && winner;
 
   const width = phase === Phase.Winter ? minorBoardWidth : majorBoardWidth;
 
@@ -41,12 +39,12 @@ const Board = ({ board, isActive, winner }: BoardProps) => {
           minHeight: width,
           height: width,
           borderWidth: boardBorderWidth,
-          borderColor: showWinner ? getNationColour(winner) : colours.boardBorder,
-          boxShadow: showWinner ? `0px 0px 100px 50px ${getNationColour(winner)}` : '',
+          borderColor: winner ? getNationColour(winner) : colours.boardBorder,
+          boxShadow: winner ? `0px 0px 100px 50px ${getNationColour(winner)}` : '',
         }}
       >
         <p className="text-md -mt-7">{getBoardName(board)}</p>
-        <Map board={board} isActive={isActive && !winner} />
+        <Map board={board} />
       </div>
       {phase === Phase.Winter && <Adjustment board={board} />}
     </div>

@@ -62,14 +62,18 @@ public class Validator(DefaultWorldFactory defaultWorldFactory)
 
         foreach (var convoy in convoys)
         {
-            // TODO fix for convoying to/from land regions with child coasts
             var locationRegion = regions.First(r => r.Id == convoy.Location.RegionId);
             var midpointRegion = regions.First(r => r.Id == convoy.Midpoint.RegionId);
             var destinationRegion = regions.First(r => r.Id == convoy.Destination.RegionId);
 
+            var midpointRegionChildren = regions.Where(r => r.ParentId == midpointRegion.Id);
+            var destinationRegionChildren = regions.Where(r => r.ParentId == destinationRegion.Id);
+
             if (locationRegion.Type != RegionType.Sea
                 || midpointRegion.Type != RegionType.Coast
-                || destinationRegion.Type != RegionType.Coast)
+                    && (!midpointRegionChildren.Any() || midpointRegionChildren.All(r => r.Type != RegionType.Coast))
+                || destinationRegion.Type != RegionType.Coast
+                    && (!destinationRegionChildren.Any() || destinationRegionChildren.All(r => r.Type != RegionType.Coast)))
             {
                 convoy.Status = OrderStatus.Invalid;
                 continue;
@@ -99,7 +103,7 @@ public class Validator(DefaultWorldFactory defaultWorldFactory)
             var board = world.Boards
                 .FirstOrDefault(b => b.Timeline == build.Location.Timeline && b.Year == build.Location.Year && b.Phase == Phase.Winter);
             var region = regions.First(r => r.Id == build.Location.RegionId);
-            var centre = homeCentres.FirstOrDefault(c => c.Location == build.Location);
+            var centre = homeCentres.FirstOrDefault(c => c.Location.RegionId == build.Location.RegionId);
             var unit = build.Unit!;
 
             if (board == null || centre == null)

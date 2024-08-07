@@ -21,18 +21,17 @@ const handleAdjustmentOrderCreation = (
   const { player, currentMode, currentOrder } = state;
   const { unit, location } = action;
   const filteredOrders = state.orders.filter(
-    (order) => !compareLocations(order.location, action.location),
+    (order) => !compareLocations(order.location, action.location, true),
   );
   const nation = regions[location.region].homeNation;
 
   const isPlayerUnit = unit && (!player || unit.owner === player);
   const isPlayerNation = nation && (!player || nation === player);
 
-  // TODO fix builds in coasts
   // Beginning a build order
   if (
-    currentMode !== InputMode.Disband &&
-    (!currentOrder || !compareLocations(currentOrder.location, location))
+    (currentMode === InputMode.Build || (!unit && currentMode === InputMode.None)) &&
+    !currentOrder
   ) {
     if (!isPlayerNation) return state;
 
@@ -63,6 +62,10 @@ const handleAdjustmentOrderCreation = (
         ...filteredOrders,
         {
           ...currentOrder,
+          location:
+            action.unit?.type === UnitType.Army
+              ? { ...currentOrder.location, region: currentOrder.location.region.split('_')[0] }
+              : currentOrder.location,
           unit: {
             owner: nation,
             type: unit.type,
@@ -75,10 +78,8 @@ const handleAdjustmentOrderCreation = (
     };
   }
 
-  // TODO disband by default if selecting an existing unit on a winter board
-
   // Setting a disband order
-  if (currentMode === InputMode.Disband) {
+  if (currentMode === InputMode.Disband || (unit && currentMode === InputMode.None)) {
     if (!isPlayerUnit) return state;
 
     return {
@@ -284,6 +285,26 @@ const handleBasicOrderCreation = (
         {
           ...currentOrder,
           destination: location,
+        },
+      ],
+      currentMode: InputMode.None,
+      currentOrder: null,
+    };
+  }
+
+  // Setting a disband order (for retreats)
+  if (currentMode === InputMode.Disband && unit?.mustRetreat) {
+    if (!isPlayerUnit) return state;
+
+    return {
+      ...state,
+      orders: [
+        ...filteredOrders,
+        {
+          $type: OrderType.Disband,
+          status: OrderStatus.New,
+          unit,
+          location,
         },
       ],
       currentMode: InputMode.None,

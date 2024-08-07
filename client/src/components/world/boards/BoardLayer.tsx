@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { getNextMajorPhase, getNextPhase } from '../../../types/enums/phase';
+import { getNextMajorPhase } from '../../../types/enums/phase';
 import { filterUnique } from '../../../utils/listUtils';
 import Board from './Board';
 import BoardSkip from './BoardSkip';
@@ -17,9 +17,6 @@ const BoardLayer = () => {
   const boards = filterUnique(world.boards.map(({ year, phase }) => ({ year, phase })));
 
   const { winner } = world;
-  const hasRetreats = world.boards.some((board) =>
-    Object.values(board.units).some((unit) => unit.mustRetreat),
-  );
 
   const selectedLocation = currentOrder?.location;
   const showGhostBoard =
@@ -46,21 +43,9 @@ const BoardLayer = () => {
             );
 
             const key = `${board.year}-${board.phase}`;
-            const nextBoard = getNextPhase(year, phase);
-            const hasNextBoard = world.boards.find(
-              (otherBoard) =>
-                otherBoard.timeline === timeline &&
-                otherBoard.year === nextBoard.year &&
-                otherBoard.phase === nextBoard.phase,
-            );
 
             return possibleBoard ? (
-              <Board
-                key={key}
-                board={possibleBoard}
-                isActive={!hasNextBoard && !hasRetreats}
-                winner={winner}
-              />
+              <Board key={key} board={possibleBoard} winner={winner} />
             ) : (
               <BoardSkip key={key} board={{ ...board, timeline }} />
             );

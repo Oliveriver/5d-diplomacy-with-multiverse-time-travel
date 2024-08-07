@@ -5,13 +5,18 @@ import regions from '../../../data/regions';
 import OrderEntryContext from '../../context/OrderEntryContext';
 import UnitType from '../../../types/enums/unitType';
 import InputMode from '../../../types/enums/inputMode';
+import { OrderType } from '../../../types/order';
+import WorldContext from '../../context/WorldContext';
+import { findUnit } from '../../../types/world';
+import Phase from '../../../types/enums/phase';
 
 type MapProps = {
   board: Board;
-  isActive: boolean;
+  isShowingCoasts?: boolean;
 };
 
-const Map = ({ board, isActive }: MapProps) => {
+const Map = ({ board, isShowingCoasts }: MapProps) => {
+  const { world } = useContext(WorldContext);
   const { currentMode, currentOrder } = useContext(OrderEntryContext);
 
   return (
@@ -30,17 +35,25 @@ const Map = ({ board, isActive }: MapProps) => {
               phase={board.phase}
               owner={board.centres[region]}
               unit={board.units[region]}
-              isActive={isActive}
             />
           );
         }
 
-        // TODO fix for fleet supporting army on space with coasts and army supporting fleet to coast
-        const showCoast =
-          currentOrder?.unit?.type !== UnitType.Army &&
-          ((currentOrder?.unit?.type === UnitType.Fleet && currentMode !== InputMode.Convoy) ||
-            board.units[region] !== undefined ||
-            currentMode === InputMode.Build);
+        const hasFleet = board.units[region]?.type === UnitType.Fleet;
+
+        const showCoast = {
+          [InputMode.None]: hasFleet || board.phase === Phase.Winter,
+          [InputMode.Hold]: hasFleet,
+          [InputMode.Move]: currentOrder?.unit?.type === UnitType.Fleet,
+          [InputMode.Support]:
+            currentOrder?.$type === OrderType.Support &&
+            ((!currentOrder.supportLocation && hasFleet) ||
+              (currentOrder.supportLocation !== null &&
+                findUnit(world, currentOrder.supportLocation)?.type === UnitType.Fleet)),
+          [InputMode.Convoy]: hasFleet,
+          [InputMode.Build]: true,
+          [InputMode.Disband]: hasFleet,
+        }[currentMode];
 
         return (
           <Region
@@ -51,8 +64,7 @@ const Map = ({ board, isActive }: MapProps) => {
             phase={board.phase}
             owner={board.centres[baseRegion]}
             unit={board.units[region]}
-            isActive={isActive}
-            isVisible={showCoast}
+            isVisible={showCoast || isShowingCoasts}
           />
         );
       })}

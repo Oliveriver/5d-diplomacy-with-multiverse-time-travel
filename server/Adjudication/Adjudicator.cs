@@ -12,7 +12,14 @@ public class Adjudicator(Validator validator)
     {
         validator.Validate(world, regions, hasStrictAdjacencies);
 
-        var previousBoard = world.Boards.Last();
+        // BEGIN TEMP
+
+        foreach (var order in world.Orders.Where(o => o.Status == OrderStatus.New))
+        {
+            order.Status = OrderStatus.Success;
+        }
+
+        var previousBoard = world.Boards.MaxBy(b => 3 * b.Year + (int)b.Phase)!;
 
         var year = previousBoard.Phase == Phase.Winter ? previousBoard.Year + 1 : previousBoard.Year;
         var phase = previousBoard.Phase.NextPhase();
@@ -48,6 +55,8 @@ public class Adjudicator(Validator validator)
                 },
             }).ToList(),
         });
+
+        // END TEMP
 
         world.Iteration++;
     }

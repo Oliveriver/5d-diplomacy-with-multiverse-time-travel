@@ -15,11 +15,14 @@ const useSetAvailableInputModes = () => {
 
   const activeBoards = getActiveBoards(boards);
 
+  const hasRetreats = activeBoards.some((board) =>
+    Object.values(board.units).some((unit) => unit.mustRetreat),
+  );
   const hasMajorBoard = !winner && activeBoards.some((board) => board.phase !== Phase.Winter);
   const hasMinorBoard = !winner && activeBoards.some((board) => board.phase === Phase.Winter);
 
   useEffect(() => {
-    // TODO allow disband during retreats
+    const retreatModes = [InputMode.Move, InputMode.Disband];
     const majorModes = [InputMode.Hold, InputMode.Move, InputMode.Support, InputMode.Convoy];
     const minorModes = [InputMode.Build, InputMode.Disband];
 
@@ -27,11 +30,12 @@ const useSetAvailableInputModes = () => {
       $type: OrderEntryActionType.SetAvailableModes,
       modes: [
         InputMode.None,
-        ...(hasMajorBoard ? majorModes : []),
-        ...(hasMinorBoard ? minorModes : []),
+        ...(hasRetreats ? retreatModes : []),
+        ...(hasMajorBoard && !hasRetreats ? majorModes : []),
+        ...(hasMinorBoard && !hasRetreats ? minorModes : []),
       ],
     });
-  }, [dispatch, hasMajorBoard, hasMinorBoard]);
+  }, [dispatch, hasRetreats, hasMajorBoard, hasMinorBoard]);
 };
 
 export default useSetAvailableInputModes;

@@ -70,7 +70,7 @@ public class ModelMapper(GameContext context)
     {
         var existingUnit = await context.Units
             .Where(u => u.Board.World.GameId == gameId)
-            .FirstAsync(u => u.Location == location);
+            .FirstOrDefaultAsync(u => u.Location == location);
 
         if (existingUnit != null)
         {

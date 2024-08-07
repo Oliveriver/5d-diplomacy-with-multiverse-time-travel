@@ -12,7 +12,7 @@ const Disband = ({ location, status, isHighlighted }: DisbandProps) => {
   const radius = 10;
 
   return (
-    <svg className="z-20 fixed overflow-visible pointer-events-none">
+    <svg className="z-30 fixed overflow-visible pointer-events-none">
       <path
         d={`M ${coordinates.x - radius},${coordinates.y} ${coordinates.x + radius},${coordinates.y}`}
         stroke={getOrderColour(status, isHighlighted)}

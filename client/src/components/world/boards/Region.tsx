@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Nation, { getNationColour } from '../../../types/enums/nation';
 import OrderEntryContext from '../../context/OrderEntryContext';
 import { OrderEntryActionType } from '../../../types/context/orderEntryAction';
@@ -11,9 +11,9 @@ import UnitIcon from './UnitIcon';
 import { compareLocations, getLocationKey } from '../../../types/location';
 import { OrderType } from '../../../types/order';
 import BuildOptions from '../../user-interface/BuildOption';
-import InputMode from '../../../types/enums/inputMode';
 import colours from '../../../utils/colours';
 import RegionType from '../../../types/enums/regionType';
+import useSelectLocation from '../../../hooks/useSelectLocation';
 
 const getRegionColour = (
   isHovering: boolean,
@@ -33,42 +33,17 @@ type RegionProps = {
   phase: Phase;
   owner?: Nation;
   unit?: Unit;
-  isActive: boolean;
   isVisible?: boolean;
 };
 
-const Region = ({
-  id,
-  timeline,
-  year,
-  phase,
-  owner,
-  unit,
-  isActive,
-  isVisible = true,
-}: RegionProps) => {
-  const { dispatch, currentOrder, currentMode } = useContext(OrderEntryContext);
+const Region = ({ id, timeline, year, phase, owner, unit, isVisible = true }: RegionProps) => {
+  const { dispatch, currentOrder } = useContext(OrderEntryContext);
 
   const location = { timeline, year, phase, region: id };
   const Svg = useRegionSvg(id)!;
-  const { x, y, type, homeNation } = regions[id];
+  const { x, y, type } = regions[id];
 
-  const canRetreat = unit?.mustRetreat;
-  const canMove = isActive && phase !== Phase.Winter && unit !== undefined;
-  const canBuild =
-    isActive &&
-    phase === Phase.Winter &&
-    currentMode !== InputMode.Disband &&
-    unit === undefined &&
-    homeNation !== undefined &&
-    owner === homeNation;
-  const canDisband = isActive && phase === Phase.Winter && unit !== undefined;
-
-  const canCreateOrder = canRetreat || canMove || canBuild || canDisband;
-
-  const hasUnfinishedOrder =
-    currentOrder?.location !== undefined && currentOrder.$type !== OrderType.Build;
-  const canSelect = canCreateOrder || hasUnfinishedOrder;
+  const canSelect = useSelectLocation(location, owner, unit);
 
   const scaleFactor =
     phase === Phase.Winter
@@ -77,12 +52,16 @@ const Region = ({
 
   const [isHovering, setIsHovering] = useState(false);
 
-  let isSelected = compareLocations(currentOrder?.location, location);
-  if (currentOrder?.$type === OrderType.Support) {
-    isSelected ||= compareLocations(currentOrder.supportLocation, location);
-  } else if (currentOrder?.$type === OrderType.Convoy) {
-    isSelected ||= compareLocations(currentOrder.convoyLocation, location);
-  }
+  useEffect(() => {
+    if (!isVisible) setIsHovering(false);
+  }, [isVisible]);
+
+  const isSelected =
+    compareLocations(currentOrder?.location, location) ||
+    (currentOrder?.$type === OrderType.Support &&
+      compareLocations(currentOrder.supportLocation, location)) ||
+    (currentOrder?.$type === OrderType.Convoy &&
+      compareLocations(currentOrder.convoyLocation, location));
 
   const colour = getRegionColour(isHovering, isSelected, owner, type === RegionType.Sea);
 

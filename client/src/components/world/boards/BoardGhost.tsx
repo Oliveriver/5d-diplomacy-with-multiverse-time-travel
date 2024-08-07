@@ -7,12 +7,15 @@ import Map from './Map';
 import TextInput from '../../user-interface/common/TextInput';
 import Select from '../../user-interface/common/Select';
 import { isInteger } from '../../../utils/numberUtils';
+import Checkbox from '../../user-interface/common/Checkbox';
 
 type LocationInputProps = {
   board: Board;
   onTimelineEntered: (value: string) => void;
   onYearEntered: (value: string) => void;
   onPhaseEntered: (value: Phase) => void;
+  isShowingCoasts: boolean;
+  onCoastsToggled: (value: boolean) => void;
 };
 
 const LocationInput = ({
@@ -20,8 +23,10 @@ const LocationInput = ({
   onTimelineEntered,
   onYearEntered,
   onPhaseEntered,
+  isShowingCoasts,
+  onCoastsToggled,
 }: LocationInputProps) => (
-  <div className="absolute -mt-20 flex flex-row gap-4 w-full justify-center">
+  <div className="absolute -mt-20 flex flex-row gap-4 w-full justify-center items-center">
     <TextInput placeholder="Timeline" onChange={onTimelineEntered} />
     <Select
       options={[
@@ -38,6 +43,7 @@ const LocationInput = ({
       setValue={onPhaseEntered}
     />
     <TextInput placeholder="Year" onChange={onYearEntered} />
+    <Checkbox title="Show coasts" value={isShowingCoasts} onChange={onCoastsToggled} />
   </div>
 );
 
@@ -51,6 +57,7 @@ const BoardGhost = ({ initialTimeline, initialYear, initialPhase }: BoardGhostPr
   const [timeline, setTimeline] = useState(initialTimeline);
   const [year, setYear] = useState(initialYear);
   const [phase, setPhase] = useState(initialPhase);
+  const [isShowingCoasts, setIsShowingCoasts] = useState(false);
 
   const board = {
     timeline,
@@ -95,6 +102,8 @@ const BoardGhost = ({ initialTimeline, initialYear, initialPhase }: BoardGhostPr
         onTimelineEntered={onTimelineEntered}
         onYearEntered={onYearEntered}
         onPhaseEntered={setPhase}
+        isShowingCoasts={isShowingCoasts}
+        onCoastsToggled={setIsShowingCoasts}
       />
       <div
         className="relative rounded-xl"
@@ -109,7 +118,7 @@ const BoardGhost = ({ initialTimeline, initialYear, initialPhase }: BoardGhostPr
         }}
       >
         <p className="text-md -mt-7">{getBoardName(board)}</p>
-        <Map board={board} isActive={false} />
+        <Map board={board} isShowingCoasts={isShowingCoasts} />
       </div>
     </div>
   );

@@ -26,11 +26,17 @@ export const displayLocation = (location: Location | null) =>
 export const getLocationKey = (location: Location) =>
   `${location.timeline} ${location.year} ${location.phase} ${location.region}`;
 
-export const compareLocations = (location1?: Location | null, location2?: Location | null) =>
+export const compareLocations = (
+  location1?: Location | null,
+  location2?: Location | null,
+  includeCoasts: boolean = false,
+) =>
   location1?.timeline === location2?.timeline &&
   location1?.year === location2?.year &&
   location1?.phase === location2?.phase &&
-  location1?.region === location2?.region;
+  (includeCoasts
+    ? location1?.region.split('_')[0] === location2?.region.split('_')[0]
+    : location1?.region === location2?.region);
 
 const getBaseCoordinates = (board: Omit<Location, 'region'>) => {
   const margin = boardSeparation / 2;
