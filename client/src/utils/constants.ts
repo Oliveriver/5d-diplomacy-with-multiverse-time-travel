@@ -7,10 +7,10 @@ export const victoryRequiredCentreCount = 18;
 
 export const initialScale = 0.8;
 export const orderFocusScale = 1.5;
-export const majorBoardWidth = 1000; // TODO stop everything breaking if this changes
+export const majorBoardWidth = 1000;
 export const minorBoardWidth = 650;
 export const boardSeparation = 400;
-export const boardBorderWidth = 32; // TODO stop everything breaking if this changes
+export const boardBorderWidth = 32;
 export const unitWidth = 28;
 export const boardArrowWidth = 200;
 export const orderArrowStartSeparation = 20;
