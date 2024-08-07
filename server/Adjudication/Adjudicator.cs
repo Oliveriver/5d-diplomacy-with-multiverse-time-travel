@@ -41,18 +41,23 @@ public class Adjudicator(Validator validator)
                     RegionId = c.Location.RegionId,
                 },
             }).ToList(),
-            Units = previousBoard.Units.Select(u => new Unit
+            Units = previousBoard.Units.Select(u =>
             {
-                Owner = u.Owner,
-                Type = u.Type,
-                MustRetreat = u.MustRetreat,
-                Location = new()
+                var move = world.Orders.OfType<Move>().FirstOrDefault(o => o.Status == OrderStatus.Success && o.Unit == u);
+
+                return new Unit
                 {
-                    Timeline = 1,
-                    Year = year,
-                    Phase = phase,
-                    RegionId = u.Location.RegionId,
-                },
+                    Owner = u.Owner,
+                    Type = u.Type,
+                    MustRetreat = u.MustRetreat,
+                    Location = new()
+                    {
+                        Timeline = 1,
+                        Year = year,
+                        Phase = phase,
+                        RegionId = move != null ? move.Destination.RegionId : u.Location.RegionId,
+                    },
+                };
             }).ToList(),
         });
 

@@ -15,7 +15,7 @@ type MapProps = {
   isShowingCoasts?: boolean;
 };
 
-const Map = ({ board, isShowingCoasts }: MapProps) => {
+const Map = ({ board, isShowingCoasts = false }: MapProps) => {
   const { world } = useContext(WorldContext);
   const { currentMode, currentOrder } = useContext(OrderEntryContext);
 
