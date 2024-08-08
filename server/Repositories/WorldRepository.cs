@@ -41,7 +41,7 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
 
         var activeBoards = world.Boards
             .GroupBy(b => b.Timeline)
-            .Select(t => t.MaxBy(b => b.Year + (int)b.Phase));
+            .Select(t => t.MaxBy(b => 3 * b.Year + (int)b.Phase));
         var livingPlayers = Constants.Nations
             .Where(n => activeBoards.Any(b => b?.Centres.Any(c => c.Owner == n) ?? false));
 
