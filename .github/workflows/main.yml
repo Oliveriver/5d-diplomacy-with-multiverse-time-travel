@@ -8,12 +8,11 @@ on:
 
 jobs:
   check_server:
+    name: Check server
     runs-on: windows-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
     - name: Install .NET
       uses: actions/setup-dotnet@v4
       with:
@@ -21,12 +20,11 @@ jobs:
     - name: Build
       run: cd server && dotnet build
   check_client:
+    name: Check client
     runs-on: windows-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
     - name: Install Node.js
       uses: actions/setup-node@v3
       with:
@@ -37,5 +35,5 @@ jobs:
       run: cd client && yarn install
     - name: Lint
       run: cd client && yarn lint
-    - name: Compile
-      run: cd client && npx tsc
+    - name: Build
+      run: cd client && yarn build
