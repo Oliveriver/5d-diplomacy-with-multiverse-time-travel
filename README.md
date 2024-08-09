@@ -18,29 +18,29 @@ The `prototype` directory contains the original proof of concept from 2021. None
 
 Requirements:
 
-* [.NET SDK 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
-* [Entity Framework Core command line tools](https://learn.microsoft.com/en-us/ef/core/cli/dotnet). If .NET has been installed, these can be installed by running `dotnet tool install --global dotnet-ef`.
-* A blank database instance running on [SQL Server](https://www.microsoft.com/en-gb/sql-server/sql-server-downloads).
+- [.NET SDK 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
+- [Entity Framework Core command line tools](https://learn.microsoft.com/en-us/ef/core/cli/dotnet). If .NET has been installed, these can be installed by running `dotnet tool install --global dotnet-ef`.
+- A blank database instance running on [SQL Server](https://www.microsoft.com/en-gb/sql-server/sql-server-downloads).
 
 Steps:
 
-* Navigate to the `server` directory.
-* Copy `appsettings.json` to a new file, `appsettings.Development.json`, and inside the new file, replace `DATABASE_CONNECTION_STRING` with the connection string for the active database instance.
-* Run `dotnet build`.
-* Run `dotnet ef database update`.
-* Run `dotnet run` to start the server.
+- Navigate to the `server` directory.
+- Copy `appsettings.json` to a new file, `appsettings.Development.json`, and inside the new file, replace `DATABASE_CONNECTION_STRING` with the connection string for the active database instance.
+- Run `dotnet build`.
+- Run `dotnet ef database update`.
+- Run `dotnet run` to start the server.
 
 ### Client
 
 Requirements:
 
-* [Node.js](https://nodejs.org/en/download/prebuilt-installer).
-* [Yarn package manager](https://yarnpkg.com/). If Node.js has been installed, this can be installed by running `npm install --global yarn`.
-* A running instance of the server, whether local or remote.
+- [Node.js](https://nodejs.org/en/download/prebuilt-installer).
+- [Yarn package manager](https://yarnpkg.com/). If Node.js has been installed, this can be installed by running `npm install --global yarn`.
+- A running instance of the server, whether local or remote.
 
 Steps:
 
-* Navigate to the `client` directory.
-* Copy `.env` to a new file, `.env.local`, and inside the new file, replace `SERVER_URL` with the base domain of the active server instance.
-* Run `yarn install`.
-* Run `yarn dev` to start the client, then open the printed URL in a browser.
+- Navigate to the `client` directory.
+- Copy `.env` to a new file, `.env.local`, and inside the new file, replace `SERVER_URL` with the base domain of the active server instance.
+- Run `yarn install`.
+- Run `yarn dev` to start the client in the default browser.
