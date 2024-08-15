@@ -36,7 +36,7 @@ const LandingPage = ({ setViewOption }: LandingPageProps) => (
         links={[
           {
             text: 'Diplomacy',
-            href: 'https://shop.hasbro.com/en-us/product/avalon-hill-diplomacy-cooperative-strategy-board-game-ages-12-and-up-2-7-players/09A402C7-4CA2-4E9D-9449-4592B2066011',
+            href: 'https://instructions.hasbro.com/en-us/instruction/avalon-hill-diplomacy-cooperative-strategy-board-game',
           },
           {
             text: '5D Chess With Multiverse Time Travel',

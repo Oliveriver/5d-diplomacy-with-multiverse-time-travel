@@ -4,7 +4,7 @@ Currently a WIP.
 
 A new standard in measuring how galaxy-brained you are, 5D Diplomacy With Multiverse Time Travel combines the classic game of pure negotiation with the modern classic game of pure disorientation. Can you convince your opponent to support an attack in the present while simultaneously backstabbing them five years ago and seven timelines over?
 
-Inspired by and indebted to the board game [Diplomacy](https://shop.hasbro.com/en-us/product/avalon-hill-diplomacy-cooperative-strategy-board-game-ages-12-and-up-2-7-players/09A402C7-4CA2-4E9D-9449-4592B2066011) and the video game [5D Chess With Multiverse Time Travel](https://www.5dchesswithmultiversetimetravel.com/). Both are excellent in their own right, so we recommend picking up a copy of each to understand the rules for 5D Diplomacy.
+Inspired by and indebted to the board game [Diplomacy](https://instructions.hasbro.com/en-us/instruction/avalon-hill-diplomacy-cooperative-strategy-board-game) and the video game [5D Chess With Multiverse Time Travel](https://www.5dchesswithmultiversetimetravel.com/). Both are excellent in their own right, so we recommend picking up a copy of each to understand the rules for 5D Diplomacy.
 
 _Diplomacy_ is a trademark of Avalon Hill. _5D Chess With Multiverse Time Travel_ is a trademark of Thunkspace, LLC. _5D Diplomacy With Multiverse Time Travel_ and its creators are not affiliated with either _Diplomacy_ or _5D Chess With Multiverse Time Travel_.
 
