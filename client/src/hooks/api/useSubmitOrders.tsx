@@ -20,11 +20,11 @@ const submitOrders = async ({ gameId, players, orders }: SubmissionRequest) => {
 };
 
 const useSubmitOrders = () => {
-  const { mutate, ...rest } = useMutation({
+  const { mutateAsync, ...rest } = useMutation({
     mutationKey: ['submitOrders'],
     mutationFn: submitOrders,
   });
-  return { submitOrders: mutate, ...rest };
+  return { submitOrders: mutateAsync, ...rest };
 };
 
 export default useSubmitOrders;

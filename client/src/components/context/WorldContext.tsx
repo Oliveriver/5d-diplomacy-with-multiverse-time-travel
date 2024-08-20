@@ -65,7 +65,7 @@ export const WorldContextProvider = ({ children }: PropsWithChildren) => {
       submitOrders: async (orders: Order[]) => {
         if (!game || !world) return;
         const players = game.player ? [game.player] : Object.values(Nation);
-        submitOrders({ gameId: game.id, players, orders });
+        await submitOrders({ gameId: game.id, players, orders });
         await refetchUntilUpdate();
       },
       isLoading: isLoading || isSubmitting || isRefetching || isWaitingForAdjudication,

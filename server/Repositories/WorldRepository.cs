@@ -21,6 +21,7 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
             .Include(w => w.Boards).ThenInclude(b => b.Centres)
             .Include(w => w.Boards).ThenInclude(b => b.Units)
             .Include(w => w.Orders).ThenInclude(o => o.Unit)
+            .AsSplitQuery() // TODO wrap database operations in shared lock to prevent concurrency issues
             .FirstOrDefaultAsync(w => w.GameId == gameId)
             ?? throw new KeyNotFoundException("World not found");
 
