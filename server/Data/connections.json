@@ -484,10 +484,6 @@
     "type": "Sea"
   },
   {
-    "id": "Gas-Spa_S",
-    "type": "Sea"
-  },
-  {
     "id": "Gre-Ser",
     "type": "Land"
   },
@@ -625,6 +621,10 @@
   },
   {
     "id": "MAO-Naf",
+    "type": "Sea"
+  },
+  {
+    "id": "MAO-NAO",
     "type": "Sea"
   },
   {
