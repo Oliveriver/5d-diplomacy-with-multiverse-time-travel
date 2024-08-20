@@ -2,16 +2,16 @@
 using Context;
 using Entities;
 using Enums;
+using Factories;
 using Microsoft.EntityFrameworkCore;
-using Utilities;
 
 namespace Repositories;
 
-public class WorldRepository(ILogger<WorldRepository> logger, GameContext context, Adjudicator adjudicator)
+public class WorldRepository(ILogger<WorldRepository> logger, GameContext context, DefaultWorldFactory defaultWorldFactory)
 {
     private readonly ILogger<WorldRepository> logger = logger;
     private readonly GameContext context = context;
-    private readonly Adjudicator adjudicator = adjudicator;
+    private readonly DefaultWorldFactory defaultWorldFactory = defaultWorldFactory;
 
     public async Task<World> GetWorld(int gameId)
     {
@@ -27,7 +27,7 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
         return world;
     }
 
-    public async Task AddOrders(int gameId, Nation[] players, IEnumerable<Order> orders)
+    public async Task AddOrders(int gameId, Nation[] players, List<Order> orders)
     {
         logger.LogInformation("Submitting orders for game {GameId}", gameId);
 
@@ -39,13 +39,7 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
         var newPlayersSubmitted = players.Where(p => !game.PlayersSubmitted.Contains(p));
         game.PlayersSubmitted = [.. game.PlayersSubmitted, .. newPlayersSubmitted];
 
-        var activeBoards = world.Boards
-            .GroupBy(b => b.Timeline)
-            .Select(t => t.MaxBy(b => 3 * b.Year + (int)b.Phase));
-        var livingPlayers = Constants.Nations
-            .Where(n => activeBoards.Any(b => b?.Centres.Any(c => c.Owner == n) ?? false));
-
-        if (livingPlayers.Count() <= game.PlayersSubmitted.Count)
+        if (world.LivingPlayers.Count <= game.PlayersSubmitted.Count)
         {
             logger.LogInformation("Adjudicating game {GameId}", gameId);
 
@@ -55,7 +49,9 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
                 .Include(r => r.Connections).ThenInclude(c => c.Regions)
                 .ToListAsync();
 
-            adjudicator.Adjudicate(world, regions, game.HasStrictAdjacencies);
+            var adjudicator = new Adjudicator(world, game.HasStrictAdjacencies, regions, defaultWorldFactory);
+            adjudicator.Adjudicate();
+            world.Iteration++;
 
             logger.LogInformation("Adjudicated game {GameId}", gameId);
         }

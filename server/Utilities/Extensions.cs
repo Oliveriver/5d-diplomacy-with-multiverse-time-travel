@@ -21,4 +21,32 @@ public static class Extensions
             Phase.Winter => Phase.Spring,
             _ => throw new ArgumentOutOfRangeException(nameof(phase))
         };
+
+    public static List<T> ChooseRandomItems<T>(this Random random, List<T> items, int count)
+    {
+        if (count >= items.Count)
+        {
+            return items;
+        }
+
+        var chosenItems = new List<T>();
+
+        if (count <= 0)
+        {
+            return chosenItems;
+        }
+
+        while (chosenItems.Count < count)
+        {
+            var nextIndex = random.Next(0, items.Count);
+            var item = items[nextIndex];
+
+            if (!chosenItems.Contains(item))
+            {
+                chosenItems.Add(item);
+            }
+        }
+
+        return chosenItems;
+    }
 }

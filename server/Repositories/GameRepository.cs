@@ -75,8 +75,7 @@ public class GameRepository(ILogger<GameRepository> logger, GameContext context,
         var chosenPlayer = player ?? GetRandomNation();
         if (!game.Players.Contains(chosenPlayer) && game.Players.Count < Constants.Nations.Count)
         {
-            // Can't use Add due to custom enum conversion
-            game.Players = [.. game.Players, chosenPlayer];
+            game.Players.Add(chosenPlayer);
             await context.SaveChangesAsync();
         }
 

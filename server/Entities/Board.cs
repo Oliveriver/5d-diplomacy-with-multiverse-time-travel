@@ -1,4 +1,5 @@
 ﻿using Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities;
 
@@ -15,4 +16,10 @@ public class Board
     public List<int> ChildTimelines { get; set; } = null!;
     public virtual List<Centre> Centres { get; set; } = null!;
     public virtual List<Unit> Units { get; set; } = null!;
+
+    [NotMapped]
+    public bool MightAdvance { get; set; }
+
+    public bool Contains(Location location)
+        => Timeline == location.Timeline && Year == location.Year && Phase == location.Phase;
 }

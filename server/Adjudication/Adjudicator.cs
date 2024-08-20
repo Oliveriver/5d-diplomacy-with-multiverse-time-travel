@@ -1,68 +1,61 @@
 ﻿using Entities;
 using Enums;
+using Factories;
 using Utilities;
 
 namespace Adjudication;
 
-public class Adjudicator(Validator validator)
+public class Adjudicator
 {
-    private readonly Validator validator = validator;
+    private readonly World world;
 
-    public void Adjudicate(World world, List<Region> regions, bool hasStrictAdjacencies)
+    private readonly AdjacencyValidator adjacencyValidator;
+    private readonly Validator validator;
+    private readonly Evaluator evaluator;
+    private readonly Executor executor;
+
+    public Adjudicator(World world, bool hasStrictAdjacencies, List<Region> regions, DefaultWorldFactory defaultWorldFactory)
     {
-        validator.Validate(world, regions, hasStrictAdjacencies);
+        this.world = world;
 
-        // BEGIN TEMP
+        adjacencyValidator = new(regions, hasStrictAdjacencies);
+        validator = new(world, regions, adjacencyValidator, defaultWorldFactory);
+        evaluator = new(world, adjacencyValidator);
+        executor = new(world, regions);
+    }
 
-        foreach (var order in world.Orders.Where(o => o.Status == OrderStatus.New))
+    public void Adjudicate()
+    {
+        if (world.Winner != null)
         {
-            order.Status = OrderStatus.Success;
+            world.Orders = world.Orders.Where(o => o.Status != OrderStatus.New).ToList();
+            return;
         }
 
-        var previousBoard = world.Boards.MaxBy(b => 3 * b.Year + (int)b.Phase)!;
+        validator.ValidateOrders();
+        evaluator.EvaluateOrders();
+        executor.ExecuteOrders();
 
-        var year = previousBoard.Phase == Phase.Winter ? previousBoard.Year + 1 : previousBoard.Year;
-        var phase = previousBoard.Phase.NextPhase();
-
-        world.Boards.Add(new Board
+        var winner = GetWinner();
+        if (winner != null)
         {
-            Timeline = 1,
-            Year = year,
-            Phase = phase,
-            ChildTimelines = [],
-            Centres = previousBoard.Centres.Select(c => new Centre
+            world.Winner = winner;
+        }
+    }
+
+    private Nation? GetWinner()
+    {
+        var activeCentres = world.ActiveBoards.SelectMany(b => b.Centres);
+
+        foreach (var nation in Constants.Nations)
+        {
+            var ownedCentres = activeCentres.Where(c => c.Owner == nation).DistinctBy(c => c.Location.RegionId);
+            if (ownedCentres.Count() >= Constants.VictoryRequiredCentreCount)
             {
-                Owner = c.Owner,
-                Location = new()
-                {
-                    Timeline = 1,
-                    Year = year,
-                    Phase = phase,
-                    RegionId = c.Location.RegionId,
-                },
-            }).ToList(),
-            Units = previousBoard.Units.Select(u =>
-            {
-                var move = world.Orders.OfType<Move>().FirstOrDefault(o => o.Status == OrderStatus.Success && o.Unit == u);
+                return nation;
+            }
+        }
 
-                return new Unit
-                {
-                    Owner = u.Owner,
-                    Type = u.Type,
-                    MustRetreat = u.MustRetreat,
-                    Location = new()
-                    {
-                        Timeline = 1,
-                        Year = year,
-                        Phase = phase,
-                        RegionId = move != null ? move.Destination.RegionId : u.Location.RegionId,
-                    },
-                };
-            }).ToList(),
-        });
-
-        // END TEMP
-
-        world.Iteration++;
+        return null;
     }
 }

@@ -10,14 +10,26 @@ public class EntityMapper
             ? world.Orders
             : world.Orders.Where(o => o.Status != OrderStatus.New || o.Unit?.Owner == player);
 
+        var builds = world.Orders.OfType<Entities.Build>().ToList();
+
         return new(world.Iteration,
-            [.. world.Boards.Select(MapBoard)],
+            [.. world.Boards.Select(b => MapBoard(b, builds))],
             [.. visibleOrders.Select(MapOrder)],
             world.Winner);
     }
 
-    public Models.Board MapBoard(Entities.Board board)
-        => new(board.Timeline, board.Year, board.Phase, [.. board.ChildTimelines], MapCentres(board.Centres), MapUnits(board.Units));
+    public Models.Board MapBoard(Entities.Board board, List<Entities.Build> builds)
+    {
+        // Hide units created by builds on the same board
+        var visibleUnits = board.Units.Where(u => builds.All(o => o.Unit != u)).ToList();
+
+        return new(board.Timeline,
+            board.Year,
+            board.Phase,
+            [.. board.ChildTimelines],
+            MapCentres(board.Centres),
+            MapUnits(visibleUnits));
+    }
 
     public Dictionary<string, Nation> MapCentres(List<Entities.Centre> centres)
         => centres.Where(c => c.Owner != null).ToDictionary(c => c.Location.RegionId, c => (Nation)c.Owner!);

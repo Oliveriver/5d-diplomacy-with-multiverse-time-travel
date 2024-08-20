@@ -4,22 +4,42 @@ using Factories;
 
 namespace Adjudication;
 
-public class Validator(DefaultWorldFactory defaultWorldFactory)
+public class Validator
 {
-    private readonly DefaultWorldFactory defaultWorldFactory = defaultWorldFactory;
+    private readonly World world;
+    private readonly List<Move> moves;
+    private readonly List<Support> supports;
+    private readonly List<Convoy> convoys;
+    private readonly List<Build> builds;
+    private readonly List<Disband> disbands;
+    private readonly List<Order> retreats;
 
-    private AdjacencyValidator adjacencyValidator = null!;
-    private ConvoyPathValidator convoyPathValidator = null!;
-    private World world = null!;
-    private List<Region> regions = null!;
+    private readonly DefaultWorldFactory defaultWorldFactory;
+    private readonly List<Region> regions;
+    private readonly AdjacencyValidator adjacencyValidator;
+    private readonly ConvoyPathValidator convoyPathValidator;
 
-    public void Validate(World world, List<Region> regions, bool hasStrictAdjacencies)
+    public Validator(World world, List<Region> regions, AdjacencyValidator adjacencyValidator, DefaultWorldFactory defaultWorldFactory)
     {
         this.world = world;
         this.regions = regions;
-        adjacencyValidator = new(regions, hasStrictAdjacencies);
-        convoyPathValidator = new(world, regions, adjacencyValidator);
+        this.adjacencyValidator = adjacencyValidator;
+        this.defaultWorldFactory = defaultWorldFactory;
 
+        var nonRetreats = world.Orders.Where(o => o.NeedsValidation && !o.Unit!.MustRetreat).ToList();
+        retreats = world.Orders.Where(o => o.NeedsValidation && o.Unit!.MustRetreat).ToList();
+
+        moves = nonRetreats.OfType<Move>().ToList();
+        supports = nonRetreats.OfType<Support>().ToList();
+        convoys = nonRetreats.OfType<Convoy>().ToList();
+        builds = nonRetreats.OfType<Build>().ToList();
+        disbands = nonRetreats.OfType<Disband>().ToList();
+
+        convoyPathValidator = new(convoys, regions, adjacencyValidator);
+    }
+
+    public void ValidateOrders()
+    {
         ValidateMoves();
         ValidateSupports();
         ValidateConvoys();
@@ -30,8 +50,6 @@ public class Validator(DefaultWorldFactory defaultWorldFactory)
 
     private void ValidateMoves()
     {
-        var moves = world.Orders.Where(o => o.NeedsValidation && !o.Unit!.MustRetreat).OfType<Move>();
-
         foreach (var move in moves)
         {
             var canDirectMove = adjacencyValidator.IsValidDirectMove(move.Unit!, move.Location, move.Destination);
@@ -43,14 +61,10 @@ public class Validator(DefaultWorldFactory defaultWorldFactory)
 
     private void ValidateSupports()
     {
-        var supports = world.Orders.Where(o => o.NeedsValidation && !o.Unit!.MustRetreat).OfType<Support>();
-
         foreach (var support in supports)
         {
             var canSupport = adjacencyValidator.IsValidDirectMove(support.Unit!, support.Location, support.Destination);
-            var hasMatchingMove = world.Orders
-                .OfType<Move>()
-                .Any(m => m.Location == support.Midpoint && m.Destination == support.Destination);
+            var hasMatchingMove = moves.Any(m => m.Location == support.Midpoint && m.Destination == support.Destination);
 
             support.Status = canSupport && hasMatchingMove ? OrderStatus.New : OrderStatus.Invalid;
         }
@@ -58,8 +72,6 @@ public class Validator(DefaultWorldFactory defaultWorldFactory)
 
     private void ValidateConvoys()
     {
-        var convoys = world.Orders.Where(o => o.NeedsValidation && !o.Unit!.MustRetreat).OfType<Convoy>();
-
         foreach (var convoy in convoys)
         {
             var locationRegion = regions.First(r => r.Id == convoy.Location.RegionId);
@@ -79,9 +91,7 @@ public class Validator(DefaultWorldFactory defaultWorldFactory)
                 continue;
             }
 
-            var hasMatchingMove = world.Orders
-                .OfType<Move>()
-                .Any(m => m.Location == convoy.Midpoint && m.Destination == convoy.Destination);
+            var hasMatchingMove = moves.Any(m => m.Location == convoy.Midpoint && m.Destination == convoy.Destination);
 
             convoy.Status = hasMatchingMove ? OrderStatus.New : OrderStatus.Invalid;
         }
@@ -89,7 +99,6 @@ public class Validator(DefaultWorldFactory defaultWorldFactory)
 
     private void ValidateBuilds()
     {
-        var builds = world.Orders.Where(o => o.NeedsValidation && !o.Unit!.MustRetreat).OfType<Build>();
         var homeCentres = defaultWorldFactory.CreateCentres();
 
         foreach (var build in builds)
@@ -100,8 +109,7 @@ public class Validator(DefaultWorldFactory defaultWorldFactory)
                 continue;
             }
 
-            var board = world.Boards
-                .FirstOrDefault(b => b.Timeline == build.Location.Timeline && b.Year == build.Location.Year && b.Phase == Phase.Winter);
+            var board = world.Boards.FirstOrDefault(b => b.Contains(build.Location));
             var region = regions.First(r => r.Id == build.Location.RegionId);
             var centre = homeCentres.FirstOrDefault(c => c.Location.RegionId == build.Location.RegionId);
             var unit = build.Unit!;
@@ -115,28 +123,21 @@ public class Validator(DefaultWorldFactory defaultWorldFactory)
             var isCompatibleRegion = centre.Owner == unit.Owner;
             var isCompatibleUnit = unit.Type == UnitType.Army && region.Type != RegionType.Sea
                 || unit.Type == UnitType.Fleet && region.Type == RegionType.Coast;
-            build.Status = isCompatibleRegion && isCompatibleUnit ? OrderStatus.New : OrderStatus.Invalid;
 
-            // NB validation based on available build count to be done as part of adjudication
+            build.Status = isCompatibleRegion && isCompatibleUnit ? OrderStatus.New : OrderStatus.Invalid;
         }
     }
 
     private void ValidateDisbands()
     {
-        var disbands = world.Orders.Where(o => o.NeedsValidation && !o.Unit!.MustRetreat).OfType<Disband>();
-
         foreach (var disband in disbands)
         {
             disband.Status = disband.Location.Phase != Phase.Winter ? OrderStatus.New : OrderStatus.Invalid;
-
-            // NB validation based on available build count to be done as part of adjudication
         }
     }
 
     private void ValidateRetreats()
     {
-        var retreats = world.Orders.Where(o => o.NeedsValidation && o.Unit!.MustRetreat);
-
         foreach (var retreat in retreats)
         {
             retreat.Status = retreat switch

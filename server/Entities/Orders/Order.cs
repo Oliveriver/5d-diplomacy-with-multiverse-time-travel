@@ -12,9 +12,12 @@ public abstract class Order
 
     public OrderStatus Status { get; set; }
     public int? UnitId { get; set; }
-    public virtual Unit? Unit { get; set; } // Nullability of this is annoying...
+    public virtual Unit? Unit { get; set; }
     public Location Location { get; set; } = null!;
 
     [NotMapped]
     public virtual bool NeedsValidation => Status == OrderStatus.New;
+
+    [NotMapped]
+    public virtual List<Location> TouchedLocations => [Location];
 }

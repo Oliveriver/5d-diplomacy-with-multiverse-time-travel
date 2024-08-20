@@ -10,4 +10,7 @@ public class Support : Order
 
     [NotMapped]
     public override bool NeedsValidation => Status is OrderStatus.Invalid or OrderStatus.New;
+
+    [NotMapped]
+    public override List<Location> TouchedLocations => [Location, Midpoint, Destination];
 }

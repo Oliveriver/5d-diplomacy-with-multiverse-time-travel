@@ -14,5 +14,19 @@ public class Unit
     public Nation Owner { get; set; }
     public UnitType Type { get; set; }
     public bool MustRetreat { get; set; }
+
+    public Unit Clone() => new()
+    {
+        Owner = Owner,
+        Type = Type,
+        MustRetreat = MustRetreat,
+        Location = new()
+        {
+            Timeline = Location.Timeline,
+            Year = Location.Year,
+            Phase = Location.Phase,
+            RegionId = Location.RegionId,
+        }
+    };
 }
 

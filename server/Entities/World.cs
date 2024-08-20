@@ -1,4 +1,6 @@
 ﻿using Enums;
+using System.ComponentModel.DataAnnotations.Schema;
+using Utilities;
 
 namespace Entities;
 
@@ -13,4 +15,12 @@ public class World
     public virtual List<Order> Orders { get; set; } = null!;
     public int Iteration { get; set; }
     public Nation? Winner { get; set; }
+
+    [NotMapped]
+    public List<Board> ActiveBoards
+        => Boards.GroupBy(b => b.Timeline).Select(t => t.MaxBy(b => 3 * b.Year + (int)b.Phase)).OfType<Board>().ToList();
+
+    [NotMapped]
+    public List<Nation> LivingPlayers
+        => Constants.Nations.Where(n => ActiveBoards.Any(b => b.Centres.Any(c => c.Owner == n))).ToList();
 }

@@ -3,11 +3,11 @@ using Enums;
 
 namespace Adjudication;
 
-public class ConvoyPathValidator(World world, List<Region> regions, AdjacencyValidator adjacencyValidator)
+public class ConvoyPathValidator(List<Convoy> convoys, List<Region> regions, AdjacencyValidator adjacencyValidator)
 {
-    private readonly World world = world;
-    private readonly List<Region> regions = regions;
+    private readonly List<Convoy> convoys = convoys;
 
+    private readonly List<Region> regions = regions;
     private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
 
     public bool HasPath(Unit unit, Location location, Location destination)
@@ -30,7 +30,7 @@ public class ConvoyPathValidator(World world, List<Region> regions, AdjacencyVal
             return false;
         }
 
-        var convoysInPath = world.Orders.OfType<Convoy>().Where(c =>
+        var convoysInPath = convoys.Where(c =>
             c.NeedsValidation
             && c.Midpoint == location
             && c.Destination == destination).ToList();

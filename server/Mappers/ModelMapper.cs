@@ -77,9 +77,10 @@ public class ModelMapper(GameContext context)
             return existingUnit;
         }
 
-        var board = await context.Boards
+        var board = (await context.Boards
             .Where(b => b.World.GameId == gameId)
-            .FirstAsync(b => b.Timeline == location.Timeline && b.Year == location.Year && b.Phase == location.Phase);
+            .ToListAsync())
+            .First(b => b.Contains(location));
 
         return new()
         {

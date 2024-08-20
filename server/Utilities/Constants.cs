@@ -16,5 +16,7 @@ public static class Constants
     };
 
     public static readonly List<Nation> Nations = Enum.GetValues(typeof(Nation)).OfType<Nation>().ToList();
+
+    public const int VictoryRequiredCentreCount = 18;
 }
 
