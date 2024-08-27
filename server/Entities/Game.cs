@@ -9,7 +9,7 @@ public class Game
     public bool IsSandbox { get; set; }
     public bool HasStrictAdjacencies { get; set; }
 
-    public List<Nation> Players { get; set; } = null!;
+    public List<Nation> Players { get; set; } = [];
     public virtual World? World { get; set; }
-    public List<Nation> PlayersSubmitted { get; set; } = null!;
+    public List<Nation> PlayersSubmitted { get; set; } = [];
 }

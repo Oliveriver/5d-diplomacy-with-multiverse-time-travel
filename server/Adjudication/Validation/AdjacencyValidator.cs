@@ -45,6 +45,11 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
 
     public bool IsValidIntraBoardMove(Unit unit, Location location, Location destination)
     {
+        if (location == destination)
+        {
+            return false;
+        }
+
         var locationId = location.RegionId;
         var destinationId = destination.RegionId;
 

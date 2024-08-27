@@ -12,7 +12,7 @@ public class ConvoyPathValidator(List<Convoy> convoys, List<Region> regions, Adj
 
     public bool HasPath(Unit unit, Location location, Location destination)
     {
-        if (unit.Type == UnitType.Fleet)
+        if (unit.Type == UnitType.Fleet || location == destination)
         {
             return false;
         }

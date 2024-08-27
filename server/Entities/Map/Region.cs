@@ -16,6 +16,6 @@ public class Region
     public RegionType Type { get; set; }
     public string Name { get; set; } = null!;
 
-    public virtual List<Connection> Connections { get; set; } = null!;
-    public virtual List<Region> Children { get; set; } = null!;
+    public virtual List<Connection> Connections { get; set; } = [];
+    public virtual List<Region> Children { get; set; } = [];
 }

@@ -21,7 +21,37 @@ public class MapFactory
             ?? throw new JsonException("Deserialised connections file was null");
 
         Check(regions, connections);
+        PopulateConnections(regions, connections);
         return (regions, connections);
+    }
+
+    private void PopulateConnections(List<Region> regions, List<Connection> connections)
+    {
+        foreach (var connection in connections)
+        {
+            var regionIds = connection.Id.Split("-");
+
+            var startRegion = regions.First(r => r.Id == regionIds[0]);
+            var endRegion = regions.First(r => r.Id == regionIds[1]);
+
+            startRegion.Connections.Add(connection);
+            endRegion.Connections.Add(connection);
+
+            connection.Regions.Add(startRegion);
+            connection.Regions.Add(endRegion);
+        }
+
+        foreach (var region in regions)
+        {
+            if (region.ParentId == null)
+            {
+                continue;
+            }
+
+            var parent = regions.First(r => r.Id == region.ParentId);
+            parent.Children.Add(region);
+            region.Parent = parent;
+        }
     }
 
     private void Check(List<Region> regions, List<Connection> connections)

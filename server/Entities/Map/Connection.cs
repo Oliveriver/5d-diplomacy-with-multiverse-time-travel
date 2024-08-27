@@ -12,6 +12,6 @@ public class Connection
 
     public ConnectionType Type { get; set; }
 
-    public virtual List<Region> Regions { get; set; } = null!;
+    public virtual List<Region> Regions { get; set; } = [];
 }
 

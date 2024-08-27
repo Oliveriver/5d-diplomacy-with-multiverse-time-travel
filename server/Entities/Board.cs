@@ -13,9 +13,9 @@ public class Board
     public int Timeline { get; set; }
     public int Year { get; set; }
     public Phase Phase { get; set; }
-    public List<int> ChildTimelines { get; set; } = null!;
-    public virtual List<Centre> Centres { get; set; } = null!;
-    public virtual List<Unit> Units { get; set; } = null!;
+    public List<int> ChildTimelines { get; set; } = [];
+    public virtual List<Centre> Centres { get; set; } = [];
+    public virtual List<Unit> Units { get; set; } = [];
 
     [NotMapped]
     public bool MightAdvance { get; set; }

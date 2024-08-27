@@ -11,8 +11,8 @@ public class World
     public int GameId { get; set; }
     public virtual Game Game { get; set; } = null!;
 
-    public virtual List<Board> Boards { get; set; } = null!;
-    public virtual List<Order> Orders { get; set; } = null!;
+    public virtual List<Board> Boards { get; set; } = [];
+    public virtual List<Order> Orders { get; set; } = [];
     public int Iteration { get; set; }
     public Nation? Winner { get; set; }
 
