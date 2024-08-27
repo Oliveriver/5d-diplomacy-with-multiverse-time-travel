@@ -10,7 +10,7 @@ public class MapFactory
     private const string RegionsFilePath = "Data/regions.json";
     private const string ConnectionsFilePath = "Data/connections.json";
 
-    public (List<Region> regions, List<Connection> connections) CreateMap()
+    public List<Region> CreateRegions()
     {
         var regionsFile = File.ReadAllText(RegionsFilePath);
         var regions = JsonSerializer.Deserialize<List<Region>>(regionsFile, Constants.JsonOptions)
@@ -22,7 +22,7 @@ public class MapFactory
 
         Check(regions, connections);
         PopulateConnections(regions, connections);
-        return (regions, connections);
+        return regions;
     }
 
     private void PopulateConnections(List<Region> regions, List<Connection> connections)

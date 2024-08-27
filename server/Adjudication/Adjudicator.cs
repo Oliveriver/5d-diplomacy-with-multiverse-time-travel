@@ -9,17 +9,19 @@ public class Adjudicator
 {
     private readonly World world;
 
-    private readonly AdjacencyValidator adjacencyValidator;
     private readonly Validator validator;
     private readonly Evaluator evaluator;
     private readonly Executor executor;
 
-    public Adjudicator(World world, bool hasStrictAdjacencies, List<Region> regions, DefaultWorldFactory defaultWorldFactory)
+    public Adjudicator(World world, bool hasStrictAdjacencies, MapFactory mapFactory, DefaultWorldFactory defaultWorldFactory)
     {
         this.world = world;
 
-        adjacencyValidator = new(regions, hasStrictAdjacencies);
-        validator = new(world, regions, adjacencyValidator, defaultWorldFactory);
+        var regions = mapFactory.CreateRegions();
+        var centres = defaultWorldFactory.CreateCentres();
+        var adjacencyValidator = new AdjacencyValidator(regions, hasStrictAdjacencies);
+
+        validator = new(world, regions, centres, adjacencyValidator);
         evaluator = new(world, adjacencyValidator);
         executor = new(world, regions);
     }

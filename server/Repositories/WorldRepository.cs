@@ -7,10 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Repositories;
 
-public class WorldRepository(ILogger<WorldRepository> logger, GameContext context, DefaultWorldFactory defaultWorldFactory)
+public class WorldRepository(ILogger<WorldRepository> logger, GameContext context, MapFactory mapFactory, DefaultWorldFactory defaultWorldFactory)
 {
     private readonly ILogger<WorldRepository> logger = logger;
     private readonly GameContext context = context;
+    private readonly MapFactory mapFactory = mapFactory;
     private readonly DefaultWorldFactory defaultWorldFactory = defaultWorldFactory;
 
     public async Task<World> GetWorld(int gameId)
@@ -46,11 +47,7 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
 
             game.PlayersSubmitted = [];
 
-            var regions = await context.Regions
-                .Include(r => r.Connections).ThenInclude(c => c.Regions)
-                .ToListAsync();
-
-            var adjudicator = new Adjudicator(world, game.HasStrictAdjacencies, regions, defaultWorldFactory);
+            var adjudicator = new Adjudicator(world, game.HasStrictAdjacencies, mapFactory, defaultWorldFactory);
             adjudicator.Adjudicate();
             world.Iteration++;
 

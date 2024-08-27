@@ -1,6 +1,5 @@
 ﻿using Entities;
 using Enums;
-using Factories;
 
 namespace Adjudication;
 
@@ -15,17 +14,18 @@ public class Validator
     private readonly List<Disband> disbands;
     private readonly List<Order> retreats;
 
-    private readonly DefaultWorldFactory defaultWorldFactory;
     private readonly List<Region> regions;
+    private readonly List<Centre> centres;
+
     private readonly AdjacencyValidator adjacencyValidator;
     private readonly ConvoyPathValidator convoyPathValidator;
 
-    public Validator(World world, List<Region> regions, AdjacencyValidator adjacencyValidator, DefaultWorldFactory defaultWorldFactory)
+    public Validator(World world, List<Region> regions, List<Centre> centres, AdjacencyValidator adjacencyValidator)
     {
         this.world = world;
         this.regions = regions;
+        this.centres = centres;
         this.adjacencyValidator = adjacencyValidator;
-        this.defaultWorldFactory = defaultWorldFactory;
 
         var nonRetreats = world.Orders.Where(o => o.NeedsValidation && !o.Unit!.MustRetreat).ToList();
         retreats = world.Orders.Where(o => o.NeedsValidation && o.Unit!.MustRetreat).ToList();
@@ -107,8 +107,6 @@ public class Validator
 
     private void ValidateBuilds()
     {
-        var homeCentres = defaultWorldFactory.CreateCentres();
-
         foreach (var build in builds)
         {
             if (build.Location.Phase != Phase.Winter)
@@ -119,7 +117,7 @@ public class Validator
 
             var board = world.Boards.FirstOrDefault(b => b.Contains(build.Location));
             var region = regions.First(r => r.Id == build.Location.RegionId);
-            var centre = homeCentres.FirstOrDefault(c => c.Location.RegionId == build.Location.RegionId);
+            var centre = centres.FirstOrDefault(c => c.Location.RegionId == build.Location.RegionId);
             var unit = build.Unit!;
 
             if (board == null || centre == null)
