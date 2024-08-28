@@ -8,4 +8,19 @@ public class Move : Order
 
     [NotMapped]
     public override List<Location> TouchedLocations => [Location, Destination];
+
+    [NotMapped]
+    public Move? OpposingMove { get; set; }
+
+    [NotMapped]
+    public List<Order> Dependencies { get; set; } = [];
+
+    [NotMapped]
+    public OrderStrength AttackStrength { get; set; } = new();
+
+    [NotMapped]
+    public OrderStrength DefendStrength { get; set; } = new();
+
+    [NotMapped]
+    public OrderStrength PreventStrength { get; set; } = new();
 }

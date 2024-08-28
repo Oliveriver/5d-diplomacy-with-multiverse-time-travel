@@ -20,4 +20,7 @@ public abstract class Order
 
     [NotMapped]
     public virtual List<Location> TouchedLocations => [Location];
+
+    [NotMapped]
+    public OrderStrength HoldStrength { get; set; } = new();
 }

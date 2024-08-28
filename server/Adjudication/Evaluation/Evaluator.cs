@@ -6,46 +6,34 @@ namespace Adjudication;
 public class Evaluator
 {
     private readonly World world;
-    private readonly List<Order> activeOrders;
 
-#pragma warning disable IDE0052 // Remove unread private members
-    private readonly AdjacencyValidator adjacencyValidator;
-#pragma warning restore IDE0052 // Remove unread private members
+    private readonly MovementEvaluator movementEvaulator;
     private readonly AdjustmentEvaluator adjustmentEvaluator;
+    private readonly RetreatEvaluator retreatEvaulator;
 
     public Evaluator(World world, AdjacencyValidator adjacencyValidator)
     {
         this.world = world;
-        this.adjacencyValidator = adjacencyValidator;
 
-        activeOrders = GetActiveOrders();
+        var activeOrders = GetActiveOrders();
+
+        movementEvaulator = new(world, activeOrders, adjacencyValidator);
         adjustmentEvaluator = new(world, activeOrders);
+        retreatEvaulator = new(world, activeOrders);
     }
 
     public void EvaluateOrders()
     {
-        adjustmentEvaluator.EvaluateAdjustments();
-
-        // REPLACE
-        foreach (var order in activeOrders)
+        var hasRetreats = world.Boards.SelectMany(b => b.Units).Any(u => u.MustRetreat);
+        if (hasRetreats)
         {
-            if (order.Status == OrderStatus.New)
-            {
-                order.Status = OrderStatus.Success;
-            }
-
-            var touchedBoards = world.Boards.Where(b => order.TouchedLocations.Any(l => b.Contains(l))).ToList();
-
-            foreach (var board in touchedBoards)
-            {
-                board.MightAdvance = true;
-            }
+            retreatEvaulator.EvaluateRetreats();
         }
-
-        // TODO
-        // - Implement adjudication algorithm
-        // - Mark orders as success/failure
-        // - Mark units needing retreat or add disbands if not possible (use adjacencyValidator, maybe add new retreat states to OrderStatus)
+        else
+        {
+            movementEvaulator.EvaluateMovements();
+            adjustmentEvaluator.EvaluateAdjustments();
+        }
     }
 
     private List<Order> GetActiveOrders()

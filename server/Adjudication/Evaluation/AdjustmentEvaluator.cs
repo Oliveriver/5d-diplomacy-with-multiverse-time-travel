@@ -4,10 +4,10 @@ using Utilities;
 
 namespace Adjudication;
 
-public class AdjustmentEvaluator(World world, List<Order> orders)
+public class AdjustmentEvaluator(World world, List<Order> activeOrders)
 {
     private readonly World world = world;
-    private readonly List<Order> orders = orders;
+    private readonly List<Order> activeOrders = activeOrders;
 
     private readonly Random random = new();
 
@@ -19,8 +19,8 @@ public class AdjustmentEvaluator(World world, List<Order> orders)
         {
             board.MightAdvance = true;
 
-            var boardBuilds = orders.OfType<Build>().Where(b => board.Contains(b.Location)).ToList();
-            var boardDisbands = orders.OfType<Disband>().Where(d => board.Contains(d.Location)).ToList();
+            var boardBuilds = activeOrders.OfType<Build>().Where(b => board.Contains(b.Location)).ToList();
+            var boardDisbands = activeOrders.OfType<Disband>().Where(d => board.Contains(d.Location)).ToList();
 
             foreach (var nation in Constants.Nations)
             {
