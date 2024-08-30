@@ -91,4 +91,20 @@ internal static class UnitExtensions
         world.Orders.Add(convoy);
         return convoy;
     }
+
+    public static Disband Disband(this Unit unit)
+    {
+        var world = unit.Board.World;
+
+        var disband = new Disband
+        {
+            World = world,
+            Status = OrderStatus.New,
+            Location = unit.Location,
+            Unit = unit,
+        };
+
+        world.Orders.Add(disband);
+        return disband;
+    }
 }
