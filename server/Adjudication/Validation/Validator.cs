@@ -73,11 +73,11 @@ public class Validator
             var canSupport = adjacencyValidator.IsValidDirectMove(support.Unit!, support.Location, support.Destination, true);
 
             var hasMatchingHold = support.Midpoint == support.Destination
-                && stationaryOrders.Any(o => adjacencyValidator.HasSameParent(o.Location, support.Destination));
+                && stationaryOrders.Any(o => adjacencyValidator.EqualsOrHasSharedParent(o.Location, support.Destination));
 
             var hasMatchingMove = moves.Any(m =>
                 m.Location == support.Midpoint
-                && adjacencyValidator.HasSameParent(m.Destination, support.Destination)
+                && adjacencyValidator.EqualsOrHasSharedParent(m.Destination, support.Destination)
                 && m.Status != OrderStatus.Invalid);
 
             support.Status = canSupport && (hasMatchingHold || hasMatchingMove) ? OrderStatus.New : OrderStatus.Invalid;

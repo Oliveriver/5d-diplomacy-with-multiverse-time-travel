@@ -8,7 +8,7 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
     private readonly List<Region> regions = regions;
     private readonly bool hasStrictAdjacencies = hasStrictAdjacencies;
 
-    public bool IsValidDirectMove(Unit unit, Location location, Location destination, bool allowSharedParent = false)
+    public bool IsValidDirectMove(Unit unit, Location location, Location destination, bool allowDestinationSibling = false)
     {
         if (location.Phase == Phase.Winter || destination.Phase == Phase.Winter)
         {
@@ -20,16 +20,16 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
             && location.Phase == destination.Phase;
 
         return isSameBoard
-            ? IsValidIntraBoardMove(unit, location, destination, allowSharedParent)
-            : !unit.MustRetreat && IsValidInterBoardMove(unit, location, destination, allowSharedParent);
+            ? IsValidIntraBoardMove(unit, location, destination, allowDestinationSibling)
+            : !unit.MustRetreat && IsValidInterBoardMove(unit, location, destination, allowDestinationSibling);
     }
 
-    public bool IsValidInterBoardMove(Unit unit, Location location, Location destination, bool allowSharedParent)
+    public bool IsValidInterBoardMove(Unit unit, Location location, Location destination, bool allowDestinationSibling)
     {
         var locationId = location.RegionId;
         var destinationId = destination.RegionId;
 
-        if (hasStrictAdjacencies ? locationId != destinationId : !IsValidIntraBoardMove(unit, location, destination, allowSharedParent))
+        if (hasStrictAdjacencies ? locationId != destinationId : !IsValidIntraBoardMove(unit, location, destination, allowDestinationSibling))
         {
             return false;
         }
@@ -95,7 +95,7 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
         return isValidArmyMove || isValidFleetMove;
     }
 
-    public bool HasSameParent(Location location1, Location location2)
+    public bool EqualsOrHasSharedParent(Location location1, Location location2)
     {
         var location1Region = regions.First(r => r.Id == location1.RegionId);
         var location2Region = regions.First(r => r.Id == location2.RegionId);
