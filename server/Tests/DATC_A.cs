@@ -18,7 +18,7 @@ public class DATC_A : AdjudicationTestBase
         var board = world.AddBoard();
         var units = board.AddUnits([(Nation.England, UnitType.Fleet, "NTH")]);
 
-        var order = units[0].Move("Pic");
+        var order = units.Get("NTH").Move("Pic");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -37,7 +37,7 @@ public class DATC_A : AdjudicationTestBase
         var board = world.AddBoard();
         var units = board.AddUnits([(Nation.England, UnitType.Army, "Lvp")]);
 
-        var order = units[0].Move("IRI");
+        var order = units.Get("Lvp").Move("IRI");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -56,7 +56,7 @@ public class DATC_A : AdjudicationTestBase
         var board = world.AddBoard();
         var units = board.AddUnits([(Nation.Germany, UnitType.Fleet, "Kie")]);
 
-        var order = units[0].Move("Mun");
+        var order = units.Get("Kie").Move("Mun");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -75,7 +75,7 @@ public class DATC_A : AdjudicationTestBase
         var board = world.AddBoard();
         var units = board.AddUnits([(Nation.Germany, UnitType.Fleet, "Kie")]);
 
-        var order = units[0].Move("Kie");
+        var order = units.Get("Kie").Move("Kie");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -102,11 +102,11 @@ public class DATC_A : AdjudicationTestBase
                 (Nation.Germany, UnitType.Army, "Wal"),
             ]);
 
-        var englishMove = units[1].Move("Yor");
-        var englishConvoy = units[0].Convoy(units[1], "Yor");
-        var englishSupport = units[2].Support(units[1], "Yor");
-        var germanMove = units[3].Move("Yor");
-        var germanSupport = units[4].Support(units[3], "Yor");
+        var englishMove = units.Get("Yor").Move("Yor");
+        var englishConvoy = units.Get("NTH").Convoy(units.Get("Yor"), "Yor");
+        var englishSupport = units.Get("Lvp").Support(units.Get("Yor"), "Yor");
+        var germanMove = units.Get("Lon").Move("Yor");
+        var germanSupport = units.Get("Wal").Support(units.Get("Lon"), "Yor");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -149,8 +149,8 @@ public class DATC_A : AdjudicationTestBase
                 (Nation.England, UnitType.Fleet, "NTH"),
             ]);
 
-        var move = units[0].Move("Bel");
-        var convoy = units[1].Convoy(units[0], "Bel");
+        var move = units.Get("Lon").Move("Bel");
+        var convoy = units.Get("NTH").Convoy(units.Get("Lon"), "Bel");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -180,9 +180,9 @@ public class DATC_A : AdjudicationTestBase
                 (Nation.Austria, UnitType.Fleet, "Tri"),
             ]);
 
-        var italianMove = units[0].Move("Tri");
-        var italianSupport = units[1].Support(units[0], "Tri");
-        var austrianSupport = units[2].Support(units[2], "Tri");
+        var italianMove = units.Get("Ven").Move("Tri");
+        var italianSupport = units.Get("Tyr").Support(units.Get("Ven"), "Tri");
+        var austrianSupport = units.Get("Tri").Support(units.Get("Tri"), "Tri");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -209,7 +209,7 @@ public class DATC_A : AdjudicationTestBase
         var board = world.AddBoard();
         var units = board.AddUnits([(Nation.Italy, UnitType.Fleet, "Rom")]);
 
-        var order = units[0].Move("Ven");
+        var order = units.Get("Rom").Move("Ven");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -233,9 +233,9 @@ public class DATC_A : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "Rom"),
             ]);
 
-        var austrianHold = units[0].Hold();
-        var italianMove = units[1].Move("Ven");
-        var italianSupport = units[2].Support(units[1], "Ven");
+        var austrianHold = units.Get("Ven").Hold();
+        var italianMove = units.Get("Apu").Move("Ven");
+        var italianSupport = units.Get("Rom").Support(units.Get("Apu"), "Ven");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -265,8 +265,8 @@ public class DATC_A : AdjudicationTestBase
                 (Nation.Italy, UnitType.Army, "Ven"),
             ]);
 
-        var austrianMove = units[0].Move("Tyr");
-        var italianMove = units[1].Move("Tyr");
+        var austrianMove = units.Get("Vie").Move("Tyr");
+        var italianMove = units.Get("Ven").Move("Tyr");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -295,9 +295,9 @@ public class DATC_A : AdjudicationTestBase
                 (Nation.Italy, UnitType.Army, "Ven"),
             ]);
 
-        var austrianMove = units[0].Move("Tyr");
-        var germanMove = units[1].Move("Tyr");
-        var italianMove = units[2].Move("Tyr");
+        var austrianMove = units.Get("Vie").Move("Tyr");
+        var germanMove = units.Get("Mun").Move("Tyr");
+        var italianMove = units.Get("Ven").Move("Tyr");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();

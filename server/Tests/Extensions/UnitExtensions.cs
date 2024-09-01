@@ -5,6 +5,19 @@ namespace Tests;
 
 internal static class UnitExtensions
 {
+    public static Unit Get(this List<Unit> units, string regionId, int timeline = 1, int year = 1901, Phase phase = Phase.Spring)
+    {
+        var location = new Location
+        {
+            Timeline = timeline,
+            Year = year,
+            Phase = phase,
+            RegionId = regionId,
+        };
+
+        return units.First(u => u.Location == location);
+    }
+
     public static Hold Hold(this Unit unit)
     {
         var world = unit.Board.World;

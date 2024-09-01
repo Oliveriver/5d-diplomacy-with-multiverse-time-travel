@@ -70,7 +70,7 @@ public class Validator
 
         foreach (var support in supports)
         {
-            var canSupport = adjacencyValidator.IsValidDirectMove(support.Unit!, support.Location, support.Destination, true);
+            var canSupport = adjacencyValidator.IsValidDirectMove(support.Unit!, support.Location, support.Destination, allowDestinationSibling: true);
 
             var hasMatchingHold = support.Midpoint == support.Destination
                 && stationaryOrders.Any(o => adjacencyValidator.EqualsOrHasSharedParent(o.Location, support.Destination));

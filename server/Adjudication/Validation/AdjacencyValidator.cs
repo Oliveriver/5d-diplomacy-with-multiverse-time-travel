@@ -8,7 +8,12 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
     private readonly List<Region> regions = regions;
     private readonly bool hasStrictAdjacencies = hasStrictAdjacencies;
 
-    public bool IsValidDirectMove(Unit unit, Location location, Location destination, bool allowDestinationSibling = false)
+    public bool IsValidDirectMove(
+        Unit unit,
+        Location location,
+        Location destination,
+        bool allowDestinationSibling = false,
+        bool allowDestinationChild = false)
     {
         if (location.Phase == Phase.Winter || destination.Phase == Phase.Winter)
         {
@@ -20,16 +25,20 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
             && location.Phase == destination.Phase;
 
         return isSameBoard
-            ? IsValidIntraBoardMove(unit, location, destination, allowDestinationSibling)
-            : !unit.MustRetreat && IsValidInterBoardMove(unit, location, destination, allowDestinationSibling);
+            ? IsValidIntraBoardMove(unit, location, destination, allowDestinationSibling, allowDestinationChild)
+            : !unit.MustRetreat && IsValidInterBoardMove(unit, location, destination, allowDestinationSibling, allowDestinationChild);
     }
 
-    public bool IsValidInterBoardMove(Unit unit, Location location, Location destination, bool allowDestinationSibling)
+    public bool IsValidInterBoardMove(Unit unit, Location location, Location destination, bool allowDestinationSibling, bool allowDestinationChild)
     {
         var locationId = location.RegionId;
         var destinationId = destination.RegionId;
 
-        if (hasStrictAdjacencies ? locationId != destinationId : !IsValidIntraBoardMove(unit, location, destination, allowDestinationSibling))
+        if (hasStrictAdjacencies && locationId != destinationId)
+        {
+            return false;
+        }
+        else if (!IsValidIntraBoardMove(unit, location, destination, allowDestinationSibling, allowDestinationChild))
         {
             return false;
         }
@@ -43,17 +52,18 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
         return timeDistance <= 1 && multiverseDistance <= 1 && (timeDistance == 0 || multiverseDistance == 0);
     }
 
-    public bool IsValidIntraBoardMove(Unit unit, Location location, Location destination, bool allowDestinationSibling)
+    public bool IsValidIntraBoardMove(Unit unit, Location location, Location destination, bool allowDestinationSibling, bool allowDestinationChild)
     {
         if (location == destination)
         {
             return false;
         }
 
+        var locationRegion = regions.First(r => r.Id == location.RegionId);
+        var destinationRegion = regions.First(r => r.Id == destination.RegionId);
+
         if (allowDestinationSibling)
         {
-            var destinationRegion = regions.First(r => r.Id == destination.RegionId);
-
             if (destinationRegion.ParentId != null)
             {
                 var destinationRegionSiblings = regions.Where(r =>
@@ -70,7 +80,7 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
                         RegionId = siblingRegion.Id,
                     };
 
-                    var isValidMove = IsValidIntraBoardMove(unit, location, sibling, false);
+                    var isValidMove = IsValidIntraBoardMove(unit, location, sibling, false, false);
                     if (isValidMove)
                     {
                         return true;
@@ -79,15 +89,20 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
             }
         }
 
-        var locationId = location.RegionId;
-        var destinationId = destination.RegionId;
-
-        var region = regions.First(r => r.Id == locationId);
-
-        var connection = region.Connections.FirstOrDefault(c => c.Regions.Any(r => r.Id == destinationId));
+        var connection = locationRegion.Connections.FirstOrDefault(c => c.Regions.Any(r => r == destinationRegion));
         if (connection == null)
         {
-            return false;
+            if (!allowDestinationChild)
+            {
+                return false;
+            }
+
+            var destinationRegionChildren = regions.Where(r => r.ParentId == destination.RegionId);
+            connection = locationRegion.Connections.FirstOrDefault(c => c.Regions.Intersect(destinationRegionChildren).Any());
+            if (connection == null)
+            {
+                return false;
+            }
         }
 
         var isValidArmyMove = unit.Type == UnitType.Army && connection.Type != ConnectionType.Sea;

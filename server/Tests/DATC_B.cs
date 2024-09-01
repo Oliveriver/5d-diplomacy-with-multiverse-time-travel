@@ -18,7 +18,7 @@ public class DATC_B : AdjudicationTestBase
         var board = world.AddBoard();
         var units = board.AddUnits([(Nation.France, UnitType.Fleet, "Por")]);
 
-        var order = units[0].Move("Spa");
+        var order = units.Get("Por").Move("Spa");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -45,7 +45,7 @@ public class DATC_B : AdjudicationTestBase
         var board = world.AddBoard();
         var units = board.AddUnits([(Nation.France, UnitType.Fleet, "Gas")]);
 
-        var order = units[0].Move("Spa_S");
+        var order = units.Get("Gas").Move("Spa_S");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -70,9 +70,9 @@ public class DATC_B : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "WES"),
             ]);
 
-        var frenchMove = units[0].Move("Spa_N");
-        var frenchSupport = units[1].Support(units[0], "Spa_N");
-        var italianMove = units[2].Move("Spa_S");
+        var frenchMove = units.Get("Gas").Move("Spa_N");
+        var frenchSupport = units.Get("Mar").Support(units.Get("Gas"), "Spa_N");
+        var italianMove = units.Get("WES").Move("Spa_S");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -104,9 +104,9 @@ public class DATC_B : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "LYO"),
             ]);
 
-        var frenchMove = units[0].Move("LYO");
-        var frenchSupport = units[1].Support(units[0], "LYO");
-        var italianMove = units[2].Hold();
+        var frenchMove = units.Get("Mar").Move("LYO");
+        var frenchSupport = units.Get("Spa_N").Support(units.Get("Mar"), "LYO");
+        var italianMove = units.Get("LYO").Hold();
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -140,11 +140,11 @@ public class DATC_B : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "LYO"),
             ]);
 
-        var englishMove = units[1].Move("MAO");
-        var englishSupport = units[0].Support(units[1], "MAO");
-        var frenchHold = units[3].Hold();
-        var frenchSupport = units[2].Support(units[3], "MAO");
-        var italianMove = units[4].Move("Spa_S");
+        var englishMove = units.Get("NAO").Move("MAO");
+        var englishSupport = units.Get("IRI").Support(units.Get("NAO"), "MAO");
+        var frenchHold = units.Get("MAO").Hold();
+        var frenchSupport = units.Get("Spa_N").Support(units.Get("MAO"), "MAO");
+        var italianMove = units.Get("LYO").Move("Spa_S");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -196,10 +196,10 @@ public class DATC_B : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "WES"),
             ]);
 
-        var frenchMove = units[1].Move("Spa_S");
-        var frenchSupport = units[0].Support(units[1], "Spa_N");
-        var italianMove = units[3].Move("Spa_S");
-        var italianSupport = units[2].Support(units[3], "Spa_S");
+        var frenchMove = units.Get("MAO").Move("Spa_S");
+        var frenchSupport = units.Get("Por").Support(units[1], "Spa_N");
+        var italianMove = units.Get("WES").Move("Spa_S");
+        var italianSupport = units.Get("LYO").Support(units[3], "Spa_S");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -234,7 +234,7 @@ public class DATC_B : AdjudicationTestBase
         var board = world.AddBoard();
         var units = board.AddUnits([(Nation.France, UnitType.Fleet, "Spa_N")]);
 
-        var order = units[0].Move("LYO");
+        var order = units.Get("Spa_N").Move("LYO");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -265,8 +265,8 @@ public class DATC_B : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Fleet, "Con"),
             ]);
 
-        var turkishMove1 = units[0].Move("Con");
-        var turkishMove2 = units[1].Move("Bul_E");
+        var turkishMove1 = units.Get("Bul_S").Move("Con");
+        var turkishMove2 = units.Get("Con").Move("Bul_E");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();

@@ -64,9 +64,11 @@ public class ConvoyPathValidator(List<Convoy> convoys, List<Region> regions, Adj
                 visitedConvoys.Add(convoy);
             }
 
-            return convoys
-                .Where(c => !visitedConvoys.Contains(c) && adjacencyValidator.IsValidDirectMove(c.Unit!, c.Location, location))
-                .Any(c => HasPath(c.Unit!, c.Location, destination));
+            var adjacentConvoys = convoys.Where(c =>
+                !visitedConvoys.Contains(c)
+                && adjacencyValidator.IsValidDirectMove(c.Unit!, c.Location, location, allowDestinationChild: true));
+
+            return adjacentConvoys.Any(c => HasPath(c.Unit!, c.Location, destination));
         }
     }
 }
