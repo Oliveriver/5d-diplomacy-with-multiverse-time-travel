@@ -19,8 +19,12 @@ public class AdjustmentEvaluator(World world, List<Order> activeOrders)
         {
             board.MightAdvance = true;
 
-            var boardBuilds = activeOrders.OfType<Build>().Where(b => board.Contains(b.Location)).ToList();
-            var boardDisbands = activeOrders.OfType<Disband>().Where(d => board.Contains(d.Location)).ToList();
+            var boardBuilds = activeOrders
+                .OfType<Build>()
+                .Where(b => b.Status == OrderStatus.New && board.Contains(b.Location)).ToList();
+            var boardDisbands = activeOrders
+                .OfType<Disband>()
+                .Where(d => d.Status == OrderStatus.New && board.Contains(d.Location)).ToList();
 
             foreach (var nation in Constants.Nations)
             {

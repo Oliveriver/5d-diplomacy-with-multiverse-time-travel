@@ -59,9 +59,8 @@ public class Evaluator
         }
 
         var depthFirstSearch = new DepthFirstSearch(world, newOrders);
-        var touchedOrders = newOrders.SelectMany(depthFirstSearch.GetTouchedOrders);
+        var activeOrders = newOrders.SelectMany(depthFirstSearch.GetTouchedOrders).ToList();
 
-        var activeOrders = newOrders.Concat(touchedOrders).ToList();
         foreach (var order in activeOrders)
         {
             var touchedBoards = world.Boards.Where(b => order.TouchedLocations.Any(l => b.Contains(l))).ToList();

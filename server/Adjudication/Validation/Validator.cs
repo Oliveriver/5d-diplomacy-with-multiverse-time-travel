@@ -70,9 +70,15 @@ public class Validator
 
         foreach (var support in supports)
         {
-            var canSupport = adjacencyValidator.IsValidDirectMove(support.Unit!, support.Location, support.Destination);
-            var hasMatchingHold = stationaryOrders.Any(o => o.Location == support.Midpoint && o.Location == support.Destination);
-            var hasMatchingMove = moves.Any(m => m.Location == support.Midpoint && m.Destination == support.Destination && m.Status != OrderStatus.Invalid);
+            var canSupport = adjacencyValidator.IsValidDirectMove(support.Unit!, support.Location, support.Destination, true);
+
+            var hasMatchingHold = support.Midpoint == support.Destination
+                && stationaryOrders.Any(o => adjacencyValidator.EqualsOrHasSharedParent(o.Location, support.Destination));
+
+            var hasMatchingMove = moves.Any(m =>
+                m.Location == support.Midpoint
+                && adjacencyValidator.EqualsOrHasSharedParent(m.Destination, support.Destination)
+                && m.Status != OrderStatus.Invalid);
 
             support.Status = canSupport && (hasMatchingHold || hasMatchingMove) ? OrderStatus.New : OrderStatus.Invalid;
         }
@@ -117,7 +123,11 @@ public class Validator
 
             var board = world.Boards.FirstOrDefault(b => b.Contains(build.Location));
             var region = regions.First(r => r.Id == build.Location.RegionId);
-            var centre = centres.FirstOrDefault(c => c.Location.RegionId == build.Location.RegionId);
+            var parentRegion = regions.FirstOrDefault(r => r.Id == region.ParentId);
+
+            var centre = centres.FirstOrDefault(c =>
+                c.Location.RegionId == region.Id
+                || c.Location.RegionId == parentRegion?.Id);
             var unit = build.Unit!;
 
             if (board == null || centre == null)

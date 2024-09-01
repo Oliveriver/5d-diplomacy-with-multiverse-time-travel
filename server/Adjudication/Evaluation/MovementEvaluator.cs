@@ -21,6 +21,12 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         // - Implement adjudication algorithm
         // - Mark orders as success/failure
         // - Mark units needing retreat or add disbands if not possible (use adjacencyValidator)
+
+        // TEMP
+        foreach (var order in activeOrders.Where(o => o.Status != Enums.OrderStatus.Invalid))
+        {
+            order.Status = Enums.OrderStatus.Success;
+        }
     }
 
     public void AdjudicateSupport(Support support)
