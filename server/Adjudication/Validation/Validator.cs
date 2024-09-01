@@ -67,6 +67,7 @@ public class Validator
         stationaryOrders.AddRange(holds);
         stationaryOrders.AddRange(supports);
         stationaryOrders.AddRange(convoys);
+        stationaryOrders.AddRange(moves.Where(m => m.Status == OrderStatus.Invalid));
 
         foreach (var support in supports)
         {

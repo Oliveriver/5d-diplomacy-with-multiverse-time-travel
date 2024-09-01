@@ -10,7 +10,7 @@ namespace Tests;
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class DATC_B : AdjudicationTestBase
 {
-    [Fact(DisplayName = "B.1. Moving with unspecified coast when coast is necessary")]
+    [Fact(DisplayName = "B.01. Moving with unspecified coast when coast is necessary")]
     public void DATC_B_1()
     {
         // Arrange
@@ -29,7 +29,7 @@ public class DATC_B : AdjudicationTestBase
         board.Next().ShouldHaveUnits([(Nation.France, UnitType.Fleet, "Por", false)]);
     }
 
-    [Fact(DisplayName = "B.2. Moving with unspecified coast when coast is not necessary", Skip = "Decided against")]
+    [Fact(DisplayName = "B.02. Moving with unspecified coast when coast is not necessary", Skip = "Decided against")]
     public void DATC_B_2()
     {
         // Although a more lenient adjudicator would allow this, for simplicity of implementation, 5D Diplomacy always
@@ -37,7 +37,7 @@ public class DATC_B : AdjudicationTestBase
         // order should never be possible.
     }
 
-    [Fact(DisplayName = "B.3. Moving with wrong coast when coast is not necessary")]
+    [Fact(DisplayName = "B.03. Moving with wrong coast when coast is not necessary")]
     public void DATC_B_3()
     {
         // Arrange
@@ -56,7 +56,7 @@ public class DATC_B : AdjudicationTestBase
         board.Next().ShouldHaveUnits([(Nation.France, UnitType.Fleet, "Gas", false)]);
     }
 
-    [Fact(DisplayName = "B.4. Support to unreachable coast allowed")]
+    [Fact(DisplayName = "B.04. Support to unreachable coast allowed")]
     public void DATC_B_4()
     {
         // Arrange
@@ -90,7 +90,7 @@ public class DATC_B : AdjudicationTestBase
             ]);
     }
 
-    [Fact(DisplayName = "B.5. Support from unreachable coast not allowed")]
+    [Fact(DisplayName = "B.05. Support from unreachable coast not allowed")]
     public void DATC_B_5()
     {
         // Arrange
@@ -124,7 +124,7 @@ public class DATC_B : AdjudicationTestBase
             ]);
     }
 
-    [Fact(DisplayName = "B.6. Support can be cut with other coast")]
+    [Fact(DisplayName = "B.06. Support can be cut with other coast")]
     public void DATC_B_6()
     {
         // Arrange
@@ -159,7 +159,7 @@ public class DATC_B : AdjudicationTestBase
         board.ShouldHaveUnits(
             [
                 (Nation.England, UnitType.Fleet, "IRI", false),
-                (Nation.England, UnitType.Fleet, "MAO", false),
+                (Nation.England, UnitType.Fleet, "NAO", false),
                 (Nation.France, UnitType.Fleet, "Spa_N", false),
                 (Nation.France, UnitType.Fleet, "MAO", true),
                 (Nation.Italy, UnitType.Fleet, "LYO", false),
@@ -167,21 +167,21 @@ public class DATC_B : AdjudicationTestBase
         board.ShouldNotHaveNextBoard();
     }
 
-    [Fact(DisplayName = "B.7. Supporting own unit with unspecified coast", Skip = "Decided against")]
+    [Fact(DisplayName = "B.07. Supporting own unit with unspecified coast", Skip = "Decided against")]
     public void DATC_B_7()
     {
         // Again, the client for 5D Diplomacy should enforce a fleet to specify a coast in such a scenario, so the move
         // is invalid in this context. The DATC specifies it should succeed, but we choose to be strict.
     }
 
-    [Fact(DisplayName = "B.8. Supporting with unspecified coast when only one coast is possible", Skip = "Decided against")]
+    [Fact(DisplayName = "B.08. Supporting with unspecified coast when only one coast is possible", Skip = "Decided against")]
     public void DATC_B_8()
     {
         // Similarly, such an order would not be possible to enter with the 5D Diplomacy client, so we decide it should
         // be invalid.
     }
 
-    [Fact(DisplayName = "B.9. Supporting with wrong coast")]
+    [Fact(DisplayName = "B.09. Supporting with wrong coast")]
     public void DATC_B_9()
     {
         // Arrange

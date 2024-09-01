@@ -10,7 +10,7 @@ namespace Tests;
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class DATC_A : AdjudicationTestBase
 {
-    [Fact(DisplayName = "A.1. Moving to an area that is not a neighbour")]
+    [Fact(DisplayName = "A.01. Moving to an area that is not a neighbour")]
     public void DATC_A_1()
     {
         // Arrange
@@ -29,7 +29,7 @@ public class DATC_A : AdjudicationTestBase
         board.Next().ShouldHaveUnits([(Nation.England, UnitType.Fleet, "NTH", false)]);
     }
 
-    [Fact(DisplayName = "A.2. Move army to sea")]
+    [Fact(DisplayName = "A.02. Move army to sea")]
     public void DATC_A_2()
     {
         // Arrange
@@ -48,7 +48,7 @@ public class DATC_A : AdjudicationTestBase
         board.Next().ShouldHaveUnits([(Nation.England, UnitType.Army, "Lvp", false)]);
     }
 
-    [Fact(DisplayName = "A.3. Move fleet to land")]
+    [Fact(DisplayName = "A.03. Move fleet to land")]
     public void DATC_A_3()
     {
         // Arrange
@@ -67,7 +67,7 @@ public class DATC_A : AdjudicationTestBase
         board.Next().ShouldHaveUnits([(Nation.Germany, UnitType.Fleet, "Kie", false)]);
     }
 
-    [Fact(DisplayName = "A.4. Move to own sector")]
+    [Fact(DisplayName = "A.04. Move to own sector")]
     public void DATC_A_4()
     {
         // Arrange
@@ -86,7 +86,7 @@ public class DATC_A : AdjudicationTestBase
         board.Next().ShouldHaveUnits([(Nation.Germany, UnitType.Fleet, "Kie", false)]);
     }
 
-    [Fact(DisplayName = "A.5. Move to own sector with convoy")]
+    [Fact(DisplayName = "A.05. Move to own sector with convoy")]
     public void DATC_A_5()
     {
         // Arrange
@@ -123,20 +123,20 @@ public class DATC_A : AdjudicationTestBase
                 (Nation.England, UnitType.Fleet, "NTH", false),
                 (Nation.England, UnitType.Army, "Yor", true),
                 (Nation.England, UnitType.Army, "Lvp", false),
-                (Nation.Germany, UnitType.Fleet, "Yor", false),
+                (Nation.Germany, UnitType.Fleet, "Lon", false),
                 (Nation.Germany, UnitType.Army, "Wal", false),
             ]);
         board.ShouldNotHaveNextBoard();
     }
 
-    [Fact(DisplayName = "A.6. Ordering a unit of another country", Skip = "Not applicable")]
+    [Fact(DisplayName = "A.06. Ordering a unit of another country", Skip = "Not applicable")]
     public void DATC_A_6()
     {
         // Order ownership is controlled by the client. Once an order reaches the server, it retains no ownership
         // information other than the acting unit. So this test case is not valid for the 5D Diplomacy adjudicator.
     }
 
-    [Fact(DisplayName = "A.7. Only armies can be convoyed")]
+    [Fact(DisplayName = "A.07. Only armies can be convoyed")]
     public void DATC_A_7()
     {
         // Arrange
@@ -166,7 +166,7 @@ public class DATC_A : AdjudicationTestBase
             ]);
     }
 
-    [Fact(DisplayName = "A.8. Support to hold yourself is not possible")]
+    [Fact(DisplayName = "A.08. Support to hold yourself is not possible")]
     public void DATC_A_8()
     {
         // Arrange
@@ -196,12 +196,12 @@ public class DATC_A : AdjudicationTestBase
             [
                 (Nation.Italy, UnitType.Army, "Ven", true),
                 (Nation.Italy, UnitType.Army, "Tyr", false),
-                (Nation.Austria, UnitType.Fleet, "Ven", false),
+                (Nation.Austria, UnitType.Fleet, "Tri", false),
             ]);
         board.ShouldNotHaveNextBoard();
     }
 
-    [Fact(DisplayName = "A.9. Fleets must follow coast if not on sea")]
+    [Fact(DisplayName = "A.09. Fleets must follow coast if not on sea")]
     public void DATC_A_9()
     {
         // Arrange

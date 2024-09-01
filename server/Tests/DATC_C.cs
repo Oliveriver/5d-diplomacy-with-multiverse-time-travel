@@ -10,7 +10,7 @@ namespace Tests;
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class DATC_C : AdjudicationTestBase
 {
-    [Fact(DisplayName = "C.1. Three army circular movement")]
+    [Fact(DisplayName = "C.01. Three army circular movement")]
     public void DATC_C_1()
     {
         // Arrange
@@ -44,7 +44,7 @@ public class DATC_C : AdjudicationTestBase
             ]);
     }
 
-    [Fact(DisplayName = "C.2. Three army circular movement with support")]
+    [Fact(DisplayName = "C.02. Three army circular movement with support")]
     public void DATC_C_2()
     {
         // Arrange
@@ -82,7 +82,7 @@ public class DATC_C : AdjudicationTestBase
             ]);
     }
 
-    [Fact(DisplayName = "C.3. A disrupted three army circular movement")]
+    [Fact(DisplayName = "C.03. A disrupted three army circular movement")]
     public void DATC_C_3()
     {
         // Arrange
@@ -120,7 +120,7 @@ public class DATC_C : AdjudicationTestBase
             ]);
     }
 
-    [Fact(DisplayName = "C.4. A circular movement with attacked convoy")]
+    [Fact(DisplayName = "C.04. A circular movement with attacked convoy")]
     public void DATC_C_4()
     {
         // Arrange
@@ -170,7 +170,7 @@ public class DATC_C : AdjudicationTestBase
             ]);
     }
 
-    [Fact(DisplayName = "C.5. A disrupted circular movement due to dislodged convoy")]
+    [Fact(DisplayName = "C.05. A disrupted circular movement due to dislodged convoy")]
     public void DATC_C_5()
     {
         // Arrange
@@ -219,13 +219,13 @@ public class DATC_C : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Fleet, "AEG", false),
                 (Nation.Turkey, UnitType.Fleet, "ION", true),
                 (Nation.Turkey, UnitType.Fleet, "ADR", false),
-                (Nation.Italy, UnitType.Fleet, "ION", false),
+                (Nation.Italy, UnitType.Fleet, "Nap", false),
                 (Nation.Italy, UnitType.Fleet, "Tun", false),
             ]);
         board.ShouldNotHaveNextBoard();
     }
 
-    [Fact(DisplayName = "C.6. Two armies with two convoys")]
+    [Fact(DisplayName = "C.06. Two armies with two convoys")]
     public void DATC_C_6()
     {
         // Arrange
@@ -263,7 +263,7 @@ public class DATC_C : AdjudicationTestBase
             ]);
     }
 
-    [Fact(DisplayName = "C.7. Disrupted unit swap")]
+    [Fact(DisplayName = "C.07. Disrupted unit swap")]
     public void DATC_C_7()
     {
         // Arrange
@@ -304,7 +304,7 @@ public class DATC_C : AdjudicationTestBase
             ]);
     }
 
-    [Fact(DisplayName = "C.8. No self dislodgement in disrupted circular movement")]
+    [Fact(DisplayName = "C.08. No self dislodgement in disrupted circular movement")]
     public void DATC_C_8()
     {
         // Arrange
@@ -346,7 +346,7 @@ public class DATC_C : AdjudicationTestBase
             ]);
     }
 
-    [Fact(DisplayName = "C.9. No help in dislodgement of own unit in disrupted circular movement")]
+    [Fact(DisplayName = "C.09. No help in dislodgement of own unit in disrupted circular movement")]
     public void DATC_C_9()
     {
         // Arrange

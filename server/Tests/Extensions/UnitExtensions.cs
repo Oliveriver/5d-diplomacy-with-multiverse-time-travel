@@ -57,7 +57,7 @@ internal static class UnitExtensions
         return move;
     }
 
-    public static Support Support(this Unit unit, Unit supportedUnit, string regionId, int timeline = 1, int year = 1901, Phase phase = Phase.Spring)
+    public static Support Support(this Unit unit, Unit supportedUnit, string? regionId = null, int timeline = 1, int year = 1901, Phase phase = Phase.Spring)
     {
         var world = unit.Board.World;
 
@@ -72,7 +72,7 @@ internal static class UnitExtensions
                 Timeline = timeline,
                 Year = year,
                 Phase = phase,
-                RegionId = regionId,
+                RegionId = regionId ?? supportedUnit.Location.RegionId,
             },
             Unit = unit,
         };
