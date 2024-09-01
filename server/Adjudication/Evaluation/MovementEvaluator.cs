@@ -21,23 +21,26 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         // - Implement adjudication algorithm
         // - Mark orders as success/failure
         // - Mark units needing retreat or add disbands if not possible (use adjacencyValidator)
-
-        // TEMP
-        foreach (var order in activeOrders.Where(o => o.Status != Enums.OrderStatus.Invalid))
-        {
-            order.Status = Enums.OrderStatus.Success;
-        }
     }
 
     public void AdjudicateSupport(Support support)
     {
+        bool unresolved = false;
         foreach (var attackingMove in support.Location.AttackingMoves)
         {
             if (!Object.ReferenceEquals(support.Midpoint,support.Destination) && !Object.ReferenceEquals(support.Destination, attackingMove.Location))
             {
-                //TODO - also need to check if it's an unresolved convoy move first...
+                //TODO - also need to check if it's an unresolved convoy move first... If so the support should also be unresolved.
                 support.Status = Enums.OrderStatus.Failure;
             }
+            else
+            {
+                unresolved = true;
+            }
+        }
+        if(!unresolved)
+        {
+            support.Status = Enums.OrderStatus.Success;
         }
 
     }
@@ -71,7 +74,13 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
                 {
                     move.OpposingMove.Unit.MustRetreat = true;
                 }
-                //Need to also check if the opposing territory has a unit present and dislodge it if true
+                else if (move.Destination.OrderAtLocation != null && !(move.Destination.OrderAtLocation is Move))
+                {
+                    move.Destination.OrderAtLocation.Status = Enums.OrderStatus.Failure;
+                    move.Destination.OrderAtLocation.Unit.MustRetreat = true;
+                    //This also needs to be done if the OrderAtDestination is an unsuccessful move, but that might not be determined yet.
+                    //So I'm thinking to maybe remove the MustRetreat line from here from here and calculate which units are dislodged after everything else is done.
+                }
 
                 foreach(var attackingMove in move.Destination.AttackingMoves)
                 {
@@ -86,6 +95,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         if (((move.OpposingMove != null) && (move.AttackStrength.Max <= move.OpposingMove.DefendStrength.Min)) || ((move.OpposingMove == null) && (move.AttackStrength.Max <= move.Destination.HoldStrength.Min)) || (move.AttackStrength.Max <= minPreventStr))
         {
             //unsuccessful
+            move.Status = Enums.OrderStatus.Failure;
         }
     }
 }

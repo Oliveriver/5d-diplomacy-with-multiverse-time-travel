@@ -32,5 +32,5 @@ public class Location : IEquatable<Location>
     public OrderStrength HoldStrength { get; set; } = new();
 
     [NotMapped]
-    public Unit PresentUnit { get; set; }
+    public Order OrderAtLocation { get; set; }
 }
