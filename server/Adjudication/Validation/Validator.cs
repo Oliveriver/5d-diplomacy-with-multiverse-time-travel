@@ -147,9 +147,17 @@ public class Validator
 
     private void ValidateDisbands()
     {
-        foreach (var disband in disbands)
+        var uniqueDisbands = disbands.DistinctBy(d => d.Location).ToList();
+        var duplicateDisbands = disbands.Where(d => !uniqueDisbands.Contains(d)).ToList();
+
+        foreach (var disband in uniqueDisbands)
         {
             disband.Status = disband.Location.Phase != Phase.Winter ? OrderStatus.New : OrderStatus.Invalid;
+        }
+
+        foreach (var disband in duplicateDisbands)
+        {
+            disband.Status = OrderStatus.Invalid;
         }
     }
 
