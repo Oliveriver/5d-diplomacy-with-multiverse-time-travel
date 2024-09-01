@@ -23,20 +23,40 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         // - Mark units needing retreat or add disbands if not possible (use adjacencyValidator)
     }
 
+    public void AdjudicateConvoy(Convoy convoy)
+    {
+        bool unresolved = false;
+        foreach (Move attackingMove in support.Location.AttackingMoves)
+        {
+            if (attackingMove.Status = Enums.OrderStatus.Success)
+            {
+                convoy.Status = Enums.OrderStatus.Failure;
+            }
+            else if (attackingMove.Status != Enums.OrderStatus.Failure)
+            {
+                unresolved = true;
+            }
+        }
+        if (!unresolved)
+        {
+            support.Status = Enums.OrderStatus.Success;
+        }
+    }
+
     public void AdjudicateSupport(Support support)
     {
         bool unresolved = false;
-        foreach (var attackingMove in support.Location.AttackingMoves)
+        foreach (Move attackingMove in support.Location.AttackingMoves)
         {
             if (!Object.ReferenceEquals(support.Midpoint,support.Destination) && !Object.ReferenceEquals(support.Destination, attackingMove.Location))
             {
-                //TODO - also need to check if it's an unresolved convoy move first... If so the support should also be unresolved.
                 support.Status = Enums.OrderStatus.Failure;
             }
             else
             {
                 unresolved = true;
             }
+            //TODO - if AttackingMove is Move via Convoy and AttackingMove is unresolved, then unresolved = true
         }
         if(!unresolved)
         {
@@ -50,7 +70,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
 
         int maxPreventStr = 0;
         int minPreventStr = 0;
-        foreach (var attackingMove in move.Destination.AttackingMoves)
+        foreach (Move attackingMove in move.Destination.AttackingMoves)
         {
             if (!Object.ReferenceEquals(attackingMove, move))
             {
@@ -82,7 +102,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
                     //So I'm thinking to maybe remove the MustRetreat line from here from here and calculate which units are dislodged after everything else is done.
                 }
 
-                foreach(var attackingMove in move.Destination.AttackingMoves)
+                foreach(Move attackingMove in move.Destination.AttackingMoves)
                 {
                     if(!Object.ReferenceEquals(attackingMove, move))
                     {
