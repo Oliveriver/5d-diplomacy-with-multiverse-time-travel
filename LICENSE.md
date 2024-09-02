@@ -9,4 +9,6 @@ You should have received a copy of the GNU General Public License along with thi
 
 This program uses the following third party assets:
 
+Diplomacy Adjudicator Test Cases: Copyright (C) 2024 Lucas B. Kruijswijk
 Diplomacy standard map: Creative Commons BY-SA 3.0 Copyright (C) 2009 Martin Asal
+The Time Machinations: Copyright (C) 2024 Matthew Pickard, AKA Lady Razor

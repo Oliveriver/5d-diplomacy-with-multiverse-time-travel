@@ -7,6 +7,9 @@ using Xunit;
 
 namespace Tests;
 
+// Diplomacy Adjudicator Test Cases, Lucas B. Kruijswijk
+// https://boardgamegeek.com/filepage/274846/datc-diplomacy-adjudicator-test-cases
+
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class DATC_A : AdjudicationTestBase
 {
