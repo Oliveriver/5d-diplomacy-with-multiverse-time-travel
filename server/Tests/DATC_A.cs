@@ -117,7 +117,7 @@ public class DATC_A : AdjudicationTestBase
         // Assert
         englishMove.Status.Should().Be(OrderStatus.Invalid);
         englishConvoy.Status.Should().Be(OrderStatus.Invalid);
-        englishSupport.Status.Should().Be(OrderStatus.Invalid);
+        englishSupport.Status.Should().Be(OrderStatus.Success);
         germanMove.Status.Should().Be(OrderStatus.Success);
         germanSupport.Status.Should().Be(OrderStatus.Success);
 

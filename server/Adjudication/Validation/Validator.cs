@@ -55,7 +55,9 @@ public class Validator
         foreach (var move in moves)
         {
             var canDirectMove = adjacencyValidator.IsValidDirectMove(move.Unit!, move.Location, move.Destination);
-            var canConvoyMove = convoyPathValidator.HasPath(move.Unit!, move.Location, move.Destination);
+
+            move.ConvoyPath = convoyPathValidator.GetPossibleConvoys(move.Unit!, move.Location, move.Destination);
+            var canConvoyMove = move.ConvoyPath.Count > 0;
 
             move.Status = canDirectMove || canConvoyMove ? OrderStatus.New : OrderStatus.Invalid;
         }
@@ -106,7 +108,7 @@ public class Validator
                 continue;
             }
 
-            var hasMatchingMove = moves.Any(m => m.Location == convoy.Midpoint && m.Destination == convoy.Destination && m.Status != OrderStatus.Invalid);
+            var hasMatchingMove = moves.Any(m => m.ConvoyPath.Contains(convoy) && m.Status != OrderStatus.Invalid);
 
             convoy.Status = hasMatchingMove ? OrderStatus.New : OrderStatus.Invalid;
         }
