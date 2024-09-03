@@ -56,10 +56,11 @@ public class ConvoyPathValidator(List<Convoy> convoys, List<Region> regions, Adj
         {
             if (adjacencyValidator.IsValidDirectMove(unit, location, destination))
             {
-                if (location == convoys.First().Midpoint)
+                if (location == convoys.FirstOrDefault()?.Midpoint)
                 {
                     var directConvoys = convoys.Where(c =>
-                        adjacencyValidator.IsValidDirectMove(c.Unit!, c.Location, destination, allowDestinationChild: true));
+                        adjacencyValidator.IsValidDirectMove(c.Unit!, c.Location, destination, allowDestinationChild: true)
+                        && adjacencyValidator.IsValidDirectMove(c.Unit!, c.Location, location, allowDestinationChild: true));
 
                     if (directConvoys.Any())
                     {
@@ -67,7 +68,10 @@ public class ConvoyPathValidator(List<Convoy> convoys, List<Region> regions, Adj
                     }
                 }
 
-                return convoys.Where(c => c.Unit == unit).ToList();
+                if (unit.Type == UnitType.Fleet)
+                {
+                    return convoys.Where(c => c.Unit == unit).ToList();
+                }
             }
 
             var convoy = convoys.FirstOrDefault(c => c.Location == location);
@@ -82,13 +86,17 @@ public class ConvoyPathValidator(List<Convoy> convoys, List<Region> regions, Adj
                 }
             }
 
-            var adjacentConvoys = convoys.Where(c =>
-                !visitedConvoys.Contains(c)
-                && adjacencyValidator.IsValidDirectMove(c.Unit!, c.Location, location, allowDestinationChild: true));
+            var adjacentConvoys = convoys
+                .Where(c =>
+                    !visitedConvoys.Contains(c)
+                    && adjacencyValidator.IsValidDirectMove(c.Unit!, c.Location, location, allowDestinationChild: true))
+                .ToList();
 
-            var onwardConvoys = adjacentConvoys.SelectMany(c => GetPossibleConvoys(c.Unit!, c.Location, destination));
+            var onwardConvoys = adjacentConvoys
+                .SelectMany(c => GetPossibleConvoys(c.Unit!, c.Location, destination))
+                .ToList();
 
-            return convoy == null || !onwardConvoys.Any() ? [.. onwardConvoys] : [.. onwardConvoys, convoy];
+            return convoy == null || onwardConvoys.Count == 0 ? [.. onwardConvoys] : [.. onwardConvoys, convoy];
         }
     }
 }
