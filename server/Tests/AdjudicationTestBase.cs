@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-public class AdjudicationTestBase
+public abstract class AdjudicationTestBase
 {
     protected MapFactory MapFactory { get; private set; }
     protected DefaultWorldFactory DefaultWorldFactory { get; private set; }

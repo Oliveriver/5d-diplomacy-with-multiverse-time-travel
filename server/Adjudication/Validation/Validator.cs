@@ -55,7 +55,9 @@ public class Validator
         foreach (var move in moves)
         {
             var canDirectMove = adjacencyValidator.IsValidDirectMove(move.Unit!, move.Location, move.Destination);
-            var canConvoyMove = convoyPathValidator.HasPath(move.Unit!, move.Location, move.Destination);
+
+            move.ConvoyPath = convoyPathValidator.GetPossibleConvoys(move.Unit!, move.Location, move.Destination);
+            var canConvoyMove = move.ConvoyPath.Count > 0;
 
             move.Status = canDirectMove || canConvoyMove ? OrderStatus.New : OrderStatus.Invalid;
         }
@@ -67,10 +69,11 @@ public class Validator
         stationaryOrders.AddRange(holds);
         stationaryOrders.AddRange(supports);
         stationaryOrders.AddRange(convoys);
+        stationaryOrders.AddRange(moves.Where(m => m.Status == OrderStatus.Invalid));
 
         foreach (var support in supports)
         {
-            var canSupport = adjacencyValidator.IsValidDirectMove(support.Unit!, support.Location, support.Destination, true);
+            var canSupport = adjacencyValidator.IsValidDirectMove(support.Unit!, support.Location, support.Destination, allowDestinationSibling: true);
 
             var hasMatchingHold = support.Midpoint == support.Destination
                 && stationaryOrders.Any(o => adjacencyValidator.EqualsOrHasSharedParent(o.Location, support.Destination));
@@ -105,7 +108,7 @@ public class Validator
                 continue;
             }
 
-            var hasMatchingMove = moves.Any(m => m.Location == convoy.Midpoint && m.Destination == convoy.Destination && m.Status != OrderStatus.Invalid);
+            var hasMatchingMove = moves.Any(m => m.ConvoyPath.Contains(convoy) && m.Status != OrderStatus.Invalid);
 
             convoy.Status = hasMatchingMove ? OrderStatus.New : OrderStatus.Invalid;
         }
@@ -146,9 +149,17 @@ public class Validator
 
     private void ValidateDisbands()
     {
-        foreach (var disband in disbands)
+        var uniqueDisbands = disbands.DistinctBy(d => d.Location).ToList();
+        var duplicateDisbands = disbands.Where(d => !uniqueDisbands.Contains(d)).ToList();
+
+        foreach (var disband in uniqueDisbands)
         {
             disband.Status = disband.Location.Phase != Phase.Winter ? OrderStatus.New : OrderStatus.Invalid;
+        }
+
+        foreach (var disband in duplicateDisbands)
+        {
+            disband.Status = OrderStatus.Invalid;
         }
     }
 

@@ -10,6 +10,9 @@ public class Move : Order
     public override List<Location> TouchedLocations => [Location, Destination];
 
     [NotMapped]
+    public List<Convoy> ConvoyPath { get; set; } = [];
+
+    [NotMapped]
     public Move? OpposingMove { get; set; }
 
     [NotMapped]

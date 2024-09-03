@@ -7,10 +7,13 @@ using Xunit;
 
 namespace Tests;
 
+// Diplomacy Adjudicator Test Cases, Lucas B. Kruijswijk
+// https://boardgamegeek.com/filepage/274846/datc-diplomacy-adjudicator-test-cases
+
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class DATC_B : AdjudicationTestBase
 {
-    [Fact(DisplayName = "B.1. Moving with unspecified coast when coast is necessary")]
+    [Fact(DisplayName = "B.01. Moving with unspecified coast when coast is necessary")]
     public void DATC_B_1()
     {
         // Arrange
@@ -18,7 +21,7 @@ public class DATC_B : AdjudicationTestBase
         var board = world.AddBoard();
         var units = board.AddUnits([(Nation.France, UnitType.Fleet, "Por")]);
 
-        var order = units[0].Move("Spa");
+        var order = units.Get("Por").Move("Spa");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -29,7 +32,7 @@ public class DATC_B : AdjudicationTestBase
         board.Next().ShouldHaveUnits([(Nation.France, UnitType.Fleet, "Por", false)]);
     }
 
-    [Fact(DisplayName = "B.2. Moving with unspecified coast when coast is not necessary", Skip = "Decided against")]
+    [Fact(DisplayName = "B.02. Moving with unspecified coast when coast is not necessary", Skip = "Decided against")]
     public void DATC_B_2()
     {
         // Although a more lenient adjudicator would allow this, for simplicity of implementation, 5D Diplomacy always
@@ -37,7 +40,7 @@ public class DATC_B : AdjudicationTestBase
         // order should never be possible.
     }
 
-    [Fact(DisplayName = "B.3. Moving with wrong coast when coast is not necessary")]
+    [Fact(DisplayName = "B.03. Moving with wrong coast when coast is not necessary")]
     public void DATC_B_3()
     {
         // Arrange
@@ -45,7 +48,7 @@ public class DATC_B : AdjudicationTestBase
         var board = world.AddBoard();
         var units = board.AddUnits([(Nation.France, UnitType.Fleet, "Gas")]);
 
-        var order = units[0].Move("Spa_S");
+        var order = units.Get("Gas").Move("Spa_S");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -56,7 +59,7 @@ public class DATC_B : AdjudicationTestBase
         board.Next().ShouldHaveUnits([(Nation.France, UnitType.Fleet, "Gas", false)]);
     }
 
-    [Fact(DisplayName = "B.4. Support to unreachable coast allowed")]
+    [Fact(DisplayName = "B.04. Support to unreachable coast allowed")]
     public void DATC_B_4()
     {
         // Arrange
@@ -70,9 +73,9 @@ public class DATC_B : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "WES"),
             ]);
 
-        var frenchMove = units[0].Move("Spa_N");
-        var frenchSupport = units[1].Support(units[0], "Spa_N");
-        var italianMove = units[2].Move("Spa_S");
+        var frenchMove = units.Get("Gas").Move("Spa_N");
+        var frenchSupport = units.Get("Mar").Support(units.Get("Gas"), "Spa_N");
+        var italianMove = units.Get("WES").Move("Spa_S");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -90,7 +93,7 @@ public class DATC_B : AdjudicationTestBase
             ]);
     }
 
-    [Fact(DisplayName = "B.5. Support from unreachable coast not allowed")]
+    [Fact(DisplayName = "B.05. Support from unreachable coast not allowed")]
     public void DATC_B_5()
     {
         // Arrange
@@ -104,9 +107,9 @@ public class DATC_B : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "LYO"),
             ]);
 
-        var frenchMove = units[0].Move("LYO");
-        var frenchSupport = units[1].Support(units[0], "LYO");
-        var italianMove = units[2].Hold();
+        var frenchMove = units.Get("Mar").Move("LYO");
+        var frenchSupport = units.Get("Spa_N").Support(units.Get("Mar"), "LYO");
+        var italianMove = units.Get("LYO").Hold();
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -124,7 +127,7 @@ public class DATC_B : AdjudicationTestBase
             ]);
     }
 
-    [Fact(DisplayName = "B.6. Support can be cut with other coast")]
+    [Fact(DisplayName = "B.06. Support can be cut with other coast")]
     public void DATC_B_6()
     {
         // Arrange
@@ -140,11 +143,11 @@ public class DATC_B : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "LYO"),
             ]);
 
-        var englishMove = units[1].Move("MAO");
-        var englishSupport = units[0].Support(units[1], "MAO");
-        var frenchHold = units[3].Hold();
-        var frenchSupport = units[2].Support(units[3], "MAO");
-        var italianMove = units[4].Move("Spa_S");
+        var englishMove = units.Get("NAO").Move("MAO");
+        var englishSupport = units.Get("IRI").Support(units.Get("NAO"), "MAO");
+        var frenchHold = units.Get("MAO").Hold();
+        var frenchSupport = units.Get("Spa_N").Support(units.Get("MAO"), "MAO");
+        var italianMove = units.Get("LYO").Move("Spa_S");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -159,7 +162,7 @@ public class DATC_B : AdjudicationTestBase
         board.ShouldHaveUnits(
             [
                 (Nation.England, UnitType.Fleet, "IRI", false),
-                (Nation.England, UnitType.Fleet, "MAO", false),
+                (Nation.England, UnitType.Fleet, "NAO", false),
                 (Nation.France, UnitType.Fleet, "Spa_N", false),
                 (Nation.France, UnitType.Fleet, "MAO", true),
                 (Nation.Italy, UnitType.Fleet, "LYO", false),
@@ -167,21 +170,21 @@ public class DATC_B : AdjudicationTestBase
         board.ShouldNotHaveNextBoard();
     }
 
-    [Fact(DisplayName = "B.7. Supporting own unit with unspecified coast", Skip = "Decided against")]
+    [Fact(DisplayName = "B.07. Supporting own unit with unspecified coast", Skip = "Decided against")]
     public void DATC_B_7()
     {
         // Again, the client for 5D Diplomacy should enforce a fleet to specify a coast in such a scenario, so the move
         // is invalid in this context. The DATC specifies it should succeed, but we choose to be strict.
     }
 
-    [Fact(DisplayName = "B.8. Supporting with unspecified coast when only one coast is possible", Skip = "Decided against")]
+    [Fact(DisplayName = "B.08. Supporting with unspecified coast when only one coast is possible", Skip = "Decided against")]
     public void DATC_B_8()
     {
         // Similarly, such an order would not be possible to enter with the 5D Diplomacy client, so we decide it should
         // be invalid.
     }
 
-    [Fact(DisplayName = "B.9. Supporting with wrong coast")]
+    [Fact(DisplayName = "B.09. Supporting with wrong coast")]
     public void DATC_B_9()
     {
         // Arrange
@@ -196,10 +199,10 @@ public class DATC_B : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "WES"),
             ]);
 
-        var frenchMove = units[1].Move("Spa_S");
-        var frenchSupport = units[0].Support(units[1], "Spa_N");
-        var italianMove = units[3].Move("Spa_S");
-        var italianSupport = units[2].Support(units[3], "Spa_S");
+        var frenchMove = units.Get("MAO").Move("Spa_S");
+        var frenchSupport = units.Get("Por").Support(units[1], "Spa_N");
+        var italianMove = units.Get("WES").Move("Spa_S");
+        var italianSupport = units.Get("LYO").Support(units[3], "Spa_S");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -234,7 +237,7 @@ public class DATC_B : AdjudicationTestBase
         var board = world.AddBoard();
         var units = board.AddUnits([(Nation.France, UnitType.Fleet, "Spa_N")]);
 
-        var order = units[0].Move("LYO");
+        var order = units.Get("Spa_N").Move("LYO");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
@@ -265,8 +268,8 @@ public class DATC_B : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Fleet, "Con"),
             ]);
 
-        var turkishMove1 = units[0].Move("Con");
-        var turkishMove2 = units[1].Move("Bul_E");
+        var turkishMove1 = units.Get("Bul_S").Move("Con");
+        var turkishMove2 = units.Get("Con").Move("Bul_E");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
