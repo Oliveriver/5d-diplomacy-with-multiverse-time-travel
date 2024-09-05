@@ -12,6 +12,8 @@ public class Validator
     private readonly List<Convoy> convoys;
     private readonly List<Build> builds;
     private readonly List<Disband> disbands;
+
+    private readonly List<Order> nonRetreats;
     private readonly List<Order> retreats;
 
     private readonly List<Region> regions;
@@ -27,7 +29,7 @@ public class Validator
         this.centres = centres;
         this.adjacencyValidator = adjacencyValidator;
 
-        var nonRetreats = world.Orders.Where(o => o.NeedsValidation && !o.Unit!.MustRetreat).ToList();
+        nonRetreats = world.Orders.Where(o => o.NeedsValidation && !o.Unit!.MustRetreat).ToList();
         retreats = world.Orders.Where(o => o.NeedsValidation && o.Unit!.MustRetreat).ToList();
 
         holds = nonRetreats.OfType<Hold>().ToList();
@@ -42,12 +44,23 @@ public class Validator
 
     public void ValidateOrders()
     {
-        ValidateMoves();
-        ValidateSupports();
-        ValidateConvoys();
-        ValidateBuilds();
-        ValidateDisbands();
-        ValidateRetreats();
+        if (world.HasRetreats)
+        {
+            ValidateRetreats();
+
+            foreach (var nonRetreat in nonRetreats)
+            {
+                nonRetreat.Status = OrderStatus.Invalid;
+            }
+        }
+        else
+        {
+            ValidateMoves();
+            ValidateSupports();
+            ValidateConvoys();
+            ValidateBuilds();
+            ValidateDisbands();
+        }
     }
 
     private void ValidateMoves()
