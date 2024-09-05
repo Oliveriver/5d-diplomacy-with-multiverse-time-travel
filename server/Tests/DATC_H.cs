@@ -358,7 +358,7 @@ public class DATC_H : AdjudicationTestBase
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.Failure);
-        germanMove.Status.Should().Be(OrderStatus.Failure);
+        germanMove.Status.Should().Be(OrderStatus.Retreat);
 
         board.Next().ShouldHaveUnits(
             [
@@ -367,6 +367,248 @@ public class DATC_H : AdjudicationTestBase
                 (Nation.Germany, UnitType.Army, "Ber", false),
                 (Nation.Russia, UnitType.Army, "Pru", false),
                 (Nation.Russia, UnitType.Army, "Sil", false),
+            ]);
+    }
+
+    [Fact(DisplayName = "H.11. Retreat when dislodged by adjacent convoy")]
+    public void DATC_H_11()
+    {
+        // Arrange
+        var world = new World();
+        var board = world.AddBoard();
+
+        var units = board.AddUnits(
+            [
+                (Nation.France, UnitType.Army, "Gas"),
+                (Nation.France, UnitType.Army, "Bur"),
+                (Nation.France, UnitType.Fleet, "MAO"),
+                (Nation.France, UnitType.Fleet, "WES"),
+                (Nation.France, UnitType.Fleet, "LYO"),
+                (Nation.Italy, UnitType.Army, "Mar"),
+            ]);
+
+        var frenchMove = units.Get("Gas").Move("Mar", status: OrderStatus.Success);
+        units.Get("Bur").Support(units.Get("Gas"), "Mar", status: OrderStatus.Success);
+        var frenchConvoy1 = units.Get("MAO").Convoy(units.Get("Gas"), "Mar", status: OrderStatus.Success);
+        var frenchConvoy2 = units.Get("WES").Convoy(units.Get("Gas"), "Mar", status: OrderStatus.Success);
+        var frenchConvoy3 = units.Get("LYO").Convoy(units.Get("Gas"), "Mar", status: OrderStatus.Success);
+        units.Get("Mar").Hold(status: OrderStatus.Failure);
+        frenchMove.ConvoyPath = [frenchConvoy1, frenchConvoy2, frenchConvoy3];
+        units.Get("Mar").MustRetreat = true;
+
+        var italianMove = units.Get("Mar").Move("Gas");
+
+        // Act
+        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+
+        // Assert
+        italianMove.Status.Should().Be(OrderStatus.Retreat);
+
+        board.Next().ShouldHaveUnits(
+            [
+                (Nation.France, UnitType.Army, "Mar", false),
+                (Nation.France, UnitType.Army, "Bur", false),
+                (Nation.France, UnitType.Fleet, "MAO", false),
+                (Nation.France, UnitType.Fleet, "WES", false),
+                (Nation.France, UnitType.Fleet, "LYO", false),
+                (Nation.Italy, UnitType.Army, "Gas", false),
+            ]);
+    }
+
+    [Fact(DisplayName = "H.12. Retreat when dislodged by adjacent convoy while trying to do the same")]
+    public void DATC_H_12()
+    {
+        // Arrange
+        var world = new World();
+        var board = world.AddBoard();
+
+        var units = board.AddUnits(
+            [
+                (Nation.England, UnitType.Army, "Lvp"),
+                (Nation.England, UnitType.Fleet, "IRI"),
+                (Nation.England, UnitType.Fleet, "ENG"),
+                (Nation.England, UnitType.Fleet, "NTH"),
+                (Nation.France, UnitType.Fleet, "Bre"),
+                (Nation.France, UnitType.Fleet, "MAO"),
+                (Nation.Russia, UnitType.Army, "Edi"),
+                (Nation.Russia, UnitType.Fleet, "NWG"),
+                (Nation.Russia, UnitType.Fleet, "NAO"),
+                (Nation.Russia, UnitType.Army, "Cly"),
+            ]);
+
+        units.Get("Lvp").Move("Edi", status: OrderStatus.Failure);
+        units.Get("IRI").Convoy(units.Get("Lvp"), "Edi", status: OrderStatus.Failure);
+        units.Get("ENG").Convoy(units.Get("Lvp"), "Edi", status: OrderStatus.Failure);
+        units.Get("NTH").Convoy(units.Get("Lvp"), "Edi", status: OrderStatus.Failure);
+        units.Get("Bre").Move("ENG", status: OrderStatus.Success);
+        units.Get("MAO").Support(units.Get("Bre"), "ENG", status: OrderStatus.Success);
+        var russianMove = units.Get("Edi").Move("Lvp", status: OrderStatus.Success);
+        var russianConvoy1 = units.Get("NWG").Convoy(units.Get("Edi"), "Lvp", status: OrderStatus.Success);
+        var russianConvoy2 = units.Get("NAO").Convoy(units.Get("Edi"), "Lvp", status: OrderStatus.Success);
+        units.Get("Cly").Support(units.Get("Edi"), "Lvp", status: OrderStatus.Success);
+        russianMove.ConvoyPath = [russianConvoy1, russianConvoy2];
+        units.Get("Lvp").MustRetreat = true;
+        units.Get("ENG").MustRetreat = true;
+
+        var englishMove = units.Get("Lvp").Move("Edi");
+
+        // Act
+        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+
+        // Assert
+        englishMove.Status.Should().Be(OrderStatus.Retreat);
+
+        board.Next().ShouldHaveUnits(
+            [
+                (Nation.England, UnitType.Army, "Edi", false),
+                (Nation.England, UnitType.Fleet, "IRI", false),
+                (Nation.England, UnitType.Fleet, "NTH", false),
+                (Nation.France, UnitType.Fleet, "ENG", false),
+                (Nation.France, UnitType.Fleet, "MAO", false),
+                (Nation.Russia, UnitType.Army, "Lvp", false),
+                (Nation.Russia, UnitType.Fleet, "NWG", false),
+                (Nation.Russia, UnitType.Fleet, "NAO", false),
+                (Nation.Russia, UnitType.Army, "Cly", false),
+            ]);
+    }
+
+    [Fact(DisplayName = "H.13. No retreat with convoy in movement phase")]
+    public void DATC_H_13()
+    {
+        // Arrange
+        var world = new World();
+        var board = world.AddBoard();
+
+        var units = board.AddUnits(
+            [
+                (Nation.England, UnitType.Army, "Pic"),
+                (Nation.England, UnitType.Fleet, "ENG"),
+            ]);
+
+        units.Get("Pic").Hold(status: OrderStatus.Failure);
+        units.Get("ENG").Convoy(units.Get("Pic"), "Lon", status: OrderStatus.Invalid);
+        units.Get("Pic").MustRetreat = true;
+
+        var move = units.Get("Pic").Move("Lon");
+
+        // Act
+        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+
+        // Assert
+        move.Status.Should().Be(OrderStatus.Invalid);
+
+        board.Next().ShouldHaveUnits(
+            [
+                (Nation.England, UnitType.Fleet, "ENG", false),
+            ]);
+    }
+
+    [Fact(DisplayName = "H.14. No retreat with support in movement phase")]
+    public void DATC_H_14()
+    {
+        // Arrange
+        var world = new World();
+        var board = world.AddBoard();
+
+        var units = board.AddUnits(
+            [
+                (Nation.England, UnitType.Army, "Pic"),
+                (Nation.England, UnitType.Fleet, "ENG"),
+                (Nation.France, UnitType.Army, "Bur"),
+            ]);
+
+        units.Get("Pic").Hold(status: OrderStatus.Failure);
+        units.Get("ENG").Support(units.Get("Pic"), "Bel", status: OrderStatus.Invalid);
+        units.Get("Bur").Hold(status: OrderStatus.Failure);
+        units.Get("Pic").MustRetreat = true;
+        units.Get("Bur").MustRetreat = true;
+
+        var englishMove = units.Get("Pic").Move("Bel");
+        var frenchMove = units.Get("Bur").Move("Bel");
+
+        // Act
+        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+
+        // Assert
+        englishMove.Status.Should().Be(OrderStatus.Failure);
+        frenchMove.Status.Should().Be(OrderStatus.Failure);
+
+        board.Next().ShouldHaveUnits(
+            [
+                 (Nation.England, UnitType.Fleet, "ENG", false),
+            ]);
+    }
+
+    [Fact(DisplayName = "H.15. No coastal crawl in retreat")]
+    public void DATC_H_15()
+    {
+        // Arrange
+        var world = new World();
+        var board = world.AddBoard();
+
+        var units = board.AddUnits(
+            [
+                (Nation.England, UnitType.Fleet, "Por"),
+                (Nation.France, UnitType.Fleet, "Spa_S"),
+                (Nation.France, UnitType.Fleet, "MAO"),
+            ]);
+
+        var englishHold = units.Get("Por").Hold();
+        var frenchMove = units.Get("Spa_S").Move("Por");
+        var frenchSupport = units.Get("MAO").Support(units.Get("Spa_S"), "Por");
+
+        // Act
+        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+
+        // Assert
+        englishHold.Status.Should().Be(OrderStatus.Failure);
+        frenchMove.Status.Should().Be(OrderStatus.Success);
+        frenchSupport.Status.Should().Be(OrderStatus.Success);
+
+        board.Next().ShouldHaveUnits(
+            [
+                (Nation.France, UnitType.Fleet, "Por", false),
+                (Nation.France, UnitType.Fleet, "MAO", false),
+            ]);
+    }
+
+    [Fact(DisplayName = "H.16. Contested for both coasts")]
+    public void DATC_H_16()
+    {
+        // Arrange
+        var world = new World();
+        var board = world.AddBoard();
+
+        var units = board.AddUnits(
+            [
+                (Nation.France, UnitType.Fleet, "MAO"),
+                (Nation.France, UnitType.Fleet, "Gas"),
+                (Nation.France, UnitType.Fleet, "WES"),
+                (Nation.Italy, UnitType.Fleet, "Tun"),
+                (Nation.Italy, UnitType.Fleet, "TYS"),
+            ]);
+
+        units.Get("MAO").Move("Spa_N", status: OrderStatus.Failure);
+        units.Get("Gas").Move("Spa_N", status: OrderStatus.Failure);
+        units.Get("WES").Hold(status: OrderStatus.Failure);
+        units.Get("TYS").Move("WES", status: OrderStatus.Success);
+        units.Get("Tun").Support(units.Get("TYS"), "WES", status: OrderStatus.Success);
+        units.Get("WES").MustRetreat = true;
+
+        var move = units.Get("WES").Move("Spa_S");
+
+        // Act
+        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+
+        // Assert
+        move.Status.Should().Be(OrderStatus.Failure);
+
+        board.Next().ShouldHaveUnits(
+            [
+                (Nation.France, UnitType.Fleet, "MAO", false),
+                (Nation.France, UnitType.Fleet, "Gas", false),
+                (Nation.Italy, UnitType.Fleet, "Tun", false),
+                (Nation.Italy, UnitType.Fleet, "WES", false),
             ]);
     }
 }

@@ -3,10 +3,12 @@ using Enums;
 
 namespace Adjudication;
 
-public class RetreatEvaluator(World world, List<Order> activeOrders)
+public class RetreatEvaluator(World world, List<Order> activeOrders, AdjacencyValidator adjacencyValidator)
 {
     private readonly World world = world;
     private readonly List<Order> activeOrders = activeOrders;
+
+    private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
 
     public void EvaluateRetreats()
     {
@@ -21,7 +23,6 @@ public class RetreatEvaluator(World world, List<Order> activeOrders)
         foreach (var disband in disbands)
         {
             disband.Status = OrderStatus.Retreat;
-            disband.Unit!.MustRetreat = false;
         }
     }
 
@@ -43,20 +44,43 @@ public class RetreatEvaluator(World world, List<Order> activeOrders)
         {
             var board = world.Boards.First(b => b.Contains(retreat.Destination));
 
-            var successfulHold = stationaryOrders.FirstOrDefault(o => o.Location == retreat.Destination);
+            var successfulHold = stationaryOrders.FirstOrDefault(o => adjacencyValidator.EqualsOrIsRelated(o.Location, retreat.Destination));
 
-            var incomingMoves = moves.Where(m => m.Destination == retreat.Destination);
+            var incomingMoves = moves.Where(m => adjacencyValidator.EqualsOrIsRelated(m.Destination, retreat.Destination));
+
             var successfulIncomingMove = incomingMoves.FirstOrDefault(m => m.Status == OrderStatus.Success);
             var bouncedIncomingMoves = incomingMoves
                 .Where(m => m.Status == OrderStatus.Failure && m.ConvoyPath.All(c => c.Status == OrderStatus.Success));
 
             var isDestinationOccupied = successfulHold != null || successfulIncomingMove != null;
             var hadBounceInDestination = bouncedIncomingMoves.Count() >= 2;
+            var hasOpposingMove = moves.Any(m =>
+                adjacencyValidator.EqualsOrIsRelated(m.Location, retreat.Destination)
+                && adjacencyValidator.EqualsOrIsRelated(m.Destination, retreat.Location)
+                && m.ConvoyPath.Count == 0);
 
-            var hasOpposingMove = moves.Any(m => m.Location == retreat.Destination && m.Destination == retreat.Location);
-            var hasOpposingRetreat = retreats.Any(r => r != retreat && r.Destination == retreat.Destination);
+            if (isDestinationOccupied || hadBounceInDestination || hasOpposingMove)
+            {
+                retreat.Status = OrderStatus.Failure;
 
-            if (isDestinationOccupied || hadBounceInDestination || hasOpposingMove || hasOpposingRetreat)
+                var disband = new Disband
+                {
+                    Status = OrderStatus.Retreat,
+                    Unit = retreat.Unit,
+                    UnitId = retreat.UnitId,
+                    Location = retreat.Location,
+                };
+
+                world.Orders.Add(disband);
+            }
+        }
+
+        var remainingRetreats = retreats.Where(r => r.Status == OrderStatus.New).ToList();
+
+        foreach (var retreat in remainingRetreats)
+        {
+            var hasOpposingRetreat = remainingRetreats.Any(r => r != retreat && r.Destination == retreat.Destination);
+            if (hasOpposingRetreat)
             {
                 retreat.Status = OrderStatus.Failure;
 
@@ -74,8 +98,6 @@ public class RetreatEvaluator(World world, List<Order> activeOrders)
             {
                 retreat.Status = OrderStatus.Retreat;
             }
-
-            retreat.Unit!.MustRetreat = false;
         }
     }
 
@@ -98,9 +120,9 @@ public class RetreatEvaluator(World world, List<Order> activeOrders)
                     Location = unit.Location,
                 };
                 world.Orders.Add(disband);
-
-                unit.MustRetreat = false;
             }
+
+            unit.MustRetreat = false;
         }
     }
 }

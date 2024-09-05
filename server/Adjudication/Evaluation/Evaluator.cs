@@ -19,7 +19,7 @@ public class Evaluator
 
         movementEvaulator = new(world, activeOrders, adjacencyValidator);
         adjustmentEvaluator = new(world, activeOrders);
-        retreatEvaulator = new(world, activeOrders);
+        retreatEvaulator = new(world, activeOrders, adjacencyValidator);
 
         foreach (var board in world.ActiveBoards)
         {
