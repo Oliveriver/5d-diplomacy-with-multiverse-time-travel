@@ -59,6 +59,11 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
             return false;
         }
 
+        if (location.RegionId == destination.RegionId)
+        {
+            return true;
+        }
+
         var locationRegion = regions.First(r => r.Id == location.RegionId);
         var destinationRegion = regions.First(r => r.Id == destination.RegionId);
 
