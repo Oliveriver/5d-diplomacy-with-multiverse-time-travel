@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Enums;
 
 namespace Adjudication;
 
@@ -23,9 +24,9 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         // - Mark units needing retreat or add disbands if not possible (use adjacencyValidator)
 
         // TEMP
-        foreach (var order in activeOrders.Where(o => o.Status != Enums.OrderStatus.Invalid))
+        foreach (var order in activeOrders.Where(o => o.Status != OrderStatus.Invalid && o.Location.Phase != Phase.Winter))
         {
-            order.Status = Enums.OrderStatus.Success;
+            order.Status = OrderStatus.Success;
         }
     }
 }

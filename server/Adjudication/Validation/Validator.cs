@@ -129,7 +129,10 @@ public class Validator
 
     private void ValidateBuilds()
     {
-        foreach (var build in builds)
+        var uniqueBuilds = builds.DistinctBy(b => b.Location).ToList();
+        var duplicateBuilds = builds.Where(b => !uniqueBuilds.Contains(b)).ToList();
+
+        foreach (var build in uniqueBuilds)
         {
             if (build.Location.Phase != Phase.Winter)
             {
@@ -141,22 +144,36 @@ public class Validator
             var region = regions.First(r => r.Id == build.Location.RegionId);
             var parentRegion = regions.FirstOrDefault(r => r.Id == region.ParentId);
 
-            var centre = centres.FirstOrDefault(c =>
+            var originalCentre = centres.FirstOrDefault(c =>
                 c.Location.RegionId == region.Id
                 || c.Location.RegionId == parentRegion?.Id);
-            var unit = build.Unit!;
 
-            if (board == null || centre == null)
+            if (board == null || originalCentre == null)
             {
                 build.Status = OrderStatus.Invalid;
                 continue;
             }
 
-            var isCompatibleRegion = centre.Owner == unit.Owner;
+            var isOccupied = board.Units.Any(u => adjacencyValidator.EqualsOrIsRelated(u.Location, build.Location));
+            if (isOccupied)
+            {
+                build.Status = OrderStatus.Invalid;
+                continue;
+            }
+
+            var currentCentre = board.Centres.First(c => c.Location.RegionId == originalCentre.Location.RegionId);
+            var unit = build.Unit!;
+
+            var isCompatibleRegion = originalCentre.Owner == unit.Owner && currentCentre.Owner == unit.Owner;
             var isCompatibleUnit = unit.Type == UnitType.Army && region.Type != RegionType.Sea
                 || unit.Type == UnitType.Fleet && region.Type == RegionType.Coast;
 
             build.Status = isCompatibleRegion && isCompatibleUnit ? OrderStatus.New : OrderStatus.Invalid;
+        }
+
+        foreach (var build in duplicateBuilds)
+        {
+            build.Status = OrderStatus.Invalid;
         }
     }
 
@@ -167,7 +184,7 @@ public class Validator
 
         foreach (var disband in uniqueDisbands)
         {
-            disband.Status = disband.Location.Phase != Phase.Winter ? OrderStatus.New : OrderStatus.Invalid;
+            disband.Status = disband.Location.Phase == Phase.Winter ? OrderStatus.New : OrderStatus.Invalid;
         }
 
         foreach (var disband in duplicateDisbands)
