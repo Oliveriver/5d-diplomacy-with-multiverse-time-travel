@@ -123,7 +123,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
                 {
                     move.OpposingMove.Unit!.MustRetreat = true;
                 }
-                else if (move.Destination.OrderAtLocation != null && move.Destination.OrderAtLocation is not Move)
+                else if (move.Destination.OrderAtLocation is not null && move.Destination.OrderAtLocation is not Move)
                 {
                     move.Destination.OrderAtLocation.Status = OrderStatus.Failure;
                     move.Destination.OrderAtLocation.Unit!.MustRetreat = true;
