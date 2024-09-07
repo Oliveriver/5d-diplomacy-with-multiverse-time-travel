@@ -121,12 +121,12 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
                 move.Status = OrderStatus.Success;
                 if (move.OpposingMove != null)
                 {
-                    move.OpposingMove.Unit.MustRetreat = true;
+                    move.OpposingMove.Unit!.MustRetreat = true;
                 }
                 else if (move.Destination.OrderAtLocation != null && !(move.Destination.OrderAtLocation is Move))
                 {
                     move.Destination.OrderAtLocation.Status = OrderStatus.Failure;
-                    move.Destination.OrderAtLocation.Unit.MustRetreat = true;
+                    move.Destination.OrderAtLocation.Unit!.MustRetreat = true;
                     //This also needs to be done if the OrderAtDestination is an unsuccessful move, but that might not be determined yet.
                     //So I'm thinking to maybe remove the MustRetreat line from here from here and calculate which units are dislodged after everything else is done.
                 }
@@ -150,9 +150,9 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
 
     public void OrderStrengthCalculator(Order order)
     {
-        if (order is Move)
+        if (order is Move move)
         {
-            MoveStrengthCalculator(order);
+            MoveStrengthCalculator(move);
         }
         else
         {
@@ -217,7 +217,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         //TODO - this still needs convoy logic. If the move is via convoy the min strength is always 0 until a Successful path is determined.
         var minAttackStrengthSet = false;
         var maxAttackStrengthSet = false;
-        if (move.Destination.OrderAtLocation != null && move.Unit.Owner == move.Destination.OrderAtLocation.Unit.Owner)
+        if (move.Destination.OrderAtLocation != null && move.Unit!.Owner == move.Destination.OrderAtLocation.Unit!.Owner)
         {
             if (move.Destination.OrderAtLocation is Move)
             {
@@ -250,7 +250,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         {
             foreach (var support in move.PotentialSupports)
             {
-                if (support.Unit.Owner != move.Destination.OrderAtLocation.Unit.Owner || move.Destination.OrderAtLocation.Status == OrderStatus.Success)
+                if (support.Unit!.Owner != move.Destination.OrderAtLocation.Unit!.Owner || move.Destination.OrderAtLocation.Status == OrderStatus.Success)
                 {
                     //a support will not add to the attack strength if it belongs to the same country as the unit at the destination, unless that destination move was successful
                     //otherwise all successful supports add to the min and max str, and all unresolved supports add to the max str (where min and max have not been set to 0 previously).
