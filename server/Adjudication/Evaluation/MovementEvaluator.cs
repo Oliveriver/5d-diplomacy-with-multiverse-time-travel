@@ -45,10 +45,10 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         }
     }
 
-    public void AdjudicateMoveViaConvoy(Move move)
-    {
-        //TODO
-    }
+    //public void AdjudicateMoveViaConvoy(Move move)
+    //{
+    //TODO
+    //}
 
     public void AdjudicateConvoy(Convoy convoy)
     {
@@ -114,7 +114,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
             }
         }
 
-        if ((move.OpposingMove != null && move.AttackStrength.Min > move.OpposingMove.DefendStrength.Max) || (move.OpposingMove == null && move.AttackStrength.Min > move.Destination.HoldStrength.Max))
+        if (move.OpposingMove != null && move.AttackStrength.Min > move.OpposingMove.DefendStrength.Max || move.OpposingMove == null && move.AttackStrength.Min > move.Destination.HoldStrength.Max)
         {
             if (move.AttackStrength.Min > maxPreventStr)
             {
@@ -123,7 +123,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
                 {
                     move.OpposingMove.Unit!.MustRetreat = true;
                 }
-                else if (move.Destination.OrderAtLocation != null && !(move.Destination.OrderAtLocation is Move))
+                else if (move.Destination.OrderAtLocation != null && move.Destination.OrderAtLocation is not Move)
                 {
                     move.Destination.OrderAtLocation.Status = OrderStatus.Failure;
                     move.Destination.OrderAtLocation.Unit!.MustRetreat = true;
@@ -141,7 +141,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
             }
         }
 
-        if ((move.OpposingMove != null && move.AttackStrength.Max <= move.OpposingMove.DefendStrength.Min) || (move.OpposingMove == null && move.AttackStrength.Max <= move.Destination.HoldStrength.Min) || (move.AttackStrength.Max <= minPreventStr))
+        if (move.OpposingMove != null && move.AttackStrength.Max <= move.OpposingMove.DefendStrength.Min || move.OpposingMove == null && move.AttackStrength.Max <= move.Destination.HoldStrength.Min || move.AttackStrength.Max <= minPreventStr)
         {
             //unsuccessful
             move.Status = OrderStatus.Failure;
