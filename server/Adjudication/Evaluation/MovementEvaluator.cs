@@ -250,23 +250,23 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         {
             foreach (var support in move.PotentialSupports)
             {
-                if (move.Destination.OrderAtLocation != null && support.Unit!.Owner != move.Destination.OrderAtLocation.Unit!.Owner || move.Destination.OrderAtLocation.Status == OrderStatus.Success)
+                if (move.Destination.OrderAtLocation != null && (support.Unit!.Owner != move.Destination.OrderAtLocation.Unit!.Owner || move.Destination.OrderAtLocation.Status == OrderStatus.Success))
                 {
                     //a support will not add to the attack strength if it belongs to the same country as the unit at the destination, unless that destination move was successful
                     //otherwise all successful supports add to the min and max str, and all unresolved supports add to the max str (where min and max have not been set to 0 previously).
                     if (support.Status == OrderStatus.Success)
                     {
                         move.AttackStrength.Max += 1;
-                        if (!minAttackStrengthSet) 
-                        { 
-                            move.AttackStrength.Min += 1; 
+                        if (!minAttackStrengthSet)
+                        {
+                            move.AttackStrength.Min += 1;
                         }
                     }
                     else if (support.Status != OrderStatus.Failure)
                     {
                         move.AttackStrength.Max += 1;
                     }
-                }  
+                }
                 else if (move.Destination.OrderAtLocation.Status != OrderStatus.Failure)
                 {
                     //if that destination move is unresolved, then a support belonging to the same country can be counted, but only for max strength.
@@ -305,7 +305,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
                 move.PreventStrength.Max = 0;
                 minPreventStrengthSet = true;
                 maxPreventStrengthSet = true;
-            } 
+            }
             else if (move.OpposingMove.Status != OrderStatus.Failure)
             {
                 //head to head attacker has not yet been resolved, so minimum value is the case where the head to head attacker is successful
@@ -323,9 +323,9 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
                 if (support.Status == OrderStatus.Success)
                 {
                     move.AttackStrength.Max += 1;
-                    if (!minPreventStrengthSet) 
-                    { 
-                        move.PreventStrength.Min += 1; 
+                    if (!minPreventStrengthSet)
+                    {
+                        move.PreventStrength.Min += 1;
                     }
                 }
                 else if (support.Status != OrderStatus.Failure)
