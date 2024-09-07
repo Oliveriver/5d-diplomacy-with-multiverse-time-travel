@@ -59,6 +59,11 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
             return false;
         }
 
+        if (location.RegionId == destination.RegionId)
+        {
+            return true;
+        }
+
         var locationRegion = regions.First(r => r.Id == location.RegionId);
         var destinationRegion = regions.First(r => r.Id == destination.RegionId);
 
@@ -110,7 +115,7 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
         return isValidArmyMove || isValidFleetMove;
     }
 
-    public bool EqualsOrHasSharedParent(Location location1, Location location2)
+    public bool EqualsOrIsRelated(Location location1, Location location2)
     {
         var location1Region = regions.First(r => r.Id == location1.RegionId);
         var location2Region = regions.First(r => r.Id == location2.RegionId);
@@ -118,28 +123,55 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
         var location1ParentRegion = regions.FirstOrDefault(r => r.Id == location1Region.ParentId);
         var location2ParentRegion = regions.FirstOrDefault(r => r.Id == location1Region.ParentId);
 
-        if (location1ParentRegion == null || location2ParentRegion == null)
+        if (location1ParentRegion == null)
         {
-            return location1 == location2;
+            if (location2ParentRegion == null)
+            {
+                return location1 == location2;
+            }
+
+            var location2Parent = new Location
+            {
+                Timeline = location2.Timeline,
+                Year = location2.Year,
+                Phase = location2.Phase,
+                RegionId = location2ParentRegion.Id,
+            };
+
+            return location1 == location2Parent;
         }
-
-        var location1Parent = new Location
+        else if (location2ParentRegion == null)
         {
-            Timeline = location1.Timeline,
-            Year = location1.Year,
-            Phase = location1.Phase,
-            RegionId = location1ParentRegion.Id,
-        };
+            var location1Parent = new Location
+            {
+                Timeline = location2.Timeline,
+                Year = location2.Year,
+                Phase = location2.Phase,
+                RegionId = location1ParentRegion.Id,
+            };
 
-        var location2Parent = new Location
+            return location2 == location1Parent;
+        }
+        else
         {
-            Timeline = location2.Timeline,
-            Year = location2.Year,
-            Phase = location2.Phase,
-            RegionId = location2ParentRegion.Id,
-        };
+            var location1Parent = new Location
+            {
+                Timeline = location1.Timeline,
+                Year = location1.Year,
+                Phase = location1.Phase,
+                RegionId = location1ParentRegion.Id,
+            };
 
-        return location1Parent == location2Parent;
+            var location2Parent = new Location
+            {
+                Timeline = location2.Timeline,
+                Year = location2.Year,
+                Phase = location2.Phase,
+                RegionId = location2ParentRegion.Id,
+            };
+
+            return location1Parent == location2Parent;
+        }
     }
 }
 

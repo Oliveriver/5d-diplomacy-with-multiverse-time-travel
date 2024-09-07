@@ -19,13 +19,17 @@ public class Evaluator
 
         movementEvaulator = new(world, activeOrders, adjacencyValidator);
         adjustmentEvaluator = new(world, activeOrders);
-        retreatEvaulator = new(world, activeOrders);
+        retreatEvaulator = new(world, activeOrders, adjacencyValidator);
+
+        foreach (var board in world.ActiveBoards)
+        {
+            board.MightAdvance = true;
+        }
     }
 
     public void EvaluateOrders()
     {
-        var hasRetreats = world.Boards.SelectMany(b => b.Units).Any(u => u.MustRetreat);
-        if (hasRetreats)
+        if (world.HasRetreats)
         {
             retreatEvaulator.EvaluateRetreats();
         }
@@ -39,6 +43,11 @@ public class Evaluator
     private List<Order> GetActiveOrders()
     {
         var newOrders = world.Orders.Where(o => o.Status == OrderStatus.New).ToList();
+
+        if (world.HasRetreats)
+        {
+            return newOrders;
+        }
 
         var idleUnits = world.ActiveBoards
             .Where(b => b.Phase != Phase.Winter)
@@ -59,7 +68,12 @@ public class Evaluator
         }
 
         var depthFirstSearch = new DepthFirstSearch(world, newOrders);
-        var activeOrders = newOrders.SelectMany(depthFirstSearch.GetTouchedOrders).ToList();
+        foreach (var order in newOrders)
+        {
+            depthFirstSearch.AddTouchedOrders(order);
+        }
+
+        var activeOrders = depthFirstSearch.TouchedOrders;
 
         foreach (var order in activeOrders)
         {
@@ -76,23 +90,18 @@ public class Evaluator
     private class DepthFirstSearch(World world, List<Order> newOrders)
     {
         private readonly World world = world;
-        private readonly List<Order> touchedOrders = [.. newOrders];
 
-        public List<Order> GetTouchedOrders(Order order)
-        {
-            AddTouchedOrders(order);
-            return touchedOrders;
-        }
+        public List<Order> TouchedOrders { get; } = [.. newOrders];
 
-        private void AddTouchedOrders(Order order)
+        public void AddTouchedOrders(Order order)
         {
-            if (!touchedOrders.Contains(order))
+            if (!TouchedOrders.Contains(order))
             {
-                touchedOrders.Add(order);
+                TouchedOrders.Add(order);
             }
 
             var adjacentOrders = world.Orders.Where(o => o != order && o.TouchedLocations.Intersect(order.TouchedLocations).Any());
-            var newAdjacentOrders = adjacentOrders.Where(o => !touchedOrders.Contains(o));
+            var newAdjacentOrders = adjacentOrders.Where(o => !TouchedOrders.Contains(o));
 
             foreach (var newOrder in newAdjacentOrders)
             {

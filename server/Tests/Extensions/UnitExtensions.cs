@@ -18,14 +18,14 @@ internal static class UnitExtensions
         return units.First(u => u.Location == location);
     }
 
-    public static Hold Hold(this Unit unit)
+    public static Hold Hold(this Unit unit, OrderStatus status = OrderStatus.New)
     {
         var world = unit.Board.World;
 
         var hold = new Hold
         {
             World = world,
-            Status = OrderStatus.New,
+            Status = status,
             Location = unit.Location,
             Unit = unit,
         };
@@ -34,14 +34,14 @@ internal static class UnitExtensions
         return hold;
     }
 
-    public static Move Move(this Unit unit, string regionId, int timeline = 1, int year = 1901, Phase phase = Phase.Spring)
+    public static Move Move(this Unit unit, string regionId, int timeline = 1, int year = 1901, Phase phase = Phase.Spring, OrderStatus status = OrderStatus.New)
     {
         var world = unit.Board.World;
 
         var move = new Move
         {
             World = world,
-            Status = OrderStatus.New,
+            Status = status,
             Location = unit.Location,
             Destination = new()
             {
@@ -57,14 +57,14 @@ internal static class UnitExtensions
         return move;
     }
 
-    public static Support Support(this Unit unit, Unit supportedUnit, string? regionId = null, int timeline = 1, int year = 1901, Phase phase = Phase.Spring)
+    public static Support Support(this Unit unit, Unit supportedUnit, string? regionId = null, int timeline = 1, int year = 1901, Phase phase = Phase.Spring, OrderStatus status = OrderStatus.New)
     {
         var world = unit.Board.World;
 
         var support = new Support
         {
             World = world,
-            Status = OrderStatus.New,
+            Status = status,
             Location = unit.Location,
             Midpoint = supportedUnit.Location,
             Destination = new()
@@ -81,14 +81,14 @@ internal static class UnitExtensions
         return support;
     }
 
-    public static Convoy Convoy(this Unit unit, Unit convoyedUnit, string regionId, int timeline = 1, int year = 1901, Phase phase = Phase.Spring)
+    public static Convoy Convoy(this Unit unit, Unit convoyedUnit, string regionId, int timeline = 1, int year = 1901, Phase phase = Phase.Spring, OrderStatus status = OrderStatus.New)
     {
         var world = unit.Board.World;
 
         var convoy = new Convoy
         {
             World = world,
-            Status = OrderStatus.New,
+            Status = status,
             Location = unit.Location,
             Midpoint = convoyedUnit.Location,
             Destination = new()
@@ -105,14 +105,14 @@ internal static class UnitExtensions
         return convoy;
     }
 
-    public static Disband Disband(this Unit unit)
+    public static Disband Disband(this Unit unit, OrderStatus status = OrderStatus.New)
     {
         var world = unit.Board.World;
 
         var disband = new Disband
         {
             World = world,
-            Status = OrderStatus.New,
+            Status = status,
             Location = unit.Location,
             Unit = unit,
         };

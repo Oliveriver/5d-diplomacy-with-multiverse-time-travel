@@ -7,14 +7,14 @@ namespace Adjudication;
 public class Executor(World world, List<Region> regions)
 {
     private readonly World world = world;
+    private readonly List<Unit> originalRetreatingUnits = world.ActiveBoards.SelectMany(b => b.Units).Where(u => u!.MustRetreat).ToList();
 
     private readonly List<Region> regions = regions;
     private readonly MapComparer mapComparer = new();
 
     public void ExecuteOrders()
     {
-        var hasRetreats = world.Boards.SelectMany(b => b.Units).Any(u => u.MustRetreat);
-        if (hasRetreats)
+        if (world.HasRetreats)
         {
             return;
         }
@@ -76,9 +76,11 @@ public class Executor(World world, List<Region> regions)
 
         var holds = world.Orders.Where(o =>
             (o is not Move || o.Status != OrderStatus.Success)
-            && previousBoard.Contains(o.Location));
+            && o is not Disband
+            && previousBoard.Contains(o.Location)
+            && !originalRetreatingUnits.Contains(o.Unit!));
         var incomingMoves = world.Orders.OfType<Move>().Where(m =>
-            m.Status == OrderStatus.Success
+            (m.Status == OrderStatus.Success || m.Status == OrderStatus.Retreat)
             && previousBoard.Contains(m.Destination));
 
         var units = new List<Unit>();

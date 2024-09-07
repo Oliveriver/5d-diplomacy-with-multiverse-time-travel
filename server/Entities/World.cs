@@ -23,4 +23,7 @@ public class World
     [NotMapped]
     public List<Nation> LivingPlayers
         => Constants.Nations.Where(n => ActiveBoards.Any(b => b.Centres.Any(c => c.Owner == n))).ToList();
+
+    [NotMapped]
+    public bool HasRetreats => ActiveBoards.SelectMany(b => b.Units).Any(u => u.MustRetreat);
 }
