@@ -39,7 +39,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         foreach (var support in activeOrders.OfType<Support>())
         {
             //add each support to the PotentialSupports list in the corresponding order
-            support.Midpoint.OrderAtLocation.PotentialSupports.Add(support);
+            support.Midpoint.OrderAtLocation!.PotentialSupports.Add(support);
 
             AdjudicateSupport(support);
         }
@@ -250,7 +250,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         {
             foreach (var support in move.PotentialSupports)
             {
-                if (support.Unit!.Owner != move.Destination.OrderAtLocation.Unit!.Owner || move.Destination.OrderAtLocation.Status == OrderStatus.Success)
+                if (move.Destination.OrderAtLocation != null && support.Unit!.Owner != move.Destination.OrderAtLocation.Unit!.Owner || move.Destination.OrderAtLocation.Status == OrderStatus.Success)
                 {
                     //a support will not add to the attack strength if it belongs to the same country as the unit at the destination, unless that destination move was successful
                     //otherwise all successful supports add to the min and max str, and all unresolved supports add to the max str (where min and max have not been set to 0 previously).
