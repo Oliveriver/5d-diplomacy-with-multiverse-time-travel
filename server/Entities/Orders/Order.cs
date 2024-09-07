@@ -23,4 +23,7 @@ public abstract class Order
 
     [NotMapped]
     public OrderStrength HoldStrength { get; set; } = new();
+
+    [NotMapped]
+    public List<Support> PotentialSupports { get; set; } = [];
 }

@@ -24,4 +24,13 @@ public class Location : IEquatable<Location>
     public override bool Equals(object? obj) => Equals(obj as Location);
 
     public override int GetHashCode() => (Timeline, Year, Phase, RegionId).GetHashCode();
+
+    [NotMapped]
+    public List<Move> AttackingMoves { get; set; } = [];
+
+    [NotMapped]
+    public OrderStrength HoldStrength { get; set; } = new();
+
+    [NotMapped]
+    public virtual Order? OrderAtLocation { get; set; }
 }
