@@ -26,15 +26,17 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
 
     public void InitialiseAdjudication()
     {
-        foreach(Order order in activeOrders)
+        foreach (var order in activeOrders)
         {
-            Order.Location.OrderAtLocation = order;
+            order.Location.OrderAtLocation = order;
         }
-        foreach(Move move in activeOrders)
+
+        foreach (var move in activeOrders.OfType<Move>())
         {
             move.Destination.AttackingMoves.Add(move);
         }
-        foreach(Support support in activeOrders)
+
+        foreach (var support in activeOrders.OfType<Support>())
         {
             //add each support to the PotentialSupports list in the corresponding order
             support.Midpoint.OrderAtLocation.PotentialSupports.Add(support);
@@ -51,20 +53,21 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
     public void AdjudicateConvoy(Convoy convoy)
     {
         bool unresolved = false;
-        foreach (Move attackingMove in support.Location.AttackingMoves)
+        foreach (Move attackingMove in convoy.Location.AttackingMoves)
         {
-            if (attackingMove.Status = Enums.OrderStatus.Success)
+            if (attackingMove.Status == OrderStatus.Success)
             {
-                convoy.Status = Enums.OrderStatus.Failure;
+                convoy.Status = OrderStatus.Failure;
             }
-            else if (attackingMove.Status != Enums.OrderStatus.Failure)
+            else if (attackingMove.Status != OrderStatus.Failure)
             {
                 unresolved = true;
             }
         }
+
         if (!unresolved)
         {
-            support.Status = Enums.OrderStatus.Success;
+            convoy.Status = OrderStatus.Success;
         }
     }
 
@@ -75,7 +78,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         {
             if (!Object.ReferenceEquals(support.Midpoint,support.Destination) && !Object.ReferenceEquals(support.Destination, attackingMove.Location))
             {
-                support.Status = Enums.OrderStatus.Failure;
+                support.Status = OrderStatus.Failure;
             }
             else
             {
@@ -83,11 +86,11 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
             }
             //TODO - if AttackingMove is Move via Convoy and AttackingMove is unresolved, then unresolved = true
         }
+
         if(!unresolved)
         {
-            support.Status = Enums.OrderStatus.Success;
+            support.Status = OrderStatus.Success;
         }
-
     }
 
     public void AdjudicateMove(Move move)
@@ -95,7 +98,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
 
         int maxPreventStr = 0;
         int minPreventStr = 0;
-        foreach (Move attackingMove in move.Destination.AttackingMoves)
+        foreach (var attackingMove in move.Destination.AttackingMoves)
         {
             if (!Object.ReferenceEquals(attackingMove, move))
             {
@@ -103,6 +106,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
                 {
                     maxPreventStr = attackingMove.PreventStrength.Max;
                 }
+
                 if (attackingMove.PreventStrength.Min > minPreventStr)
                 {
                     minPreventStr = attackingMove.PreventStrength.Min;
@@ -114,24 +118,24 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         {
             if (move.AttackStrength.Min > maxPreventStr)
             {
-                move.Status = Enums.OrderStatus.Success;
+                move.Status = OrderStatus.Success;
                 if(move.OpposingMove != null)
                 {
                     move.OpposingMove.Unit.MustRetreat = true;
                 }
                 else if (move.Destination.OrderAtLocation != null && !(move.Destination.OrderAtLocation is Move))
                 {
-                    move.Destination.OrderAtLocation.Status = Enums.OrderStatus.Failure;
+                    move.Destination.OrderAtLocation.Status = OrderStatus.Failure;
                     move.Destination.OrderAtLocation.Unit.MustRetreat = true;
                     //This also needs to be done if the OrderAtDestination is an unsuccessful move, but that might not be determined yet.
                     //So I'm thinking to maybe remove the MustRetreat line from here from here and calculate which units are dislodged after everything else is done.
                 }
 
-                foreach(Move attackingMove in move.Destination.AttackingMoves)
+                foreach (var attackingMove in move.Destination.AttackingMoves)
                 {
                     if(!Object.ReferenceEquals(attackingMove, move))
                     {
-                        attackingMove.Status = Enums.OrderStatus.Failure;
+                        attackingMove.Status = OrderStatus.Failure;
                     }
                 }
             }
@@ -140,7 +144,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         if (((move.OpposingMove != null) && (move.AttackStrength.Max <= move.OpposingMove.DefendStrength.Min)) || ((move.OpposingMove == null) && (move.AttackStrength.Max <= move.Destination.HoldStrength.Min)) || (move.AttackStrength.Max <= minPreventStr))
         {
             //unsuccessful
-            move.Status = Enums.OrderStatus.Failure;
+            move.Status = OrderStatus.Failure;
         }
     }
 
@@ -155,15 +159,15 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
             //initialise to base unit strength of 1
             order.HoldStrength.Min = 1;
             order.HoldStrength.Max = 1;
-            foreach (Support support in order.PotentialSupports)
+            foreach (var support in order.PotentialSupports)
             {
                 //all successful supports add 1 to min and max, all unresolved add 1 to max.
-                if (support.Status == Enums.OrderStatus.Success)
+                if (support.Status == OrderStatus.Success)
                 {
                     order.HoldStrength.Max += 1;
                     order.HoldStrength.Min += 1;
                 }
-                else if (support.Status != Enums.OrderStatus.Failure)
+                else if (support.Status != OrderStatus.Failure)
                 {
                     order.HoldStrength.Max += 1;
                 }
@@ -186,12 +190,12 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         move.PreventStrength.Min = 1;
         move.PreventStrength.Max = 1;
         //Hold Strength
-        if (move.Status == Enums.OrderStatus.Success)
+        if (move.Status == OrderStatus.Success)
         {
             //if a move is successful, its hold strength is 0
             move.HoldStrength.Min = 0;
             move.HoldStrength.Max = 0;
-        } else if (move.Status = Enums.OrderStatus.Failure)
+        } else if (move.Status = OrderStatus.Failure)
         {
             //if a move fails, its hold strength is 1
             move.HoldStrength.Min = 1;
@@ -214,7 +218,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         {
             if(move.Destination.OrderAtLocation is Move)
             {
-                if(move.Destination.OrderAtLocation.Status == Enums.OrderStatus.Failure)
+                if(move.Destination.OrderAtLocation.Status == OrderStatus.Failure)
                 {
                     //if the unit at the destination belongs to the same country and is moving, the attack strength is 0 if that unit fails to move.
                     move.AttackStrength.Min = 0;
@@ -222,7 +226,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
                     minAttackStrengthSet = true;
                     maxAttackStrengthSet = true;
                 }
-                else if(move.Destination.OrderAtLocation.Status != Enums.OrderStatus.Success)
+                else if(move.Destination.OrderAtLocation.Status != OrderStatus.Success)
                 {
                     //if that destination move is unresolved, then the min attack strength is the case where it fails.
                     move.AttackStrength.Min = 0;
@@ -238,27 +242,31 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
                 maxAttackStrengthSet = true;
             }
         }
+
         if(!maxAttackStrengthSet)
         {
-            foreach(Support support in move.PotentialSupports)
+            foreach (var support in move.PotentialSupports)
             {
-                if (support.Unit.Owner != move.Destination.OrderAtLocation.Unit.Owner || move.Destination.OrderAtLocation.Status == Enums.OrderStatus.Success)
+                if (support.Unit.Owner != move.Destination.OrderAtLocation.Unit.Owner || move.Destination.OrderAtLocation.Status == OrderStatus.Success)
                 {
                     //a support will not add to the attack strength if it belongs to the same country as the unit at the destination, unless that destination move was successful
                     //otherwise all successful supports add to the min and max str, and all unresolved supports add to the max str (where min and max have not been set to 0 previously).
-                    if (support.Status == Enums.OrderStatus.Success)
+                    if (support.Status == OrderStatus.Success)
                     {
                         move.AttackStrength.Max += 1;
-                        if (!minAttackStrengthSet) { move.AttackStrength.Min += 1; }
+                        if (!minAttackStrengthSet) 
+                        { 
+                            move.AttackStrength.Min += 1; 
+                        }
                     }
-                    else if (support.Status != Enums.OrderStatus.Failure)
+                    else if (support.Status != OrderStatus.Failure)
                     {
                         move.AttackStrength.Max += 1;
                     }
-                } else if(move.Destination.OrderAtLocation.Status != Enums.OrderStatus.Failure)
+                } else if(move.Destination.OrderAtLocation.Status != OrderStatus.Failure)
                 {
                     //if that destination move is unresolved, then a support belonging to the same country can be counted, but only for max strength.
-                    if (support.Status != Enums.OrderStatus.Failure)
+                    if (support.Status != OrderStatus.Failure)
                     {
                         move.AttackStrength.Max += 1;
                     }
@@ -266,15 +274,15 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
             }
         }
         //Defend Strength
-        foreach (Support support in move.PotentialSupports)
+        foreach (var support in move.PotentialSupports)
         {
             //all successful supports add 1 to min and max, all unresolved add 1 to max.
-            if (support.Status == Enums.OrderStatus.Success)
+            if (support.Status == OrderStatus.Success)
             {
                 move.DefendStrength.Max += 1;
                 move.DefendStrength.Min += 1;
             }
-            else if (support.Status != Enums.OrderStatus.Failure)
+            else if (support.Status != OrderStatus.Failure)
             {
                 move.DefendStrength.Max += 1;
             }
@@ -286,32 +294,36 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         bool maxPreventStrengthSet = false;
         if (move.OpposingMove != null)
         {
-            if(move.OpposingMove.Status == Enums.OrderStatus.Success)
+            if(move.OpposingMove.Status == OrderStatus.Success)
             {
                 //if the head to head attacker is successful, a move order has no attack strength
                 move.PreventStrength.Min = 0;
                 move.PreventStrength.Max = 0;
                 minPreventStrengthSet = true;
                 maxPreventStrengthSet = true;
-            } else if (move.OpposingMove.Status != Enums.OrderStatus.Failure)
+            } else if (move.OpposingMove.Status != OrderStatus.Failure)
             {
                 //head to head attacker has not yet been resolved, so minimum value is the case where the head to head attacker is successful
                 move.PreventStrength.Min = 0;
                 minPreventStrengthSet = true;
             }
         }
+
         if (!maxPreventStrengthSet)
         {
-            foreach (Support support in move.PotentialSupports)
+            foreach (var support in move.PotentialSupports)
             {
                 //Min Prevent Str is 1 + number of successful supports, if not already set to 0.
                 //Max Prevent Str is 1 + number of successful or unresolved supports, if not already set to 0.
-                if (support.Status == Enums.OrderStatus.Success)
+                if (support.Status == OrderStatus.Success)
                 {
                     move.AttackStrength.Max += 1;
-                    if (!minPreventStrengthSet) { move.PreventStrength.Min += 1; }
+                    if (!minPreventStrengthSet) 
+                    { 
+                        move.PreventStrength.Min += 1; 
+                    }
                 }
-                else if (support.Status != Enums.OrderStatus.Failure)
+                else if (support.Status != OrderStatus.Failure)
                 {
                     move.PreventStrength.Max += 1;
                 }
