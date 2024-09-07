@@ -23,6 +23,30 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         // - Mark units needing retreat or add disbands if not possible (use adjacencyValidator)
     }
 
+    public void InitialiseAdjudication()
+    {
+        foreach(Order order in activeOrders)
+        {
+            Order.Location.OrderAtLocation = order;
+        }
+        foreach(Move move in activeOrders)
+        {
+            move.Destination.AttackingMoves.Add(move);
+        }
+        foreach(Support support in activeOrders)
+        {
+            //add each support to the PotentialSupports list in the corresponding order
+            support.Midpoint.OrderAtLocation.PotentialSupports.Add(support);
+
+            AdjudicateSupport(support);
+        }
+    }
+
+    public void AdjudicateMoveViaConvoy(Move move)
+    {
+        //TODO
+    }
+
     public void AdjudicateConvoy(Convoy convoy)
     {
         bool unresolved = false;
@@ -116,6 +140,181 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         {
             //unsuccessful
             move.Status = Enums.OrderStatus.Failure;
+        }
+    }
+
+    public void OrderStrengthCalculator(Order order)
+    {
+        if(order is Move)
+        {
+            MoveStrengthCalculator(order);
+        } else
+        {
+            //for all other order types, we only need Hold Strength
+            //initialise to base unit strength of 1
+            order.HoldStrength.Min = 1;
+            order.HoldStrength.Max = 1;
+            foreach (Support support in order.PotentialSupports)
+            {
+                //all successful supports add 1 to min and max, all unresolved add 1 to max.
+                if (support.Status == Enums.OrderStatus.Success)
+                {
+                    order.HoldStrength.Max += 1;
+                    order.HoldStrength.Min += 1;
+                }
+                else if (support.Status != Enums.OrderStatus.Failure)
+                {
+                    order.HoldStrength.Max += 1;
+                }
+            }
+            //copy over HoldStrength to the Location, as this makes adjudication more simple
+            order.Location.HoldStrength.Min = order.HoldStrength.Min;
+            order.Location.HoldStrength.Max = order.HoldStrength.Max;
+        }
+    }
+
+    public void MoveStrengthCalculator(Move move)
+    {
+        //initialise all strengths to the base strength of the unit
+        move.AttackStrength.Min = 1;
+        move.AttackStrength.Max = 1;
+        move.HoldStrength.Min = 1;
+        move.HoldStrength.Max = 1;
+        move.DefendStrength.Min = 1;
+        move.DefendStrength.Max = 1;
+        move.PreventStrength.Min = 1;
+        move.PreventStrength.Max = 1;
+        //Hold Strength
+        if (move.Status == Enums.OrderStatus.Success)
+        {
+            //if a move is successful, its hold strength is 0
+            move.HoldStrength.Min = 0;
+            move.HoldStrength.Max = 0;
+        } else if (move.Status = Enums.OrderStatus.Failure)
+        {
+            //if a move fails, its hold strength is 1
+            move.HoldStrength.Min = 1;
+            move.HoldStrength.Max = 1;
+        } else
+        {
+            //if unknown resolution, could be 0 or 1
+            move.HoldStrength.Min = 0;
+            move.HoldStrength.Max = 1;
+        }
+        //copy over HoldStrength to the Location, as this makes adjudication more simple
+        move.Location.HoldStrength.Min = move.HoldStrength.Min;
+        move.Location.HoldStrength.Max = move.HoldStrength.Max;
+
+        //Attack Strength
+        //TODO - this still needs convoy logic. If the move is via convoy the min strength is always 0 until a Successful path is determined.
+        bool minAttackStrengthSet = false;
+        bool maxAttackStrengthSet = false;
+        if(move.Destination.OrderAtLocation != null && move.Unit.Owner == move.Destination.OrderAtLocation.Unit.Owner)
+        {
+            if(move.Destination.OrderAtLocation is Move)
+            {
+                if(move.Destination.OrderAtLocation.Status == Enums.OrderStatus.Failure)
+                {
+                    //if the unit at the destination belongs to the same country and is moving, the attack strength is 0 if that unit fails to move.
+                    move.AttackStrength.Min = 0;
+                    move.AttackStrength.Max = 0;
+                    minAttackStrengthSet = true;
+                    maxAttackStrengthSet = true;
+                }
+                else if(move.Destination.OrderAtLocation.Status != Enums.OrderStatus.Success)
+                {
+                    //if that destination move is unresolved, then the min attack strength is the case where it fails.
+                    move.AttackStrength.Min = 0;
+                    minAttackStrengthSet = true;
+                }
+            }
+            else
+            {
+                //if the unit at the destination belongs to the same country and is not moving, the attack strength is always 0.
+                move.AttackStrength.Min = 0;
+                move.AttackStrength.Max = 0;
+                minAttackStrengthSet = true;
+                maxAttackStrengthSet = true;
+            }
+        }
+        if(!maxAttackStrengthSet)
+        {
+            foreach(Support support in move.PotentialSupports)
+            {
+                if (support.Unit.Owner != move.Destination.OrderAtLocation.Unit.Owner || move.Destination.OrderAtLocation.Status == Enums.OrderStatus.Success)
+                {
+                    //a support will not add to the attack strength if it belongs to the same country as the unit at the destination, unless that destination move was successful
+                    //otherwise all successful supports add to the min and max str, and all unresolved supports add to the max str (where min and max have not been set to 0 previously).
+                    if (support.Status == Enums.OrderStatus.Success)
+                    {
+                        move.AttackStrength.Max += 1;
+                        if (!minAttackStrengthSet) { move.AttackStrength.Min += 1; }
+                    }
+                    else if (support.Status != Enums.OrderStatus.Failure)
+                    {
+                        move.AttackStrength.Max += 1;
+                    }
+                } else if(move.Destination.OrderAtLocation.Status != Enums.OrderStatus.Failure)
+                {
+                    //if that destination move is unresolved, then a support belonging to the same country can be counted, but only for max strength.
+                    if (support.Status != Enums.OrderStatus.Failure)
+                    {
+                        move.AttackStrength.Max += 1;
+                    }
+                }
+            }
+        }
+        //Defend Strength
+        foreach (Support support in move.PotentialSupports)
+        {
+            //all successful supports add 1 to min and max, all unresolved add 1 to max.
+            if (support.Status == Enums.OrderStatus.Success)
+            {
+                move.DefendStrength.Max += 1;
+                move.DefendStrength.Min += 1;
+            }
+            else if (support.Status != Enums.OrderStatus.Failure)
+            {
+                move.DefendStrength.Max += 1;
+            }
+        }
+
+        //Prevent Strength
+        //TODO - this also still needs convoy logic. Will be same as Attack Strength.
+        bool minPreventStrengthSet = false;
+        bool maxPreventStrengthSet = false;
+        if (move.OpposingMove != null)
+        {
+            if(move.OpposingMove.Status == Enums.OrderStatus.Success)
+            {
+                //if the head to head attacker is successful, a move order has no attack strength
+                move.PreventStrength.Min = 0;
+                move.PreventStrength.Max = 0;
+                minPreventStrengthSet = true;
+                maxPreventStrengthSet = true;
+            } else if (move.OpposingMove.Status != Enums.OrderStatus.Failure)
+            {
+                //head to head attacker has not yet been resolved, so minimum value is the case where the head to head attacker is successful
+                move.PreventStrength.Min = 0;
+                minPreventStrengthSet = true;
+            }
+        }
+        if (!maxPreventStrengthSet)
+        {
+            foreach (Support support in move.PotentialSupports)
+            {
+                //Min Prevent Str is 1 + number of successful supports, if not already set to 0.
+                //Max Prevent Str is 1 + number of successful or unresolved supports, if not already set to 0.
+                if (support.Status == Enums.OrderStatus.Success)
+                {
+                    move.AttackStrength.Max += 1;
+                    if (!minPreventStrengthSet) { move.PreventStrength.Min += 1; }
+                }
+                else if (support.Status != Enums.OrderStatus.Failure)
+                {
+                    move.PreventStrength.Max += 1;
+                }
+            }
         }
     }
 }
