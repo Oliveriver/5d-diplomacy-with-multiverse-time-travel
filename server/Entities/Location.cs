@@ -26,7 +26,7 @@ public class Location : IEquatable<Location>
     public override int GetHashCode() => (Timeline, Year, Phase, RegionId).GetHashCode();
 
     [NotMapped]
-    public List<Move> AttackingMoves { get; set; } = new();
+    public List<Move> AttackingMoves { get; set; } = [];
 
     [NotMapped]
     public OrderStrength HoldStrength { get; set; } = new();

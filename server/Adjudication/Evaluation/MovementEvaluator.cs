@@ -76,7 +76,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
         var unresolved = false;
         foreach (var attackingMove in support.Location.AttackingMoves)
         {
-            if (!Object.ReferenceEquals(support.Midpoint,support.Destination) && !Object.ReferenceEquals(support.Destination, attackingMove.Location))
+            if (!Object.ReferenceEquals(support.Midpoint, support.Destination) && !Object.ReferenceEquals(support.Destination, attackingMove.Location))
             {
                 support.Status = OrderStatus.Failure;
             }
