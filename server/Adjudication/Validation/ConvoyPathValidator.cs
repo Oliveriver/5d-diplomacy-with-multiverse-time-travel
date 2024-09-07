@@ -12,7 +12,7 @@ public class ConvoyPathValidator(List<Convoy> convoys, List<Region> regions, Adj
 
     public List<Convoy> GetPossibleConvoys(Unit unit, Location location, Location destination)
     {
-        if (unit.Type == UnitType.Fleet || location == destination)
+        if (unit.Type == UnitType.Fleet || location == destination || unit.MustRetreat)
         {
             return [];
         }

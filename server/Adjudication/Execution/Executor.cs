@@ -7,7 +7,7 @@ namespace Adjudication;
 public class Executor(World world, List<Region> regions)
 {
     private readonly World world = world;
-    private readonly List<Unit> originalRetreatingUnits = world.ActiveBoards.SelectMany(b => b.Units).Where(u => u!.MustRetreat).ToList();
+    private readonly List<Unit> originalRetreatingUnits = world.Boards.SelectMany(b => b.Units).Where(u => u!.MustRetreat).ToList();
 
     private readonly List<Region> regions = regions;
     private readonly MapComparer mapComparer = new();

@@ -6,7 +6,6 @@ namespace Adjudication;
 public class Validator
 {
     private readonly World world;
-    private readonly List<Hold> holds;
     private readonly List<Move> moves;
     private readonly List<Support> supports;
     private readonly List<Convoy> convoys;
@@ -32,7 +31,6 @@ public class Validator
         nonRetreats = world.Orders.Where(o => o.NeedsValidation && !o.Unit!.MustRetreat).ToList();
         retreats = world.Orders.Where(o => o.NeedsValidation && o.Unit!.MustRetreat).ToList();
 
-        holds = nonRetreats.OfType<Hold>().ToList();
         moves = nonRetreats.OfType<Move>().ToList();
         supports = nonRetreats.OfType<Support>().ToList();
         convoys = nonRetreats.OfType<Convoy>().ToList();
@@ -74,15 +72,25 @@ public class Validator
 
             move.Status = canDirectMove || canConvoyMove ? OrderStatus.New : OrderStatus.Invalid;
         }
+
+        var existingMoves = world.Orders.OfType<Move>().Except(moves);
+        foreach (var move in existingMoves)
+        {
+            var newConvoyPath = convoyPathValidator.GetPossibleConvoys(move.Unit!, move.Location, move.Destination);
+            if (newConvoyPath.Count > 0)
+            {
+                move.ConvoyPath = newConvoyPath;
+                move.Status = OrderStatus.New;
+            }
+        }
     }
 
     private void ValidateSupports()
     {
-        var stationaryOrders = new List<Order>();
-        stationaryOrders.AddRange(holds);
-        stationaryOrders.AddRange(supports);
-        stationaryOrders.AddRange(convoys);
-        stationaryOrders.AddRange(moves.Where(m => m.Status == OrderStatus.Invalid));
+        var stationaryOrders = world.Orders.Where(o =>
+            o is Hold or Support or Convoy
+            || o is Move && o.Status == OrderStatus.Invalid);
+        var allMoves = world.Orders.OfType<Move>();
 
         foreach (var support in supports)
         {
@@ -91,7 +99,7 @@ public class Validator
             var hasMatchingHold = support.Midpoint == support.Destination
                 && stationaryOrders.Any(o => adjacencyValidator.EqualsOrIsRelated(o.Location, support.Destination));
 
-            var hasMatchingMove = moves.Any(m =>
+            var hasMatchingMove = allMoves.Any(m =>
                 m.Location == support.Midpoint
                 && adjacencyValidator.EqualsOrIsRelated(m.Destination, support.Destination)
                 && m.Status != OrderStatus.Invalid);
@@ -121,7 +129,9 @@ public class Validator
                 continue;
             }
 
-            var hasMatchingMove = moves.Any(m => m.ConvoyPath.Contains(convoy) && m.Status != OrderStatus.Invalid);
+            var hasMatchingMove = world.Orders
+                .OfType<Move>()
+                .Any(m => m.ConvoyPath.Contains(convoy) && m.Status != OrderStatus.Invalid);
 
             convoy.Status = hasMatchingMove ? OrderStatus.New : OrderStatus.Invalid;
         }

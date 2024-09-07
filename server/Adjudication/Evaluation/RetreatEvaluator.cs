@@ -12,6 +12,12 @@ public class RetreatEvaluator(World world, List<Order> activeOrders, AdjacencyVa
 
     public void EvaluateRetreats()
     {
+        var boardsWithRetreats = world.Boards.Where(b => b.Units.Any(u => u.MustRetreat));
+        foreach (var board in boardsWithRetreats)
+        {
+            board.MightAdvance = true;
+        }
+
         EvaluateDisbands();
         EvaluateRetreatMoves();
         AddMissingDisbands();
@@ -103,7 +109,7 @@ public class RetreatEvaluator(World world, List<Order> activeOrders, AdjacencyVa
 
     private void AddMissingDisbands()
     {
-        var retreatingUnits = world.ActiveBoards
+        var retreatingUnits = world.Boards
             .SelectMany(b => b.Units)
             .Where(u => u.MustRetreat);
 

@@ -7,7 +7,7 @@ namespace Tests;
 
 internal static class BoardExtensions
 {
-    public static Build Build(this Board board, Nation owner, UnitType type, string regionId)
+    public static Build Build(this Board board, Nation owner, UnitType type, string regionId, OrderStatus status = OrderStatus.New)
     {
         var world = board.World;
 
@@ -21,7 +21,7 @@ internal static class BoardExtensions
         var build = new Build
         {
             World = world,
-            Status = OrderStatus.New,
+            Status = status,
             Location = location,
             Unit = new()
             {
