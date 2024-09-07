@@ -52,8 +52,8 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
 
     public void AdjudicateConvoy(Convoy convoy)
     {
-        bool unresolved = false;
-        foreach (Move attackingMove in convoy.Location.AttackingMoves)
+        var unresolved = false;
+        foreach (var attackingMove in convoy.Location.AttackingMoves)
         {
             if (attackingMove.Status == OrderStatus.Success)
             {
@@ -73,8 +73,8 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
 
     public void AdjudicateSupport(Support support)
     {
-        bool unresolved = false;
-        foreach (Move attackingMove in support.Location.AttackingMoves)
+        var unresolved = false;
+        foreach (var attackingMove in support.Location.AttackingMoves)
         {
             if (!Object.ReferenceEquals(support.Midpoint,support.Destination) && !Object.ReferenceEquals(support.Destination, attackingMove.Location))
             {
@@ -87,7 +87,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
             //TODO - if AttackingMove is Move via Convoy and AttackingMove is unresolved, then unresolved = true
         }
 
-        if(!unresolved)
+        if (!unresolved)
         {
             support.Status = OrderStatus.Success;
         }
@@ -96,8 +96,8 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
     public void AdjudicateMove(Move move)
     {
 
-        int maxPreventStr = 0;
-        int minPreventStr = 0;
+        var maxPreventStr = 0;
+        var minPreventStr = 0;
         foreach (var attackingMove in move.Destination.AttackingMoves)
         {
             if (!Object.ReferenceEquals(attackingMove, move))
@@ -114,12 +114,12 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
             }
         }
 
-        if (((move.OpposingMove != null) && (move.AttackStrength.Min > move.OpposingMove.DefendStrength.Max)) || ((move.OpposingMove == null) && (move.AttackStrength.Min > move.Destination.HoldStrength.Max)))
+        if ((move.OpposingMove != null && move.AttackStrength.Min > move.OpposingMove.DefendStrength.Max) || (move.OpposingMove == null && move.AttackStrength.Min > move.Destination.HoldStrength.Max))
         {
             if (move.AttackStrength.Min > maxPreventStr)
             {
                 move.Status = OrderStatus.Success;
-                if(move.OpposingMove != null)
+                if (move.OpposingMove != null)
                 {
                     move.OpposingMove.Unit.MustRetreat = true;
                 }
@@ -133,7 +133,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
 
                 foreach (var attackingMove in move.Destination.AttackingMoves)
                 {
-                    if(!Object.ReferenceEquals(attackingMove, move))
+                    if (!Object.ReferenceEquals(attackingMove, move))
                     {
                         attackingMove.Status = OrderStatus.Failure;
                     }
@@ -141,7 +141,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
             }
         }
 
-        if (((move.OpposingMove != null) && (move.AttackStrength.Max <= move.OpposingMove.DefendStrength.Min)) || ((move.OpposingMove == null) && (move.AttackStrength.Max <= move.Destination.HoldStrength.Min)) || (move.AttackStrength.Max <= minPreventStr))
+        if ((move.OpposingMove != null && move.AttackStrength.Max <= move.OpposingMove.DefendStrength.Min) || (move.OpposingMove == null && move.AttackStrength.Max <= move.Destination.HoldStrength.Min) || (move.AttackStrength.Max <= minPreventStr))
         {
             //unsuccessful
             move.Status = OrderStatus.Failure;
@@ -150,10 +150,11 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
 
     public void OrderStrengthCalculator(Order order)
     {
-        if(order is Move)
+        if (order is Move)
         {
             MoveStrengthCalculator(order);
-        } else
+        }
+        else
         {
             //for all other order types, we only need Hold Strength
             //initialise to base unit strength of 1
@@ -195,12 +196,14 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
             //if a move is successful, its hold strength is 0
             move.HoldStrength.Min = 0;
             move.HoldStrength.Max = 0;
-        } else if (move.Status = OrderStatus.Failure)
+        }
+        else if (move.Status == OrderStatus.Failure)
         {
             //if a move fails, its hold strength is 1
             move.HoldStrength.Min = 1;
             move.HoldStrength.Max = 1;
-        } else
+        }
+        else
         {
             //if unknown resolution, could be 0 or 1
             move.HoldStrength.Min = 0;
@@ -212,13 +215,13 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
 
         //Attack Strength
         //TODO - this still needs convoy logic. If the move is via convoy the min strength is always 0 until a Successful path is determined.
-        bool minAttackStrengthSet = false;
-        bool maxAttackStrengthSet = false;
-        if(move.Destination.OrderAtLocation != null && move.Unit.Owner == move.Destination.OrderAtLocation.Unit.Owner)
+        var minAttackStrengthSet = false;
+        var maxAttackStrengthSet = false;
+        if (move.Destination.OrderAtLocation != null && move.Unit.Owner == move.Destination.OrderAtLocation.Unit.Owner)
         {
-            if(move.Destination.OrderAtLocation is Move)
+            if (move.Destination.OrderAtLocation is Move)
             {
-                if(move.Destination.OrderAtLocation.Status == OrderStatus.Failure)
+                if (move.Destination.OrderAtLocation.Status == OrderStatus.Failure)
                 {
                     //if the unit at the destination belongs to the same country and is moving, the attack strength is 0 if that unit fails to move.
                     move.AttackStrength.Min = 0;
@@ -226,7 +229,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
                     minAttackStrengthSet = true;
                     maxAttackStrengthSet = true;
                 }
-                else if(move.Destination.OrderAtLocation.Status != OrderStatus.Success)
+                else if (move.Destination.OrderAtLocation.Status != OrderStatus.Success)
                 {
                     //if that destination move is unresolved, then the min attack strength is the case where it fails.
                     move.AttackStrength.Min = 0;
@@ -243,7 +246,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
             }
         }
 
-        if(!maxAttackStrengthSet)
+        if (!maxAttackStrengthSet)
         {
             foreach (var support in move.PotentialSupports)
             {
@@ -263,7 +266,8 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
                     {
                         move.AttackStrength.Max += 1;
                     }
-                } else if(move.Destination.OrderAtLocation.Status != OrderStatus.Failure)
+                }  
+                else if (move.Destination.OrderAtLocation.Status != OrderStatus.Failure)
                 {
                     //if that destination move is unresolved, then a support belonging to the same country can be counted, but only for max strength.
                     if (support.Status != OrderStatus.Failure)
@@ -290,18 +294,19 @@ public class MovementEvaluator(World world, List<Order> activeOrders, AdjacencyV
 
         //Prevent Strength
         //TODO - this also still needs convoy logic. Will be same as Attack Strength.
-        bool minPreventStrengthSet = false;
-        bool maxPreventStrengthSet = false;
+        var minPreventStrengthSet = false;
+        var maxPreventStrengthSet = false;
         if (move.OpposingMove != null)
         {
-            if(move.OpposingMove.Status == OrderStatus.Success)
+            if (move.OpposingMove.Status == OrderStatus.Success)
             {
                 //if the head to head attacker is successful, a move order has no attack strength
                 move.PreventStrength.Min = 0;
                 move.PreventStrength.Max = 0;
                 minPreventStrengthSet = true;
                 maxPreventStrengthSet = true;
-            } else if (move.OpposingMove.Status != OrderStatus.Failure)
+            } 
+            else if (move.OpposingMove.Status != OrderStatus.Failure)
             {
                 //head to head attacker has not yet been resolved, so minimum value is the case where the head to head attacker is successful
                 move.PreventStrength.Min = 0;
