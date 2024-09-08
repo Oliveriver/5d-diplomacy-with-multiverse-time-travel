@@ -7,6 +7,8 @@ public class Evaluator
 {
     private readonly World world;
 
+    private readonly TouchedOrdersFinder touchedOrdersFinder;
+
     private readonly MovementEvaluator movementEvaulator;
     private readonly AdjustmentEvaluator adjustmentEvaluator;
     private readonly RetreatEvaluator retreatEvaulator;
@@ -14,10 +16,11 @@ public class Evaluator
     public Evaluator(World world, List<Region> regions, AdjacencyValidator adjacencyValidator)
     {
         this.world = world;
+        touchedOrdersFinder = new(world, adjacencyValidator);
 
         var activeOrders = GetActiveOrders();
 
-        movementEvaulator = new(world, activeOrders, regions, adjacencyValidator);
+        movementEvaulator = new(world, activeOrders, regions, adjacencyValidator, touchedOrdersFinder);
         adjustmentEvaluator = new(world, activeOrders);
         retreatEvaulator = new(world, activeOrders, adjacencyValidator);
 
@@ -67,13 +70,7 @@ public class Evaluator
             newOrders.Add(hold);
         }
 
-        var depthFirstSearch = new DepthFirstSearch(world, newOrders);
-        foreach (var order in newOrders)
-        {
-            depthFirstSearch.AddTouchedOrders(order);
-        }
-
-        var activeOrders = depthFirstSearch.TouchedOrders;
+        var activeOrders = touchedOrdersFinder.GetTouchedOrders(newOrders);
 
         foreach (var order in activeOrders)
         {
@@ -90,28 +87,5 @@ public class Evaluator
         }
 
         return activeOrders;
-    }
-
-    private class DepthFirstSearch(World world, List<Order> newOrders)
-    {
-        private readonly World world = world;
-
-        public List<Order> TouchedOrders { get; } = [.. newOrders];
-
-        public void AddTouchedOrders(Order order)
-        {
-            if (!TouchedOrders.Contains(order))
-            {
-                TouchedOrders.Add(order);
-            }
-
-            var adjacentOrders = world.Orders.Where(o => o != order && o.TouchedLocations.Intersect(order.TouchedLocations).Any());
-            var newAdjacentOrders = adjacentOrders.Where(o => !TouchedOrders.Contains(o));
-
-            foreach (var newOrder in newAdjacentOrders)
-            {
-                AddTouchedOrders(newOrder);
-            }
-        }
     }
 }

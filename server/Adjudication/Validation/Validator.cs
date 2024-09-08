@@ -37,7 +37,7 @@ public class Validator
         builds = nonRetreats.OfType<Build>().ToList();
         disbands = nonRetreats.OfType<Disband>().ToList();
 
-        convoyPathValidator = new(convoys, regions, adjacencyValidator);
+        convoyPathValidator = new(world, convoys, regions, adjacencyValidator);
     }
 
     public void ValidateOrders()
@@ -89,7 +89,7 @@ public class Validator
     {
         var stationaryOrders = world.Orders.Where(o =>
             o is Hold or Support or Convoy
-            || o is Move m && m.Status == OrderStatus.Invalid && m.Location != m.Destination);
+            || o is Move m && m.Status == OrderStatus.Invalid && m.Location != m.Destination && !convoyPathValidator.CouldHaveConvoyed(m.Unit!, m.Location, m.Destination));
         var allMoves = world.Orders.OfType<Move>();
 
         foreach (var support in supports)

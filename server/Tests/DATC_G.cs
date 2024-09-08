@@ -402,18 +402,16 @@ public class DATC_G : AdjudicationTestBase
         frenchMove.Status.Should().Be(OrderStatus.Failure);
         frenchSupport.Status.Should().Be(OrderStatus.Failure);
 
-        board.ShouldHaveUnits(
+        board.Next().ShouldHaveUnits(
             [
-                (Nation.England, UnitType.Army, "Nwy", false),
+                (Nation.England, UnitType.Army, "Swe", false),
                 (Nation.England, UnitType.Fleet, "Den", false),
                 (Nation.England, UnitType.Fleet, "Fin", false),
                 (Nation.Germany, UnitType.Fleet, "SKA", false),
-                (Nation.Russia, UnitType.Army, "Swe", true),
                 (Nation.Russia, UnitType.Fleet, "BAR", false),
                 (Nation.France, UnitType.Fleet, "NWG", false),
                 (Nation.France, UnitType.Fleet, "NTH", false),
             ]);
-        board.ShouldNotHaveNextBoard();
 
         world.ShouldHaveAllOrdersResolved();
     }

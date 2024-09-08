@@ -343,15 +343,13 @@ public class DATC_D : AdjudicationTestBase
         turkishMove.Status.Should().Be(OrderStatus.Invalid);
         turkishSupport.Status.Should().Be(OrderStatus.Invalid);
 
-        board.ShouldHaveUnits(
+        board.Next().ShouldHaveUnits(
             [
                 (Nation.Austria, UnitType.Fleet, "ION", false),
                 (Nation.Austria, UnitType.Army, "Ser", false),
-                (Nation.Austria, UnitType.Army, "Alb", false),
-                (Nation.Turkey, UnitType.Army, "Gre", true),
+                (Nation.Austria, UnitType.Army, "Gre", false),
                 (Nation.Turkey, UnitType.Army, "Bul", false),
             ]);
-        board.ShouldNotHaveNextBoard();
 
         world.ShouldHaveAllOrdersResolved();
     }
@@ -709,7 +707,7 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "Con", true),
                 (Nation.Russia, UnitType.Fleet, "BLA", false),
                 (Nation.Turkey, UnitType.Fleet, "Ank", false),
-                (Nation.Turkey, UnitType.Army, "Amy", false),
+                (Nation.Turkey, UnitType.Army, "Smy", false),
                 (Nation.Turkey, UnitType.Army, "Arm", false),
             ]);
         board.ShouldNotHaveNextBoard();
@@ -752,16 +750,14 @@ public class DATC_D : AdjudicationTestBase
         turkishMove2.Status.Should().Be(OrderStatus.Failure);
         turkishSupport.Status.Should().Be(OrderStatus.Failure);
 
-        board.ShouldHaveUnits(
+        board.Next().ShouldHaveUnits(
             [
-                (Nation.Russia, UnitType.Fleet, "Con", true),
-                (Nation.Russia, UnitType.Fleet, "BLA", false),
+                (Nation.Russia, UnitType.Fleet, "Con", false),
+                (Nation.Russia, UnitType.Fleet, "Ank", false),
                 (Nation.Russia, UnitType.Army, "Bul", false),
-                (Nation.Turkey, UnitType.Fleet, "Ank", false),
                 (Nation.Turkey, UnitType.Army, "Smy", false),
                 (Nation.Turkey, UnitType.Army, "Arm", false),
             ]);
-        board.ShouldNotHaveNextBoard();
 
         world.ShouldHaveAllOrdersResolved();
     }
@@ -1259,8 +1255,8 @@ public class DATC_D : AdjudicationTestBase
 
         board.Next().ShouldHaveUnits(
             [
-                (Nation.Austria, UnitType.Army, "Bud", false),
-                (Nation.Russia, UnitType.Fleet, "Rum", false),
+                (Nation.Italy, UnitType.Fleet, "AEG", false),
+                (Nation.Russia, UnitType.Fleet, "Con", false),
                 (Nation.Turkey, UnitType.Fleet, "BLA", false),
                 (Nation.Turkey, UnitType.Army, "Bul", false),
             ]);
@@ -1415,16 +1411,14 @@ public class DATC_D : AdjudicationTestBase
         russianMove.Status.Should().Be(OrderStatus.Failure);
         russianSupport.Status.Should().Be(OrderStatus.Failure);
 
-        board.ShouldHaveUnits(
+        board.Next().ShouldHaveUnits(
             [
-                (Nation.Germany, UnitType.Army, "Ber", false),
+                (Nation.Germany, UnitType.Army, "Pru", false),
                 (Nation.Germany, UnitType.Army, "Sil", false),
                 (Nation.Germany, UnitType.Fleet, "BAL", false),
-                (Nation.Italy, UnitType.Army, "Pru", true),
                 (Nation.Russia, UnitType.Army, "War", false),
                 (Nation.Russia, UnitType.Army, "Lvn", false),
             ]);
-        board.ShouldNotHaveNextBoard();
 
         world.ShouldHaveAllOrdersResolved();
     }

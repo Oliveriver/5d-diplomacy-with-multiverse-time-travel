@@ -49,15 +49,21 @@ public class Adjudicator
     {
         var activeCentres = world.ActiveBoards.SelectMany(b => b.Centres);
 
+        var centreCounts = new Dictionary<Nation, int>();
+
         foreach (var nation in Constants.Nations)
         {
             var ownedCentres = activeCentres.Where(c => c.Owner == nation).DistinctBy(c => c.Location.RegionId);
-            if (ownedCentres.Count() >= Constants.VictoryRequiredCentreCount)
-            {
-                return nation;
-            }
+            centreCounts.Add(nation, ownedCentres.Count());
         }
 
-        return null;
+        var maxCentreCount = centreCounts.Max(c => c.Value);
+        if (maxCentreCount < Constants.VictoryRequiredCentreCount)
+        {
+            return null;
+        }
+
+        var leadingNations = centreCounts.Where(c => c.Value == maxCentreCount).Select(c => c.Key);
+        return leadingNations.Count() == 1 ? leadingNations.First() : null;
     }
 }

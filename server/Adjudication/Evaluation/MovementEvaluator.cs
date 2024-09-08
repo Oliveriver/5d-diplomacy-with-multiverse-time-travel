@@ -3,34 +3,66 @@ using Enums;
 
 namespace Adjudication;
 
-public class MovementEvaluator(World world, List<Order> activeOrders, List<Region> regions, AdjacencyValidator adjacencyValidator)
+public class MovementEvaluator(
+    World world,
+    List<Order> activeOrders,
+    List<Region> regions,
+    AdjacencyValidator adjacencyValidator,
+    TouchedOrdersFinder touchedOrdersFinder)
 {
     private readonly World world = world;
 
     private readonly List<Region> regions = regions;
     private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
-    private readonly StrengthCalculator strengthCalculator = new(activeOrders, adjacencyValidator);
-
-    private List<Hold> holds = [];
-    private List<Move> moves = [];
-    private List<Support> supports = [];
-    private List<Convoy> convoys = [];
+    private readonly TouchedOrdersFinder touchedOrdersFinder = touchedOrdersFinder;
+    private readonly CycleFinder cycleFinder = new(adjacencyValidator);
 
     public void EvaluateMovements()
     {
-        holds = activeOrders.OfType<Hold>().ToList();
-        moves = activeOrders.OfType<Move>().Where(m => m.Status != OrderStatus.Invalid).ToList();
-        supports = activeOrders.OfType<Support>().Where(s => s.Status != OrderStatus.Invalid).ToList();
-        convoys = activeOrders.OfType<Convoy>().Where(c => c.Status != OrderStatus.Invalid).ToList();
-
         IdentifyHeadToHeadBattles();
-        ApplyInitialPass();
-        // TODO do the rest
+        LinkSupports();
+
+        var initialEvaluator = new OrderTreeEvaluator(world, activeOrders, regions, adjacencyValidator);
+        initialEvaluator.ApplyEvaluationPass();
+
+        var unresolvedMoves = activeOrders.OfType<Move>().Where(m => m.Status == OrderStatus.New).ToList();
+        var unresolvedNonMoves = activeOrders.Where(o => o is not Move && o.Status == OrderStatus.New).ToList();
+
+        if (unresolvedNonMoves.Count > 0 && unresolvedMoves.Count == 0)
+        {
+            initialEvaluator.ApplyEvaluationPass();
+        }
+
+        while (unresolvedMoves.Count > 0)
+        {
+            IdentifyDependencies(unresolvedMoves);
+
+            foreach (var move in unresolvedMoves)
+            {
+                ResolveDependencies(move);
+            }
+
+            unresolvedMoves = activeOrders.OfType<Move>().Where(m => m.Status == OrderStatus.New).ToList();
+        }
+
         IdentifyRetreats();
+    }
+
+    private void LinkSupports()
+    {
+        var supports = activeOrders.OfType<Support>().Where(s => s.Status != OrderStatus.Invalid).ToList();
+
+        foreach (var support in supports)
+        {
+            var supportedOrder = activeOrders.First(o => o.Location == support.Midpoint);
+            supportedOrder.Supports.Add(support);
+        }
     }
 
     private void IdentifyHeadToHeadBattles()
     {
+        var moves = activeOrders.OfType<Move>().Where(m => m.Status != OrderStatus.Invalid).ToList();
+
         foreach (var move in moves)
         {
             if (move.ConvoyPath.Count > 0)
@@ -40,59 +72,123 @@ public class MovementEvaluator(World world, List<Order> activeOrders, List<Regio
 
             var opposingMove = moves.FirstOrDefault(m =>
                 m.Status != OrderStatus.Invalid
-                && m.Location == move.Destination
-                && m.Destination == move.Location
+                && adjacencyValidator.EqualsOrIsRelated(m.Location, move.Destination)
+                && adjacencyValidator.EqualsOrIsRelated(m.Destination, move.Location)
                 && m.ConvoyPath.Count == 0);
             move.OpposingMove = opposingMove;
         }
     }
 
-    private void ApplyInitialPass()
+    private void IdentifyDependencies(List<Move> unresolvedMoves)
     {
-        foreach (var support in supports)
+        foreach (var move in unresolvedMoves)
         {
-            var supportedOrder = activeOrders.First(o => o.Location == support.Midpoint);
-            supportedOrder.Supports.Add(support);
+            if (unresolvedMoves.Any(m => m.Dependencies.Contains(move)))
+            {
+                continue;
+            }
 
-            EvaluateSupport(support);
-        }
-
-        foreach (var convoy in convoys)
-        {
-            EvaluateConvoy(convoy);
-        }
-
-        UpdateOrderStrengths();
-
-        foreach (var move in moves)
-        {
-            EvaluateMove(move);
-        }
-
-        foreach (var hold in holds)
-        {
-            EvaluateHold(hold);
-        }
-
-        UpdateConvoyPaths();
-        UpdateOrderStrengths();
-    }
-
-    private void UpdateOrderStrengths()
-    {
-        foreach (var order in activeOrders)
-        {
-            strengthCalculator.UpdateOrderStrength(order);
+            move.Dependencies = touchedOrdersFinder.GetTouchedOrders([move]);
         }
     }
 
-    private void UpdateConvoyPaths()
+    private void ResolveDependencies(Move move)
     {
-        var possibleConvoys = convoys.Where(c => c.Status is not OrderStatus.Invalid or OrderStatus.Failure).ToList();
-        var convoyPathValidator = new ConvoyPathValidator(possibleConvoys, regions, adjacencyValidator);
-        foreach (var move in moves)
+        if (move.Status != OrderStatus.New)
         {
-            move.ConvoyPath = convoyPathValidator.GetPossibleConvoys(move.Unit!, move.Location, move.Destination);
+            return;
+        }
+
+        var treeEvaluator = new OrderTreeEvaluator(world, move.Dependencies, regions, adjacencyValidator);
+
+        var initialStatuses = move.Dependencies.Select(o => o.Status).ToList();
+        var newStatuses = new List<OrderStatus>();
+
+        while (!initialStatuses.SequenceEqual(newStatuses))
+        {
+            initialStatuses = newStatuses;
+            treeEvaluator.ApplyEvaluationPass();
+            newStatuses = move.Dependencies.Select(o => o.Status).ToList();
+        }
+
+        if (move.Status == OrderStatus.New)
+        {
+            var isConsistentSuccess = TryStatusGuess(move, OrderStatus.Success);
+
+            foreach (var order in move.Dependencies)
+            {
+                order.Status = initialStatuses[move.Dependencies.IndexOf(order)];
+            }
+
+            var isConsistentFailure = TryStatusGuess(move, OrderStatus.Failure);
+
+            foreach (var order in move.Dependencies)
+            {
+                order.Status = initialStatuses[move.Dependencies.IndexOf(order)];
+            }
+
+            if (isConsistentSuccess && !isConsistentFailure)
+            {
+                TryStatusGuess(move, OrderStatus.Success);
+            }
+            else if (isConsistentFailure && !isConsistentSuccess)
+            {
+                TryStatusGuess(move, OrderStatus.Failure);
+            }
+            else if (!isConsistentSuccess && !isConsistentFailure)
+            {
+                ResolveConvoyParadox(move.Dependencies);
+            }
+            else
+            {
+                var cycle = cycleFinder.GetMoveCycle(move.Dependencies);
+
+                if (cycle.Count > 0)
+                {
+                    foreach (var cycleMove in cycle)
+                    {
+                        cycleMove.Status = OrderStatus.Success;
+                    }
+                }
+                else
+                {
+                    ResolveConvoyParadox(move.Dependencies);
+                }
+            }
+        }
+    }
+
+    private bool TryStatusGuess(Move move, OrderStatus status)
+    {
+        move.Status = status;
+
+        var treeEvaluator = new OrderTreeEvaluator(world, move.Dependencies, regions, adjacencyValidator);
+        treeEvaluator.ApplyEvaluationPass();
+
+        var initialGuessStatuses = move.Dependencies.Select(o => o.Status).ToList();
+        var newGuessStatuses = new List<OrderStatus>();
+
+        while (!initialGuessStatuses.SequenceEqual(newGuessStatuses))
+        {
+            initialGuessStatuses = newGuessStatuses;
+            treeEvaluator.ApplyEvaluationPass();
+            newGuessStatuses = move.Dependencies.Select(o => o.Status).ToList();
+
+            if (move.Status != status)
+            {
+                return false;
+            }
+        }
+
+        return move.Status == status;
+    }
+
+    private void ResolveConvoyParadox(List<Order> orders)
+    {
+        var movesViaConvoy = orders.OfType<Move>().Where(m => m.ConvoyPath.Count > 0);
+        foreach (var move in movesViaConvoy)
+        {
+            move.Status = OrderStatus.Failure;
         }
     }
 
@@ -103,7 +199,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, List<Regio
         var supports = world.Orders.OfType<Support>();
         var convoys = world.Orders.OfType<Convoy>();
 
-        List<Order> stationaryOrders = [.. holds, .. supports, .. convoys, .. moves.Where(m => m.Status == OrderStatus.Invalid)];
+        List<Order> stationaryOrders = [.. holds, .. supports, .. convoys, .. moves.Where(m => m.Status is OrderStatus.Failure or OrderStatus.Invalid)];
 
         foreach (var order in activeOrders)
         {
@@ -155,103 +251,6 @@ public class MovementEvaluator(World world, List<Order> activeOrders, List<Regio
                 Location = unit.Location,
             };
             world.Orders.Add(disband);
-        }
-    }
-
-    private void EvaluateHold(Hold hold)
-    {
-        var attackingMoves = moves.Where(m => adjacencyValidator.EqualsOrIsRelated(m.Destination, hold.Location));
-        if (attackingMoves.Any(m => m.Status == OrderStatus.Success))
-        {
-            hold.Status = OrderStatus.Failure;
-        }
-        else if (attackingMoves.All(m => m.Status == OrderStatus.Failure))
-        {
-            hold.Status = OrderStatus.Success;
-        }
-    }
-
-    private void EvaluateMove(Move move)
-    {
-        var attackingMoves = moves.Where(m => m != move && adjacencyValidator.EqualsOrIsRelated(m.Destination, move.Destination));
-
-        var beatsPreventStrength = move.AttackStrength.Min > (attackingMoves.Any() ? attackingMoves.Max(m => m.PreventStrength.Max) : 0);
-        var losesToPreventStrength = move.AttackStrength.Max <= (attackingMoves.Any() ? attackingMoves.Min(m => m.PreventStrength.Min) : 0);
-
-        if (move.OpposingMove != null)
-        {
-            var beatsDefendStrength = move.AttackStrength.Min > move.OpposingMove.DefendStrength.Max;
-            var losesToDefendStrength = move.AttackStrength.Max <= move.OpposingMove.DefendStrength.Min;
-
-            if (beatsDefendStrength && beatsPreventStrength)
-            {
-                move.Status = OrderStatus.Success;
-            }
-            else if (losesToPreventStrength || losesToDefendStrength)
-            {
-                move.Status = OrderStatus.Failure;
-            }
-        }
-        else
-        {
-            var destinationOrder = activeOrders.FirstOrDefault(o => adjacencyValidator.EqualsOrIsRelated(o.Location, move.Destination));
-
-            var beatsHoldStrength = move.AttackStrength.Min > (destinationOrder?.HoldStrength.Max ?? 0);
-            var losesToHoldStrength = move.AttackStrength.Max <= (destinationOrder?.HoldStrength.Min ?? 0);
-
-            if (beatsHoldStrength && beatsPreventStrength)
-            {
-                move.Status = OrderStatus.Success;
-            }
-            else if (losesToPreventStrength || losesToHoldStrength)
-            {
-                move.Status = OrderStatus.Failure;
-            }
-        }
-    }
-
-    private void EvaluateSupport(Support support)
-    {
-        var supportedOrder = activeOrders.First(o => o.Location == support.Midpoint);
-
-        var attackingMoves = moves.Where(m => adjacencyValidator.EqualsOrIsRelated(m.Destination, support.Location));
-        var opposingMove = attackingMoves.FirstOrDefault(m => adjacencyValidator.EqualsOrIsRelated(m.Location, support.Destination));
-
-        var isAttackedByUnresolvedConvoy = attackingMoves.Any(m =>
-            m.Unit!.Owner != support.Unit!.Owner
-            && m.ConvoyPath.Any(c => c.Status == OrderStatus.New));
-
-        if (opposingMove != null || isAttackedByUnresolvedConvoy)
-        {
-            return;
-        }
-
-        if (attackingMoves.Any(m => m.Unit!.Owner != support.Unit!.Owner))
-        {
-            support.Status = OrderStatus.Failure;
-            return;
-        }
-
-        support.Status = OrderStatus.Success;
-    }
-
-    private void EvaluateConvoy(Convoy convoy)
-    {
-        var attackingMoves = moves.Where(m => m.Destination == convoy.Location);
-
-        if (!attackingMoves.Any())
-        {
-            convoy.Status = OrderStatus.Success;
-            return;
-        }
-
-        foreach (var attackingMove in attackingMoves)
-        {
-            if (attackingMove.Status == OrderStatus.Success)
-            {
-                convoy.Status = OrderStatus.Failure;
-                return;
-            }
         }
     }
 }

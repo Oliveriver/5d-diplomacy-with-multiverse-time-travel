@@ -48,15 +48,20 @@ public class StrengthCalculator(List<Order> activeOrders, AdjacencyValidator adj
         {
             case OrderStatus.Success:
             case OrderStatus.Retreat:
-            case OrderStatus.GuessingSuccess:
                 {
                     move.HoldStrength.Max = 0;
                     move.HoldStrength.Min = 0;
                     break;
                 }
             case OrderStatus.Invalid:
+                {
+                    move.HoldStrength.Max = 1;
+                    move.HoldStrength.Min = 1;
+
+                    AddSupportStrength(move.HoldStrength, move.Supports);
+                    break;
+                }
             case OrderStatus.Failure:
-            case OrderStatus.GuessingFailure:
                 {
                     move.HoldStrength.Max = 1;
                     move.HoldStrength.Min = 1;
@@ -82,6 +87,13 @@ public class StrengthCalculator(List<Order> activeOrders, AdjacencyValidator adj
 
     private void CalculateMoveAttackStrength(Move move)
     {
+        if (move.Status is OrderStatus.Invalid or OrderStatus.Failure)
+        {
+            move.AttackStrength.Max = 0;
+            move.AttackStrength.Min = 0;
+            return;
+        }
+
         move.AttackStrength.Max = 1;
         move.AttackStrength.Min = 1;
 
@@ -92,32 +104,61 @@ public class StrengthCalculator(List<Order> activeOrders, AdjacencyValidator adj
             if (move.ConvoyPath.Any(c => c.Status == OrderStatus.Failure))
             {
                 move.AttackStrength.Max = 0;
+                return;
             }
-
-            return;
         }
 
         var destinationOrder = activeOrders.FirstOrDefault(o => adjacencyValidator.EqualsOrIsRelated(o.Location, move.Destination));
 
-        if (destinationOrder == null ||
-            destinationOrder is Move destinationMove && destinationMove.OpposingMove == null && destinationMove.Status == OrderStatus.Success)
+        if (destinationOrder != null)
         {
-            AddSupportStrength(move.AttackStrength, move.Supports);
+            if (destinationOrder.Unit!.Owner == move.Unit!.Owner)
+            {
+                if (destinationOrder is Move)
+                {
+                    if (destinationOrder.Status is OrderStatus.Failure or OrderStatus.Invalid)
+                    {
+                        move.AttackStrength.Max = 0;
+                        move.AttackStrength.Min = 0;
+                        return;
+                    }
+
+                    if (destinationOrder.Status != OrderStatus.Success)
+                    {
+                        move.AttackStrength.Min = 0;
+                    }
+                }
+                else
+                {
+                    move.AttackStrength.Max = 0;
+                    move.AttackStrength.Min = 0;
+                    return;
+                }
+            }
+
+            if (destinationOrder.Status == OrderStatus.Success)
+            {
+                AddSupportStrength(move.AttackStrength, move.Supports);
+                return;
+            }
+
+            var supportsWithDifferentOwner = move.Supports.Where(s => s.Unit!.Owner != destinationOrder.Unit!.Owner).ToList();
+            AddSupportStrength(move.AttackStrength, supportsWithDifferentOwner);
             return;
         }
 
-        if (destinationOrder.Unit!.Owner == move.Unit!.Owner)
-        {
-            move.AttackStrength.Max = 0;
-            move.AttackStrength.Min = 0;
-            return;
-        }
-
-        AddSupportStrength(move.AttackStrength, move.Supports.Where(s => s.Unit!.Owner != destinationOrder.Unit!.Owner).ToList());
+        AddSupportStrength(move.AttackStrength, move.Supports);
     }
 
     private void CalculateMovePreventStrength(Move move)
     {
+        if (move.Status == OrderStatus.Invalid)
+        {
+            move.PreventStrength.Max = 0;
+            move.PreventStrength.Min = 0;
+            return;
+        }
+
         move.PreventStrength.Max = 1;
         move.PreventStrength.Min = 1;
 
@@ -150,7 +191,6 @@ public class StrengthCalculator(List<Order> activeOrders, AdjacencyValidator adj
             switch (support.Status)
             {
                 case OrderStatus.Success:
-                case OrderStatus.GuessingSuccess:
                     {
                         strength.Max += 1;
                         strength.Min += 1;
@@ -164,7 +204,6 @@ public class StrengthCalculator(List<Order> activeOrders, AdjacencyValidator adj
                 case OrderStatus.Invalid:
                 case OrderStatus.Failure:
                 case OrderStatus.Retreat:
-                case OrderStatus.GuessingFailure:
                 default:
                     break;
             }

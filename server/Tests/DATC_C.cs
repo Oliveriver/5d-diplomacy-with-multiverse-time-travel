@@ -313,9 +313,10 @@ public class DATC_C : AdjudicationTestBase
         board.Next().ShouldHaveUnits(
             [
                 (Nation.England, UnitType.Fleet, "NTH", false),
-                (Nation.England, UnitType.Army, "Bel", false),
+                (Nation.England, UnitType.Army, "Lon", false),
                 (Nation.France, UnitType.Fleet, "ENG", false),
-                (Nation.France, UnitType.Army, "Lon", false),
+                (Nation.France, UnitType.Army, "Bel", false),
+                (Nation.France, UnitType.Army, "Bur", false),
             ]);
 
         world.ShouldHaveAllOrdersResolved();
@@ -340,7 +341,7 @@ public class DATC_C : AdjudicationTestBase
         var turkishMove1 = units.Get("Con").Move("BLA");
         var turkishMove2 = units.Get("Bul").Move("Con");
         var turkishSupport = units.Get("Smy").Support(units.Get("Bul"), "Con");
-        var russianMove = units.Get("BLA").Move("Bul_S");
+        var russianMove = units.Get("BLA").Move("Bul_E");
         var austrianMove = units.Get("Ser").Move("Bul");
 
         // Act
@@ -383,7 +384,7 @@ public class DATC_C : AdjudicationTestBase
 
         var turkishMove = units.Get("Con").Move("BLA");
         var turkishSupport = units.Get("Smy").Support(units.Get("Bul"), "Con");
-        var russianMove = units.Get("BLA").Move("Bul_S");
+        var russianMove = units.Get("BLA").Move("Bul_E");
         var austrianMove1 = units.Get("Ser").Move("Bul");
         var austrianMove2 = units.Get("Bul").Move("Con");
 

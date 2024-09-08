@@ -3,8 +3,9 @@ using Enums;
 
 namespace Adjudication;
 
-public class ConvoyPathValidator(List<Convoy> convoys, List<Region> regions, AdjacencyValidator adjacencyValidator)
+public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region> regions, AdjacencyValidator adjacencyValidator)
 {
+    private readonly World world = world;
     private readonly List<Convoy> convoys = convoys;
 
     private readonly List<Region> regions = regions;
@@ -31,8 +32,7 @@ public class ConvoyPathValidator(List<Convoy> convoys, List<Region> regions, Adj
         }
 
         var convoysInPath = convoys.Where(c =>
-            c.NeedsValidation
-            && c.Midpoint == location
+            c.Midpoint == location
             && c.Destination == destination).ToList();
 
         if (convoysInPath.Count == 0)
@@ -40,11 +40,45 @@ public class ConvoyPathValidator(List<Convoy> convoys, List<Region> regions, Adj
             return [];
         }
 
-        var depthFirstSearch = new DepthFirstSearch(convoysInPath, adjacencyValidator, regions);
+        var depthFirstSearch = new DepthFirstConvoySearch(convoysInPath, adjacencyValidator, regions);
         return depthFirstSearch.GetPossibleConvoys(unit, location, destination);
     }
 
-    private class DepthFirstSearch(List<Convoy> convoys, AdjacencyValidator adjacencyValidator, List<Region> regions)
+    public bool CouldHaveConvoyed(Unit unit, Location location, Location destination)
+    {
+        if (unit.Type == UnitType.Fleet || location == destination || unit.MustRetreat)
+        {
+            return false;
+        }
+
+        var startRegion = regions.First(r => r.Id == location.RegionId);
+        var endRegion = regions.First(r => r.Id == destination.RegionId);
+
+        var startsOnCoast = startRegion.Type == RegionType.Coast
+            || regions.Where(r => r.ParentId == startRegion.Id).Any(r => r.Type == RegionType.Coast);
+        var endsOnCoast = endRegion.Type == RegionType.Coast
+            || regions.Where(r => r.ParentId == endRegion.Id).Any(r => r.Type == RegionType.Coast);
+
+        if (!startsOnCoast || !endsOnCoast)
+        {
+            return false;
+        }
+
+        var fleets = world.Boards
+            .SelectMany(b => b.Units)
+            .Where(u => u.Type == UnitType.Fleet)
+            .ToList();
+
+        if (fleets.Count == 0)
+        {
+            return false;
+        }
+
+        var depthFirstSearch = new DepthFirstFleetSearch(fleets, adjacencyValidator, regions);
+        return depthFirstSearch.CouldHaveConvoyed(unit, location, destination);
+    }
+
+    private class DepthFirstConvoySearch(List<Convoy> convoys, AdjacencyValidator adjacencyValidator, List<Region> regions)
     {
         private readonly List<Convoy> convoys = convoys;
         private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
@@ -97,6 +131,45 @@ public class ConvoyPathValidator(List<Convoy> convoys, List<Region> regions, Adj
                 .ToList();
 
             return convoy == null || onwardConvoys.Count == 0 ? [.. onwardConvoys] : [.. onwardConvoys, convoy];
+        }
+    }
+
+    private class DepthFirstFleetSearch(List<Unit> fleets, AdjacencyValidator adjacencyValidator, List<Region> regions)
+    {
+        private readonly List<Unit> fleets = fleets;
+        private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
+        private readonly List<Region> regions = regions;
+
+        private readonly List<Unit> visitedFleets = [];
+
+        public bool CouldHaveConvoyed(Unit unit, Location location, Location destination)
+        {
+            if (adjacencyValidator.IsValidDirectMove(unit, location, destination))
+            {
+                return true;
+            }
+
+            var fleet = fleets.FirstOrDefault(f => f.Location == location);
+            if (fleet != null)
+            {
+                visitedFleets.Add(fleet);
+
+                var region = regions.First(r => r.Id == fleet.Location.RegionId);
+                if (region.Type != RegionType.Sea)
+                {
+                    return false;
+                }
+            }
+
+            var adjacentFleets = fleets
+                .Where(f =>
+                    !visitedFleets.Contains(f)
+                    && adjacencyValidator.IsValidDirectMove(f, f.Location, location, allowDestinationChild: true))
+                .ToList();
+
+            var hasOnwardFleets = adjacentFleets.Any(f => CouldHaveConvoyed(f, f.Location, destination));
+
+            return hasOnwardFleets;
         }
     }
 }

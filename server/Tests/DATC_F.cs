@@ -319,7 +319,7 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.England, UnitType.Fleet, "Hol", false),
                 (Nation.England, UnitType.Army, "Lon", false),
                 (Nation.Germany, UnitType.Fleet, "HEL", false),
-                (Nation.Germany, UnitType.Fleet, "SKA", false),
+                (Nation.Germany, UnitType.Fleet, "NTH", false),
             ]);
 
         world.ShouldHaveAllOrdersResolved();
@@ -577,16 +577,16 @@ public class DATC_F : AdjudicationTestBase
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.Success);
-        englishConvoy.Status.Should().Be(OrderStatus.Success);
-        frenchConvoy.Status.Should().Be(OrderStatus.Failure);
+        englishConvoy.Status.Should().Be(OrderStatus.Failure);
+        frenchConvoy.Status.Should().Be(OrderStatus.Success);
         germanMove.Status.Should().Be(OrderStatus.Success);
         germanSupport.Status.Should().Be(OrderStatus.Success);
 
         board.ShouldHaveUnits(
             [
                 (Nation.England, UnitType.Army, "Lon", false),
-                (Nation.England, UnitType.Fleet, "NTH", false),
-                (Nation.France, UnitType.Fleet, "ENG", true),
+                (Nation.England, UnitType.Fleet, "NTH", true),
+                (Nation.France, UnitType.Fleet, "ENG", false),
                 (Nation.Germany, UnitType.Fleet, "Hol", false),
                 (Nation.Germany, UnitType.Fleet, "Den", false),
             ]);
@@ -781,6 +781,7 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.England, UnitType.Fleet, "Wal", false),
                 (Nation.France, UnitType.Army, "Bre", false),
                 (Nation.France, UnitType.Fleet, "ENG", false),
+                (Nation.France, UnitType.Fleet, "Yor", false),
                 (Nation.Germany, UnitType.Fleet, "NTH", false),
                 (Nation.Germany, UnitType.Fleet, "Bel", false),
             ]);
@@ -970,18 +971,15 @@ public class DATC_F : AdjudicationTestBase
         englishSupport.Status.Should().Be(OrderStatus.Failure);
         englishConvoy.Status.Should().Be(OrderStatus.Failure);
 
-        board.ShouldHaveUnits(
+        board.Next().ShouldHaveUnits(
             [
-                (Nation.Russia, UnitType.Army, "Edi", true),
+                (Nation.Russia, UnitType.Army, "Edi", false),
                 (Nation.Russia, UnitType.Fleet, "NWG", false),
-                (Nation.Russia, UnitType.Army, "Nwy", false),
+                (Nation.Russia, UnitType.Army, "Cly", false),
                 (Nation.France, UnitType.Fleet, "IRI", false),
-                (Nation.France, UnitType.Fleet, "MAO", false),
+                (Nation.France, UnitType.Fleet, "NAO", false),
                 (Nation.England, UnitType.Army, "Lvp", false),
-                (Nation.England, UnitType.Fleet, "NAO", true),
-                (Nation.England, UnitType.Fleet, "Cly", false),
             ]);
-        board.ShouldNotHaveNextBoard();
 
         world.ShouldHaveAllOrdersResolved();
     }

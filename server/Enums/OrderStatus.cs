@@ -7,6 +7,4 @@ public enum OrderStatus
     Failure,
     Invalid,
     Retreat,
-    GuessingSuccess,
-    GuessingFailure,
 }
