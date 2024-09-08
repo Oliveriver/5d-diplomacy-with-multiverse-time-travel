@@ -36,6 +36,8 @@ public class MDATC_C : AdjudicationTestBase
 
         presentBoard.Next().ShouldHaveUnits([]);
         pastBoard.ShouldNotHaveNextBoard(timeline: 2);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "C.02. Retreats to parallel timelines forbidden")]
@@ -61,6 +63,8 @@ public class MDATC_C : AdjudicationTestBase
 
         topBoard.Next().ShouldHaveUnits([]);
         bottomBoard.Next().ShouldHaveUnits([]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "C.03. No orders elsewhere in the multiverse during retreats")]
@@ -92,6 +96,8 @@ public class MDATC_C : AdjudicationTestBase
 
         topBoard.Next().ShouldHaveUnits([(Nation.England, UnitType.Army, "Wal", false)]);
         bottomBoard.Next().ShouldHaveUnits([(Nation.Italy, UnitType.Fleet, "ADR", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "C0.4. Retreat in past to new location forks timeline")]
@@ -143,5 +149,7 @@ public class MDATC_C : AdjudicationTestBase
                 (Nation.Germany, UnitType.Army, "Tyr", false),
                 (Nation.Austria, UnitType.Army, "Boh", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 }

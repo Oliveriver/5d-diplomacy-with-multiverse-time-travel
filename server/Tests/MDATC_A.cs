@@ -34,6 +34,8 @@ public class MDATC_A : AdjudicationTestBase
 
         topBoard.Next().ShouldHaveUnits([]);
         bottomBoard.Next().ShouldHaveUnits([(Nation.England, UnitType.Army, "Lon", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.02. Move to same region with strict adjacencies")]
@@ -57,6 +59,8 @@ public class MDATC_A : AdjudicationTestBase
 
         topBoard.Next().ShouldHaveUnits([]);
         bottomBoard.Next().ShouldHaveUnits([(Nation.Turkey, UnitType.Fleet, "Smy", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.03. Move to neighbouring region with loose adjacencies")]
@@ -80,6 +84,8 @@ public class MDATC_A : AdjudicationTestBase
 
         topBoard.Next().ShouldHaveUnits([(Nation.Austria, UnitType.Army, "Bud", false)]);
         bottomBoard.Next().ShouldHaveUnits([]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.04. Move to neighbouring region with strict adjacencies")]
@@ -103,6 +109,8 @@ public class MDATC_A : AdjudicationTestBase
 
         topBoard.Next().ShouldHaveUnits([]);
         bottomBoard.Next().ShouldHaveUnits([(Nation.Italy, UnitType.Fleet, "Tun", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.05. Move to non-neighbouring region")]
@@ -126,6 +134,8 @@ public class MDATC_A : AdjudicationTestBase
 
         topBoard.Next().ShouldHaveUnits([(Nation.England, UnitType.Fleet, "Lvp", false)]);
         bottomBoard.Next().ShouldHaveUnits([]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.06. Can't cross coasts across time")]
@@ -149,6 +159,8 @@ public class MDATC_A : AdjudicationTestBase
 
         topBoard.Next().ShouldHaveUnits([]);
         bottomBoard.Next().ShouldHaveUnits([(Nation.France, UnitType.Fleet, "Spa_S", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.07. No diagonal board movement")]
@@ -172,6 +184,8 @@ public class MDATC_A : AdjudicationTestBase
 
         topBoard.Next().ShouldHaveUnits([(Nation.Germany, UnitType.Army, "Mun", false)]);
         bottomBoard.Next().ShouldHaveUnits([]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.08. Must be adjacent timeline without convoy")]
@@ -197,6 +211,8 @@ public class MDATC_A : AdjudicationTestBase
         topBoard.Next().ShouldHaveUnits([(Nation.England, UnitType.Army, "Lon", false)]);
         middleBoard.Next().ShouldHaveUnits([]);
         bottomBoard.Next().ShouldHaveUnits([]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.09. Must be immediate past major board without convoy")]
@@ -230,6 +246,8 @@ public class MDATC_A : AdjudicationTestBase
         pastBoard1.ShouldNotHaveNextBoard(timeline: 2);
         pastBoard2.Next(timeline: 2).ShouldHaveUnits([(Nation.France, UnitType.Army, "Gas", false)]);
         pastBoard3.ShouldNotHaveNextBoard(timeline: 2);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.10. No move to winter board")]
@@ -260,6 +278,8 @@ public class MDATC_A : AdjudicationTestBase
 
         presentBoard.Next().ShouldHaveUnits([(Nation.Russia, UnitType.Fleet, "Sev", false)]);
         pastBoard.ShouldNotHaveNextBoard(timeline: 2);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.11. Simultaneous adjustment and movement phases advance together")]
@@ -287,5 +307,7 @@ public class MDATC_A : AdjudicationTestBase
 
         topBoard.Next().ShouldHaveUnits([(Nation.England, UnitType.Fleet, "Cly", false)]);
         bottomBoard.Next().ShouldHaveUnits([(Nation.Germany, UnitType.Army, "Ber", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 }

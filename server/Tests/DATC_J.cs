@@ -52,6 +52,8 @@ public class DATC_J : AdjudicationTestBase
 
             board.Next().ShouldHaveUnits([(Nation.France, UnitType.Army, "Pic", false)]);
         }
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "J.02. Removing the same unit twice")]
@@ -78,6 +80,8 @@ public class DATC_J : AdjudicationTestBase
         disband2.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "J.03. Civil disorder two armies with different distance", Skip = "Decided against")]

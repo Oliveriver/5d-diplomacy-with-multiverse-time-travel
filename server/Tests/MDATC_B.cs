@@ -44,6 +44,8 @@ public class MDATC_B : AdjudicationTestBase
                 (Nation.Germany, UnitType.Army, "Mun", false),
                 (Nation.Germany, UnitType.Army, "Tyr", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.02. Support to past move repelled by move forks timeline")]
@@ -92,6 +94,8 @@ public class MDATC_B : AdjudicationTestBase
                 (Nation.Germany, UnitType.Army, "Tyr", false),
                 (Nation.Austria, UnitType.Army, "Boh", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.03. Support to past move repelled by hold dislodges")]
@@ -142,6 +146,8 @@ public class MDATC_B : AdjudicationTestBase
             ]);
         presentBoard.ShouldNotHaveNextBoard();
         pastBoard.ShouldNotHaveNextBoard(timeline: 2);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.04. Failed move does not fork timeline")]
@@ -186,6 +192,8 @@ public class MDATC_B : AdjudicationTestBase
                 (Nation.Austria, UnitType.Army, "Tyr", false),
             ]);
         pastBoard.ShouldNotHaveNextBoard(timeline: 2);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.05. Superfluous support does not fork timeline")]
@@ -230,6 +238,8 @@ public class MDATC_B : AdjudicationTestBase
                 (Nation.Germany, UnitType.Army, "Boh", false),
             ]);
         pastBoard.ShouldNotHaveNextBoard(timeline: 2);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.06. Cross-timeline support does not fork head")]
@@ -261,6 +271,8 @@ public class MDATC_B : AdjudicationTestBase
         bottomBoard.Next().ShouldHaveUnits([(Nation.Germany, UnitType.Army, "Tyr", false)]);
         topBoard.ShouldNotHaveNextBoard(timeline: 3);
         bottomBoard.ShouldNotHaveNextBoard(timeline: 3);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.07. Cutting cross-timeline support forks timeline")]
@@ -326,6 +338,8 @@ public class MDATC_B : AdjudicationTestBase
                 (Nation.Germany, UnitType.Army, "Mun", false),
                 (Nation.Austria, UnitType.Army, "Boh", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.08. Multiple powers move to same board")]
@@ -408,6 +422,8 @@ public class MDATC_B : AdjudicationTestBase
                 (Nation.France, UnitType.Army, "Pic", false),
             ]);
         pastBoard.ShouldNotHaveNextBoard(timeline: 3);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.09. Grandfather paradox resolved")]
@@ -452,6 +468,8 @@ public class MDATC_B : AdjudicationTestBase
                 (Nation.Russia, UnitType.Army, "War", false),
             ]);
         pastBoard.ShouldNotHaveNextBoard(timeline: 2);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.10. Vanishing in a puff of logic")]
@@ -481,5 +499,7 @@ public class MDATC_B : AdjudicationTestBase
 
         presentBoard.Next().ShouldHaveUnits([]);
         pastBoard.ShouldNotHaveNextBoard(timeline: 2);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 }

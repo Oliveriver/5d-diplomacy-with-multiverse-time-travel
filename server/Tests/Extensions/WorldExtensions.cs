@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Enums;
+using FluentAssertions;
 
 namespace Tests;
 
@@ -17,5 +18,13 @@ internal static class WorldExtensions
 
         world.Boards.Add(board);
         return board;
+    }
+
+    public static void ShouldHaveAllOrdersResolved(this World world)
+    {
+        foreach (var order in world.Orders)
+        {
+            order.Status.Should().BeOneOf(OrderStatus.Invalid, OrderStatus.Success, OrderStatus.Failure, OrderStatus.Retreat);
+        }
     }
 }

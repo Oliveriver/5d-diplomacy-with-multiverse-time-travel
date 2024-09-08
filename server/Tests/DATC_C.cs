@@ -45,6 +45,8 @@ public class DATC_C : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Army, "Smy", false),
                 (Nation.Turkey, UnitType.Army, "Ank", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "C.02. Three army circular movement with support")]
@@ -83,6 +85,8 @@ public class DATC_C : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Army, "Ank", false),
                 (Nation.Turkey, UnitType.Army, "Bul", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "C.03. A disrupted three army circular movement")]
@@ -121,6 +125,8 @@ public class DATC_C : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Army, "Smy", false),
                 (Nation.Turkey, UnitType.Army, "Bul", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "C.04. A circular movement with attacked convoy")]
@@ -171,6 +177,8 @@ public class DATC_C : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Fleet, "ADR", false),
                 (Nation.Italy, UnitType.Fleet, "Nap", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "C.05. A disrupted circular movement due to dislodged convoy")]
@@ -226,6 +234,8 @@ public class DATC_C : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "Tun", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "C.06. Two armies with two convoys")]
@@ -264,6 +274,8 @@ public class DATC_C : AdjudicationTestBase
                 (Nation.France, UnitType.Fleet, "ENG", false),
                 (Nation.France, UnitType.Army, "Lon", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "C.07. Disrupted unit swap")]
@@ -305,6 +317,8 @@ public class DATC_C : AdjudicationTestBase
                 (Nation.France, UnitType.Fleet, "ENG", false),
                 (Nation.France, UnitType.Army, "Lon", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "C.08. No self dislodgement in disrupted circular movement")]
@@ -347,6 +361,8 @@ public class DATC_C : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "BLA", false),
                 (Nation.Austria, UnitType.Army, "Ser", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "C.09. No help in dislodgement of own unit in disrupted circular movement")]
@@ -389,5 +405,7 @@ public class DATC_C : AdjudicationTestBase
                 (Nation.Austria, UnitType.Army, "Ser", false),
                 (Nation.Austria, UnitType.Army, "Bul", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 }

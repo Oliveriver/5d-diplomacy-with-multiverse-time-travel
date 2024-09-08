@@ -49,6 +49,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Italy, UnitType.Army, "Ven", false),
                 (Nation.Italy, UnitType.Army, "Tyr", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.02. A move cuts support on hold")]
@@ -92,6 +94,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Italy, UnitType.Army, "Tyr", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.03. A move cuts support on move")]
@@ -130,6 +134,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Italy, UnitType.Army, "Ven", false),
                 (Nation.Italy, UnitType.Fleet, "ION", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.04. Support to hold on unit supporting a hold allowed")]
@@ -168,6 +174,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "BAL", false),
                 (Nation.Russia, UnitType.Army, "Pru", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.05. Support to hold on unit supporting a move allowed")]
@@ -210,6 +218,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "BAL", false),
                 (Nation.Russia, UnitType.Army, "Pru", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.06. Support to hold on convoying unit allowed")]
@@ -252,6 +262,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "Lvn", false),
                 (Nation.Russia, UnitType.Fleet, "BOT", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.07. Support to hold on moving unit not allowed")]
@@ -295,6 +307,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Russia, UnitType.Army, "Fin", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.08. Failed convoy cannot receive hold support")]
@@ -338,6 +352,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Army, "Bul", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.09. Support to move on holding unit not allowed")]
@@ -377,6 +393,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Austria, UnitType.Army, "Tri", true),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.10. Self dislodgement prohibited")]
@@ -411,6 +429,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Germany, UnitType.Fleet, "Kie", false),
                 (Nation.Germany, UnitType.Army, "Mun", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.11. No self dislodgement of returning unit")]
@@ -449,6 +469,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Germany, UnitType.Army, "Mun", false),
                 (Nation.Russia, UnitType.Army, "War", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.12. Supporting a foreign unit to dislodge own unit prohibited")]
@@ -483,6 +505,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Austria, UnitType.Army, "Vie", false),
                 (Nation.Italy, UnitType.Army, "Ven", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.13. Supporting a foreign unit to dislodge a returning own unit prohibited")]
@@ -521,6 +545,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Italy, UnitType.Army, "Ven", false),
                 (Nation.Italy, UnitType.Fleet, "Apu", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.14. Supporting a foreign unit is not enough to prevent dislodgement")]
@@ -564,6 +590,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "ADR", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.15. Defender cannot cut support for attack on itself")]
@@ -599,6 +627,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Fleet, "Ank", true),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.16. Convoying a unit dislodging a unit of same power is allowed")]
@@ -638,6 +668,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.France, UnitType.Army, "Bel", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.17. Dislodgement cuts support")]
@@ -681,6 +713,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Army, "Arm", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.18. A surviving unit will sustain support")]
@@ -728,6 +762,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Army, "Arm", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.19. Even when surviving is in alternative way")]
@@ -767,6 +803,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Fleet, "Ank", true),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.20. Unit cannot cut support of its own country")]
@@ -806,6 +844,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.France, UnitType.Fleet, "ENG", true),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.21. Dislodging does not cancel a support cut")]
@@ -853,6 +893,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Russia, UnitType.Army, "Ber", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.22. Impossible fleet move cannot be supported")]
@@ -892,6 +934,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Russia, UnitType.Army, "Ber", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.23. Impossible coast move cannot be supported")]
@@ -931,6 +975,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.France, UnitType.Fleet, "Mar", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.24. Impossible army move cannot be supported")]
@@ -974,6 +1020,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Fleet, "WES", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.25. Failing hold support can be supported")]
@@ -1012,6 +1060,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "BAL", false),
                 (Nation.Russia, UnitType.Army, "Pru", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.26. Failing move support can be supported")]
@@ -1050,6 +1100,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "BAL", false),
                 (Nation.Russia, UnitType.Army, "Pru", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.27. Failing convoy can be supported")]
@@ -1092,6 +1144,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "BAL", false),
                 (Nation.Russia, UnitType.Fleet, "Pru", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.28. Impossible move and support")]
@@ -1130,6 +1184,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Fleet, "BLA", false),
                 (Nation.Turkey, UnitType.Army, "Bul", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.29. Move to impossible coast and support")]
@@ -1168,6 +1224,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Fleet, "BLA", false),
                 (Nation.Turkey, UnitType.Army, "Bul", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.30. Move without coast and support")]
@@ -1206,6 +1264,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Fleet, "BLA", false),
                 (Nation.Turkey, UnitType.Army, "Bul", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.31. A tricky impossible scenario")]
@@ -1236,6 +1296,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Austria, UnitType.Army, "Rum", false),
                 (Nation.Turkey, UnitType.Fleet, "BLA", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.32. A missing fleet")]
@@ -1274,6 +1336,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.France, UnitType.Fleet, "Lon", false),
                 (Nation.Germany, UnitType.Army, "Yor", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.33. Unwanted support allowed")]
@@ -1312,6 +1376,8 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Russia, UnitType.Army, "Gal", false),
                 (Nation.Turkey, UnitType.Army, "Ser", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.34. Support targeting own area not allowed")]
@@ -1359,5 +1425,7 @@ public class DATC_D : AdjudicationTestBase
                 (Nation.Russia, UnitType.Army, "Lvn", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 }

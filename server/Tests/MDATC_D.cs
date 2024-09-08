@@ -38,6 +38,8 @@ public class MDATC_D : AdjudicationTestBase
 
         presentBoard.Next().ShouldHaveUnits([]);
         pastBoard2.Next(timeline: 2).ShouldHaveUnits([(Nation.France, UnitType.Army, "Mar", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.02. Convoy kidnapping across time")]
@@ -93,6 +95,8 @@ public class MDATC_D : AdjudicationTestBase
                 (Nation.Germany, UnitType.Army, "Bel", false),
                 (Nation.France, UnitType.Army, "Hol", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "D.03. Jurassic convoy")]
@@ -162,5 +166,7 @@ public class MDATC_D : AdjudicationTestBase
                 (Nation.England, UnitType.Army, "Lon", false),
                 (Nation.England, UnitType.Army, "Nwy", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 }

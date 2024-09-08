@@ -49,6 +49,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Fleet, "Con", false),
                 (Nation.Turkey, UnitType.Fleet, "BLA", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.02. An army being convoyed can bounce as normal")]
@@ -83,6 +85,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.England, UnitType.Army, "Lon", false),
                 (Nation.France, UnitType.Army, "Par", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.03. An army being convoyed can receive support")]
@@ -121,6 +125,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.England, UnitType.Fleet, "MAO", false),
                 (Nation.France, UnitType.Army, "Par", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.04. An attacked convoy is not disrupted")]
@@ -155,6 +161,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.England, UnitType.Army, "Hol", false),
                 (Nation.Germany, UnitType.Fleet, "SKA", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.05. A beleaguered convoy is not disrupted")]
@@ -201,6 +209,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.Germany, UnitType.Fleet, "SKA", false),
                 (Nation.Germany, UnitType.Fleet, "Den", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.06. Dislodged convoy does not cut support")]
@@ -256,6 +266,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.France, UnitType.Army, "Bur", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.07. Dislodged convoy does not cause contested area")]
@@ -309,6 +321,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.Germany, UnitType.Fleet, "HEL", false),
                 (Nation.Germany, UnitType.Fleet, "SKA", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.08. Dislodged convoy does not cause a bounce")]
@@ -352,6 +366,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.Germany, UnitType.Army, "Bel", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.09. Dislodge of multi-route convoy")]
@@ -395,6 +411,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.France, UnitType.Fleet, "MAO", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.10. Dislodge of multi-route convoy with foreign fleet")]
@@ -438,6 +456,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.France, UnitType.Fleet, "MAO", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.11. Dislodge of multi-route convoy with only foreign fleets")]
@@ -481,6 +501,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.France, UnitType.Fleet, "MAO", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.12. Dislodged convoying fleet not on route")]
@@ -524,6 +546,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.France, UnitType.Fleet, "MAO", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.13. The unwanted alternative")]
@@ -567,6 +591,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.Germany, UnitType.Fleet, "Den", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.14. Simple convoy paradox")]
@@ -606,6 +632,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.France, UnitType.Fleet, "ENG", true),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.15. Simple convoy paradox with additional convoy")]
@@ -657,6 +685,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.Italy, UnitType.Army, "Naf", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.16. Pandin's paradox")]
@@ -703,6 +733,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.Germany, UnitType.Fleet, "NTH", false),
                 (Nation.Germany, UnitType.Fleet, "Bel", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.17. Pandin's extended paradox")]
@@ -752,6 +784,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.Germany, UnitType.Fleet, "NTH", false),
                 (Nation.Germany, UnitType.Fleet, "Bel", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.18. Betrayal paradox")]
@@ -798,6 +832,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.Germany, UnitType.Fleet, "HEL", false),
                 (Nation.Germany, UnitType.Fleet, "SKA", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.19. Multi-route convoy disruption paradox")]
@@ -840,6 +876,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "Nap", false),
                 (Nation.Italy, UnitType.Fleet, "Rom", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.20. Unwanted multi-route convoy paradox")]
@@ -887,6 +925,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Fleet, "EAS", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.21. Dad's army convoy")]
@@ -942,6 +982,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.England, UnitType.Fleet, "Cly", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.22. Second order paradox with two resolutions")]
@@ -997,6 +1039,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "NTH", true),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.23. Second order paradox with two exclusive convoys")]
@@ -1059,6 +1103,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.Russia, UnitType.Army, "Nwy", false),
                 (Nation.Russia, UnitType.Fleet, "NTH", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.24. Second order paradox with no resolution")]
@@ -1118,6 +1164,8 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "NTH", true),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "F.25. Cut support last")]
@@ -1189,5 +1237,7 @@ public class DATC_F : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "Swe", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 }

@@ -30,6 +30,8 @@ public class DATC_A : AdjudicationTestBase
         order.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([(Nation.England, UnitType.Fleet, "NTH", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.02. Move army to sea")]
@@ -49,6 +51,8 @@ public class DATC_A : AdjudicationTestBase
         order.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([(Nation.England, UnitType.Army, "Lvp", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.03. Move fleet to land")]
@@ -68,6 +72,8 @@ public class DATC_A : AdjudicationTestBase
         order.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([(Nation.Germany, UnitType.Fleet, "Kie", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.04. Move to own sector")]
@@ -87,6 +93,8 @@ public class DATC_A : AdjudicationTestBase
         order.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([(Nation.Germany, UnitType.Fleet, "Kie", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.05. Move to own sector with convoy")]
@@ -130,6 +138,8 @@ public class DATC_A : AdjudicationTestBase
                 (Nation.Germany, UnitType.Army, "Wal", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.06. Ordering a unit of another country", Skip = "Not applicable")]
@@ -167,6 +177,8 @@ public class DATC_A : AdjudicationTestBase
                 (Nation.England, UnitType.Fleet, "Lon", false),
                 (Nation.England, UnitType.Fleet, "NTH", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.08. Support to hold yourself is not possible")]
@@ -202,6 +214,8 @@ public class DATC_A : AdjudicationTestBase
                 (Nation.Austria, UnitType.Fleet, "Tri", true),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.09. Fleets must follow coast if not on sea")]
@@ -221,6 +235,8 @@ public class DATC_A : AdjudicationTestBase
         order.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([(Nation.Italy, UnitType.Fleet, "Rom", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.10. Support on unreachable destination not possible")]
@@ -254,6 +270,8 @@ public class DATC_A : AdjudicationTestBase
                 (Nation.Italy, UnitType.Army, "Apu", false),
                 (Nation.Italy, UnitType.Fleet, "Rom", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.11. Simple bounce")]
@@ -283,6 +301,8 @@ public class DATC_A : AdjudicationTestBase
                 (Nation.Austria, UnitType.Army, "Vie", false),
                 (Nation.Italy, UnitType.Army, "Ven", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "A.12. Bounce of three units")]
@@ -316,5 +336,7 @@ public class DATC_A : AdjudicationTestBase
                 (Nation.Germany, UnitType.Army, "Mun", false),
                 (Nation.Italy, UnitType.Army, "Ven", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 }

@@ -46,6 +46,8 @@ public class DATC_H : AdjudicationTestBase
             [
                 (Nation.Austria, UnitType.Army, "Ser", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "H.02. No supports from retreating unit")]
@@ -79,6 +81,8 @@ public class DATC_H : AdjudicationTestBase
         russianSupport.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "H.03. No convoy during retreat")]
@@ -110,6 +114,8 @@ public class DATC_H : AdjudicationTestBase
             [
                 (Nation.England, UnitType.Fleet, "NTH", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "H.04. No other moves during retreat")]
@@ -142,6 +148,8 @@ public class DATC_H : AdjudicationTestBase
                 (Nation.England, UnitType.Army, "Bel", false),
                 (Nation.England, UnitType.Fleet, "NTH", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "H.05. A unit may not retreat to the area from which it is attacked")]
@@ -176,6 +184,8 @@ public class DATC_H : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "Con", false),
                 (Nation.Russia, UnitType.Fleet, "Ank", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "H.06. Unit may not retreat to a contested area")]
@@ -216,6 +226,8 @@ public class DATC_H : AdjudicationTestBase
                 (Nation.Germany, UnitType.Army, "Mun", false),
                 (Nation.Germany, UnitType.Army, "Sil", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "H.07. Multiple reteat to same area will disband units")]
@@ -245,6 +257,8 @@ public class DATC_H : AdjudicationTestBase
         move2.Status.Should().Be(OrderStatus.Failure);
 
         board.Next().ShouldHaveUnits([]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "H.08. Triple retreat to same area will disband units")]
@@ -278,6 +292,8 @@ public class DATC_H : AdjudicationTestBase
         russianMove2.Status.Should().Be(OrderStatus.Failure);
 
         board.Next().ShouldHaveUnits([]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "H.09. Dislodged unit will not make attacker's area contested")]
@@ -322,6 +338,8 @@ public class DATC_H : AdjudicationTestBase
                 (Nation.Germany, UnitType.Fleet, "Ber", false),
                 (Nation.Germany, UnitType.Army, "Sil", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "H.10. Not retreating to attacker does not mean contested")]
@@ -368,6 +386,8 @@ public class DATC_H : AdjudicationTestBase
                 (Nation.Russia, UnitType.Army, "Pru", false),
                 (Nation.Russia, UnitType.Army, "Sil", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "H.11. Retreat when dislodged by adjacent convoy")]
@@ -413,6 +433,8 @@ public class DATC_H : AdjudicationTestBase
                 (Nation.France, UnitType.Fleet, "LYO", false),
                 (Nation.Italy, UnitType.Army, "Gas", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "H.12. Retreat when dislodged by adjacent convoy while trying to do the same")]
@@ -470,6 +492,8 @@ public class DATC_H : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "NAO", false),
                 (Nation.Russia, UnitType.Army, "Cly", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "H.13. No retreat with convoy in movement phase")]
@@ -501,6 +525,8 @@ public class DATC_H : AdjudicationTestBase
             [
                 (Nation.England, UnitType.Fleet, "ENG", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "H.14. No retreat with support in movement phase")]
@@ -537,6 +563,8 @@ public class DATC_H : AdjudicationTestBase
             [
                  (Nation.England, UnitType.Fleet, "ENG", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "H.15. No coastal crawl in retreat")]
@@ -570,6 +598,8 @@ public class DATC_H : AdjudicationTestBase
                 (Nation.France, UnitType.Fleet, "Por", false),
                 (Nation.France, UnitType.Fleet, "MAO", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "H.16. Contested for both coasts")]
@@ -610,5 +640,7 @@ public class DATC_H : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "Tun", false),
                 (Nation.Italy, UnitType.Fleet, "WES", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 }

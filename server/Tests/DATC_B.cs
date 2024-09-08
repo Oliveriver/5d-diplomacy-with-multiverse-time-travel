@@ -30,6 +30,8 @@ public class DATC_B : AdjudicationTestBase
         order.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([(Nation.France, UnitType.Fleet, "Por", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.02. Moving with unspecified coast when coast is not necessary", Skip = "Decided against")]
@@ -57,6 +59,8 @@ public class DATC_B : AdjudicationTestBase
         order.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([(Nation.France, UnitType.Fleet, "Gas", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.04. Support to unreachable coast allowed")]
@@ -91,6 +95,8 @@ public class DATC_B : AdjudicationTestBase
                 (Nation.France, UnitType.Fleet, "Mar", false),
                 (Nation.Italy, UnitType.Fleet, "WES", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.05. Support from unreachable coast not allowed")]
@@ -125,6 +131,8 @@ public class DATC_B : AdjudicationTestBase
                 (Nation.France, UnitType.Fleet, "Spa_N", false),
                 (Nation.Italy, UnitType.Fleet, "LYO", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.06. Support can be cut with other coast")]
@@ -168,6 +176,8 @@ public class DATC_B : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "LYO", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.07. Supporting own unit with unspecified coast", Skip = "Decided against")]
@@ -220,6 +230,8 @@ public class DATC_B : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "LYO", false),
                 (Nation.Italy, UnitType.Fleet, "Spa_S", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.10. Unit ordered with wrong coast", Skip = "Decided against")]
@@ -246,6 +258,8 @@ public class DATC_B : AdjudicationTestBase
         order.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([(Nation.France, UnitType.Fleet, "Spa_N", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.12. Army movement with coastal specification", Skip = "Decided against")]
@@ -283,6 +297,8 @@ public class DATC_B : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Fleet, "Bul_S", false),
                 (Nation.Turkey, UnitType.Fleet, "Con", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.14. Building with unspecified coast")]
@@ -303,6 +319,8 @@ public class DATC_B : AdjudicationTestBase
         order.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "B.15. Supporting foreign unit with unspecified coast", Skip = "Decided against")]

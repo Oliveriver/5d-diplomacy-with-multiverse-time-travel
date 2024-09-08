@@ -50,6 +50,8 @@ public class DATC_E : AdjudicationTestBase
                 (Nation.Russia, UnitType.Army, "Pru", true),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "E.02. No self dislodgement in head-to-head battle")]
@@ -84,6 +86,8 @@ public class DATC_E : AdjudicationTestBase
                 (Nation.Germany, UnitType.Fleet, "Kie", false),
                 (Nation.Germany, UnitType.Army, "Mun", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "E.03. No help in dislodging own unit")]
@@ -118,6 +122,8 @@ public class DATC_E : AdjudicationTestBase
                 (Nation.Germany, UnitType.Army, "Mun", false),
                 (Nation.England, UnitType.Fleet, "Kie", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "E.04. Non-dislodged loser still has effect")]
@@ -180,6 +186,8 @@ public class DATC_E : AdjudicationTestBase
                 (Nation.Austria, UnitType.Army, "Kie", false),
                 (Nation.Austria, UnitType.Army, "Ruh", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "E.05. Loser dislodged by another army still has effect")]
@@ -247,6 +255,8 @@ public class DATC_E : AdjudicationTestBase
                 (Nation.Austria, UnitType.Army, "Ruh", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "E.06. Not dislodge because of own support still has effect")]
@@ -297,6 +307,8 @@ public class DATC_E : AdjudicationTestBase
                 (Nation.Austria, UnitType.Army, "Kie", false),
                 (Nation.Austria, UnitType.Army, "Ruh", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "E.07. No self dislodgement with beleaguered garrison")]
@@ -343,6 +355,8 @@ public class DATC_E : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "SKA", false),
                 (Nation.Russia, UnitType.Fleet, "Nwy", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "E.08. No self dislodgement with beleaguered garrison and head-to-head battle")]
@@ -389,6 +403,8 @@ public class DATC_E : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "SKA", false),
                 (Nation.Russia, UnitType.Fleet, "Nwy", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "E.09. Almost self dislodgement with beleaguered garrison")]
@@ -435,6 +451,8 @@ public class DATC_E : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "SKA", false),
                 (Nation.Russia, UnitType.Fleet, "NTH", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "E.10. Almost circular movement with no self dislodgement with beleaguered garrison")]
@@ -485,6 +503,8 @@ public class DATC_E : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "SKA", false),
                 (Nation.Russia, UnitType.Fleet, "Nwy", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "E.11. No self dislodgement with beleaguered garrison, unit swap with adjacent convoying and two coasts")]
@@ -535,6 +555,8 @@ public class DATC_E : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "Spa_N", false),
                 (Nation.Italy, UnitType.Fleet, "WES", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "E.12. Support on attack on own unit can be used for other means")]
@@ -577,6 +599,8 @@ public class DATC_E : AdjudicationTestBase
                 (Nation.Russia, UnitType.Army, "Gal", false),
                 (Nation.Russia, UnitType.Army, "Rum", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "E.13. Three way beleaguered garrison")]
@@ -627,6 +651,8 @@ public class DATC_E : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "NWG", false),
                 (Nation.Russia, UnitType.Fleet, "Nwy", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "E.14. Illegal head-to-head battle can still defend")]
@@ -657,6 +683,8 @@ public class DATC_E : AdjudicationTestBase
                 (Nation.England, UnitType.Army, "Lvp", false),
                 (Nation.Russia, UnitType.Fleet, "Edi", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "E.15. The friendly head-to-head battle")]
@@ -719,5 +747,7 @@ public class DATC_E : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "BAL", false),
                 (Nation.Russia, UnitType.Army, "Pru", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 }

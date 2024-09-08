@@ -60,6 +60,8 @@ public class DATC_I : AdjudicationTestBase
                     (Nation.Germany, UnitType.Army, "Mun", false),
                 ]);
         }
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "I.02. Fleets cannot be built in land areas")]
@@ -80,6 +82,8 @@ public class DATC_I : AdjudicationTestBase
         build.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "I.03. Supply centre must be empty for building")]
@@ -105,6 +109,8 @@ public class DATC_I : AdjudicationTestBase
         build.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([(Nation.Germany, UnitType.Army, "Ber", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "I.04. Both coasts must be empty for building")]
@@ -130,6 +136,8 @@ public class DATC_I : AdjudicationTestBase
         build.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([(Nation.Russia, UnitType.Fleet, "Stp_S", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "I.05. Building in home supply centre that is not owned")]
@@ -154,6 +162,8 @@ public class DATC_I : AdjudicationTestBase
         build.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "I.06. Building in owned supply centre that is not a home supply centre")]
@@ -174,6 +184,8 @@ public class DATC_I : AdjudicationTestBase
         build.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "I.07. Only one build in a home supply centre")]
@@ -200,5 +212,7 @@ public class DATC_I : AdjudicationTestBase
         build2.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits([(Nation.Russia, UnitType.Army, "Mos", false)]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 }

@@ -48,6 +48,7 @@ public class StrengthCalculator(List<Order> activeOrders, AdjacencyValidator adj
         {
             case OrderStatus.Success:
             case OrderStatus.Retreat:
+            case OrderStatus.GuessingSuccess:
                 {
                     move.HoldStrength.Max = 0;
                     move.HoldStrength.Min = 0;
@@ -55,13 +56,13 @@ public class StrengthCalculator(List<Order> activeOrders, AdjacencyValidator adj
                 }
             case OrderStatus.Invalid:
             case OrderStatus.Failure:
+            case OrderStatus.GuessingFailure:
                 {
                     move.HoldStrength.Max = 1;
                     move.HoldStrength.Min = 1;
                     break;
                 }
             case OrderStatus.New:
-            case OrderStatus.Guessing:
             default:
                 {
                     move.HoldStrength.Max = 1;
@@ -149,13 +150,13 @@ public class StrengthCalculator(List<Order> activeOrders, AdjacencyValidator adj
             switch (support.Status)
             {
                 case OrderStatus.Success:
+                case OrderStatus.GuessingSuccess:
                     {
                         strength.Max += 1;
                         strength.Min += 1;
                         break;
                     }
                 case OrderStatus.New:
-                case OrderStatus.Guessing:
                     {
                         strength.Max += 1;
                         break;
@@ -163,6 +164,7 @@ public class StrengthCalculator(List<Order> activeOrders, AdjacencyValidator adj
                 case OrderStatus.Invalid:
                 case OrderStatus.Failure:
                 case OrderStatus.Retreat:
+                case OrderStatus.GuessingFailure:
                 default:
                     break;
             }

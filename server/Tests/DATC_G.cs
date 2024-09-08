@@ -45,6 +45,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.England, UnitType.Fleet, "SKA", false),
                 (Nation.Russia, UnitType.Army, "Nwy", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.02. Kidnapping an army")]
@@ -81,6 +83,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "Nwy", false),
                 (Nation.Germany, UnitType.Fleet, "SKA", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.03. An unwanted convoy to adjacent province")]
@@ -124,6 +128,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.England, UnitType.Fleet, "ENG", true),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.04. An unwanted disrupted convoy to adjacent province and opposite move")]
@@ -171,6 +177,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.England, UnitType.Army, "Bel", true),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.05. Swapping with multiple fleets with one own fleet")]
@@ -209,6 +217,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.Turkey, UnitType.Army, "Rom", false),
                 (Nation.Turkey, UnitType.Fleet, "ION", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.06. Swapping with unintended intent")]
@@ -259,6 +269,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "NWG", false),
                 (Nation.Russia, UnitType.Fleet, "NAO", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.07. Swapping with illegal intent")]
@@ -299,6 +311,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.Russia, UnitType.Army, "Nwy", false),
                 (Nation.Russia, UnitType.Fleet, "BOT", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.08. Explicit convoy that isn't there", Skip = "Not applicable")]
@@ -343,6 +357,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.England, UnitType.Fleet, "Fin", false),
                 (Nation.Russia, UnitType.Army, "Nwy", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.10. Swapped or a head-to-head battle?")]
@@ -398,6 +414,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.France, UnitType.Fleet, "NTH", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.11. A convoy to an adjacent province with a paradox")]
@@ -441,6 +459,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "BAR", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.12. Swapping two units with two convoys")]
@@ -491,6 +511,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.Germany, UnitType.Fleet, "ENG", false),
                 (Nation.Germany, UnitType.Fleet, "IRI", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.13. Support cut on attack on itself via convoy")]
@@ -530,6 +552,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "Alb", false),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.14. Bounce by convoy to adjacent province")]
@@ -583,6 +607,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.Germany, UnitType.Fleet, "SKA", false),
                 (Nation.Russia, UnitType.Fleet, "BAR", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.15. Bounce and dislodge with double convoy")]
@@ -630,6 +656,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.France, UnitType.Army, "Bel", true),
             ]);
         board.ShouldNotHaveNextBoard();
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.16. The two unit in one area bug, moving by convoy")]
@@ -680,6 +708,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.Russia, UnitType.Fleet, "SKA", false),
                 (Nation.Russia, UnitType.Fleet, "NWG", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.17. The two unit in one area bug, moving over land")]
@@ -730,6 +760,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.Russia, UnitType.Army, "Nwy", false),
                 (Nation.Russia, UnitType.Fleet, "NWG", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.18. The two unit in one area bug, with double convoy")]
@@ -784,6 +816,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.France, UnitType.Army, "Lon", false),
                 (Nation.France, UnitType.Army, "Wal", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.19. Swapping with intent of unnecesary convoy")]
@@ -824,6 +858,8 @@ public class DATC_G : AdjudicationTestBase
                 (Nation.Italy, UnitType.Fleet, "LYO", false),
                 (Nation.Italy, UnitType.Army, "Mar", false),
             ]);
+
+        world.ShouldHaveAllOrdersResolved();
     }
 
     [Fact(DisplayName = "G.20. Explicit convoy to adjacent province disrupted", Skip = "Not applicable")]
