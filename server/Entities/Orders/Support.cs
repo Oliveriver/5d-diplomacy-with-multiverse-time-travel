@@ -13,4 +13,6 @@ public class Support : Order
 
     [NotMapped]
     public override List<Location> TouchedLocations => [Location, Midpoint, Destination];
+
+    public override string ToString() => $"Support {Location} from {Midpoint} to {Destination}: {Status}";
 }

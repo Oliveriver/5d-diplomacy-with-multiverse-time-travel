@@ -1,9 +1,34 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities;
 
 public class Move : Order
 {
+    private OrderStatus status;
+
+    public override OrderStatus Status
+    {
+        get => status;
+        set
+        {
+            status = value;
+
+            if (value == OrderStatus.Failure)
+            {
+                foreach (var support in Supports)
+                {
+                    support.Status = OrderStatus.Failure;
+                }
+
+                foreach (var convoy in ConvoyPath)
+                {
+                    convoy.Status = OrderStatus.Failure;
+                }
+            }
+        }
+    }
+
     public Location Destination { get; set; } = null!;
 
     [NotMapped]
@@ -26,4 +51,6 @@ public class Move : Order
 
     [NotMapped]
     public OrderStrength PreventStrength { get; set; } = new();
+
+    public override string ToString() => $"Move {Location} to {Destination}: {Status}";
 }

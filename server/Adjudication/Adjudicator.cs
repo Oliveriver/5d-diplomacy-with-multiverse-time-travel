@@ -22,7 +22,7 @@ public class Adjudicator
         var adjacencyValidator = new AdjacencyValidator(regions, hasStrictAdjacencies);
 
         validator = new(world, regions, centres, adjacencyValidator);
-        evaluator = new(world, adjacencyValidator);
+        evaluator = new(world, regions, adjacencyValidator);
         executor = new(world, regions);
     }
 

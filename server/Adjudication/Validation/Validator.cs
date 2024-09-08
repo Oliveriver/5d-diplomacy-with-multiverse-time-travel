@@ -89,7 +89,7 @@ public class Validator
     {
         var stationaryOrders = world.Orders.Where(o =>
             o is Hold or Support or Convoy
-            || o is Move && o.Status == OrderStatus.Invalid);
+            || o is Move m && m.Status == OrderStatus.Invalid && m.Location != m.Destination);
         var allMoves = world.Orders.OfType<Move>();
 
         foreach (var support in supports)
@@ -101,7 +101,7 @@ public class Validator
 
             var hasMatchingMove = allMoves.Any(m =>
                 m.Location == support.Midpoint
-                && adjacencyValidator.EqualsOrIsRelated(m.Destination, support.Destination)
+                && m.Destination == support.Destination
                 && m.Status != OrderStatus.Invalid);
 
             support.Status = canSupport && (hasMatchingHold || hasMatchingMove) ? OrderStatus.New : OrderStatus.Invalid;

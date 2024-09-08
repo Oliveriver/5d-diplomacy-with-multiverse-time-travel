@@ -11,13 +11,13 @@ public class Evaluator
     private readonly AdjustmentEvaluator adjustmentEvaluator;
     private readonly RetreatEvaluator retreatEvaulator;
 
-    public Evaluator(World world, AdjacencyValidator adjacencyValidator)
+    public Evaluator(World world, List<Region> regions, AdjacencyValidator adjacencyValidator)
     {
         this.world = world;
 
         var activeOrders = GetActiveOrders();
 
-        movementEvaulator = new(world, activeOrders, adjacencyValidator);
+        movementEvaulator = new(world, activeOrders, regions, adjacencyValidator);
         adjustmentEvaluator = new(world, activeOrders);
         retreatEvaulator = new(world, activeOrders, adjacencyValidator);
 
@@ -77,6 +77,11 @@ public class Evaluator
 
         foreach (var order in activeOrders)
         {
+            if (order.Status != OrderStatus.Invalid)
+            {
+                order.Status = OrderStatus.New;
+            }
+
             var touchedBoards = world.Boards.Where(b => order.TouchedLocations.Any(l => b.Contains(l))).ToList();
             foreach (var board in touchedBoards)
             {

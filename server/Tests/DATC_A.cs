@@ -117,7 +117,7 @@ public class DATC_A : AdjudicationTestBase
         // Assert
         englishMove.Status.Should().Be(OrderStatus.Invalid);
         englishConvoy.Status.Should().Be(OrderStatus.Invalid);
-        englishSupport.Status.Should().Be(OrderStatus.Success);
+        englishSupport.Status.Should().Be(OrderStatus.Invalid);
         germanMove.Status.Should().Be(OrderStatus.Success);
         germanSupport.Status.Should().Be(OrderStatus.Success);
 
@@ -197,9 +197,9 @@ public class DATC_A : AdjudicationTestBase
 
         board.ShouldHaveUnits(
             [
-                (Nation.Italy, UnitType.Army, "Ven", true),
+                (Nation.Italy, UnitType.Army, "Ven", false),
                 (Nation.Italy, UnitType.Army, "Tyr", false),
-                (Nation.Austria, UnitType.Fleet, "Tri", false),
+                (Nation.Austria, UnitType.Fleet, "Tri", true),
             ]);
         board.ShouldNotHaveNextBoard();
     }

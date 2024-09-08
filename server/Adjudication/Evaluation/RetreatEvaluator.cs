@@ -40,11 +40,7 @@ public class RetreatEvaluator(World world, List<Order> activeOrders, AdjacencyVa
         var supports = world.Orders.OfType<Support>();
         var convoys = world.Orders.OfType<Convoy>();
 
-        var stationaryOrders = new List<Order>();
-        stationaryOrders.AddRange(holds);
-        stationaryOrders.AddRange(supports);
-        stationaryOrders.AddRange(convoys);
-        stationaryOrders.AddRange(moves.Where(m => m.Status == OrderStatus.Invalid));
+        List<Order> stationaryOrders = [.. holds, .. supports, .. convoys, .. moves.Where(m => m.Status == OrderStatus.Invalid)];
 
         foreach (var retreat in retreats)
         {

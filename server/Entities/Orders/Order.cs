@@ -10,7 +10,7 @@ public abstract class Order
     public int WorldId { get; set; }
     public virtual World World { get; set; } = null!;
 
-    public OrderStatus Status { get; set; }
+    public virtual OrderStatus Status { get; set; }
     public int? UnitId { get; set; }
     public virtual Unit? Unit { get; set; }
     public Location Location { get; set; } = null!;
@@ -25,5 +25,7 @@ public abstract class Order
     public OrderStrength HoldStrength { get; set; } = new();
 
     [NotMapped]
-    public List<Support> PotentialSupports { get; set; } = [];
+    public List<Support> Supports { get; set; } = [];
+
+    public abstract override string ToString();
 }

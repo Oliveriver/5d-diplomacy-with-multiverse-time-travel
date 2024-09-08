@@ -573,18 +573,16 @@ public class DATC_G : AdjudicationTestBase
         russianMove.Status.Should().Be(OrderStatus.Failure);
         russianSupport.Status.Should().Be(OrderStatus.Failure);
 
-        board.ShouldHaveUnits(
+        board.Next().ShouldHaveUnits(
             [
-                (Nation.England, UnitType.Army, "Nwy", false),
+                (Nation.England, UnitType.Army, "Swe", false),
                 (Nation.England, UnitType.Fleet, "Den", false),
                 (Nation.England, UnitType.Fleet, "Fin", false),
                 (Nation.France, UnitType.Fleet, "NWG", false),
                 (Nation.France, UnitType.Fleet, "NTH", false),
                 (Nation.Germany, UnitType.Fleet, "SKA", false),
-                (Nation.Russia, UnitType.Army, "Swe", true),
                 (Nation.Russia, UnitType.Fleet, "BAR", false),
             ]);
-        board.ShouldNotHaveNextBoard();
     }
 
     [Fact(DisplayName = "G.15. Bounce and dislodge with double convoy")]
@@ -724,12 +722,12 @@ public class DATC_G : AdjudicationTestBase
 
         board.Next().ShouldHaveUnits(
             [
-                (Nation.England, UnitType.Army, "Nwy", false),
+                (Nation.England, UnitType.Army, "Swe", false),
                 (Nation.England, UnitType.Army, "Den", false),
                 (Nation.England, UnitType.Fleet, "BAL", false),
                 (Nation.England, UnitType.Fleet, "SKA", false),
                 (Nation.England, UnitType.Fleet, "NTH", false),
-                (Nation.Russia, UnitType.Army, "Swe", false),
+                (Nation.Russia, UnitType.Army, "Nwy", false),
                 (Nation.Russia, UnitType.Fleet, "NWG", false),
             ]);
     }

@@ -324,7 +324,7 @@ public class MDATC_B : AdjudicationTestBase
         pastBottomBoard.Next(timeline: 3).ShouldHaveUnits(
             [
                 (Nation.Germany, UnitType.Army, "Mun", false),
-                (Nation.Germany, UnitType.Army, "Boh", false),
+                (Nation.Austria, UnitType.Army, "Boh", false),
             ]);
     }
 

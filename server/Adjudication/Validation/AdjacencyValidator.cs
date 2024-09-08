@@ -110,9 +110,7 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
             }
         }
 
-        var isValidArmyMove = unit.Type == UnitType.Army && connection.Type != ConnectionType.Sea;
-        var isValidFleetMove = unit.Type == UnitType.Fleet && connection.Type != ConnectionType.Land;
-        return isValidArmyMove || isValidFleetMove;
+        return CanTraverseConnection(unit, connection);
     }
 
     public bool EqualsOrIsRelated(Location location1, Location location2)
@@ -121,7 +119,7 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
         var location2Region = regions.First(r => r.Id == location2.RegionId);
 
         var location1ParentRegion = regions.FirstOrDefault(r => r.Id == location1Region.ParentId);
-        var location2ParentRegion = regions.FirstOrDefault(r => r.Id == location1Region.ParentId);
+        var location2ParentRegion = regions.FirstOrDefault(r => r.Id == location2Region.ParentId);
 
         if (location1ParentRegion == null)
         {
@@ -172,6 +170,31 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
 
             return location1Parent == location2Parent;
         }
+    }
+
+    public List<Location> GetAdjacentRegions(Unit unit)
+    {
+        var location = unit.Location;
+
+        var locationRegion = regions.First(r => r.Id == location.RegionId);
+        var adjacentRegions = locationRegion.Connections
+            .Where(c => CanTraverseConnection(unit, c))
+            .Select(c => c.Regions.First(r => r != locationRegion));
+
+        return adjacentRegions.Select(r => new Location
+        {
+            Timeline = location.Timeline,
+            Year = location.Year,
+            Phase = location.Phase,
+            RegionId = r.Id,
+        }).ToList();
+    }
+
+    private bool CanTraverseConnection(Unit unit, Connection connection)
+    {
+        var isValidArmyMove = unit.Type == UnitType.Army && connection.Type != ConnectionType.Sea;
+        var isValidFleetMove = unit.Type == UnitType.Fleet && connection.Type != ConnectionType.Land;
+        return isValidArmyMove || isValidFleetMove;
     }
 }
 
