@@ -122,7 +122,9 @@ public class OrderResolver(List<Order> orders, AdjacencyValidator adjacencyValid
             !m.IsSzykmanHold
             && adjacencyValidator.EqualsOrIsRelated(m.Destination, support.Location));
 
-        if (attackingMoves.All(m => m.Unit!.Owner == support.Unit!.Owner || adjacencyValidator.EqualsOrIsRelated(m.Location, support.Destination)))
+        if (attackingMoves.All(m =>
+            m.Unit!.Owner == support.Unit!.Owner
+            || adjacencyValidator.EqualsOrIsRelated(m.Location, support.Destination) && m.Status == OrderStatus.Failure))
         {
             support.Status = OrderStatus.Success;
             return;
