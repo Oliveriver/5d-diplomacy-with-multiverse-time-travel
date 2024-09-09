@@ -20,7 +20,7 @@ public class Evaluator
 
         var activeOrders = GetActiveOrders();
 
-        movementEvaulator = new(world, activeOrders, regions, adjacencyValidator, touchedOrdersFinder);
+        movementEvaulator = new(world, activeOrders, regions, adjacencyValidator);
         adjustmentEvaluator = new(world, activeOrders);
         retreatEvaulator = new(world, activeOrders, adjacencyValidator);
 

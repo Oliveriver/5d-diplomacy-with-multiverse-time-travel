@@ -3,11 +3,11 @@ using Enums;
 
 namespace Adjudication;
 
-public class StrengthCalculator(List<Order> activeOrders, AdjacencyValidator adjacencyValidator)
+public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacencyValidator)
 {
     private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
 
-    private readonly List<Order> activeOrders = activeOrders;
+    private readonly List<Order> orders = orders;
 
     public void UpdateOrderStrength(Order order)
     {
@@ -108,13 +108,13 @@ public class StrengthCalculator(List<Order> activeOrders, AdjacencyValidator adj
             }
         }
 
-        var destinationOrder = activeOrders.FirstOrDefault(o => adjacencyValidator.EqualsOrIsRelated(o.Location, move.Destination));
+        var destinationOrder = orders.FirstOrDefault(o => adjacencyValidator.EqualsOrIsRelated(o.Location, move.Destination));
 
         if (destinationOrder != null)
         {
             if (destinationOrder.Unit!.Owner == move.Unit!.Owner)
             {
-                if (destinationOrder is Move)
+                if (destinationOrder is Move otherMove && !otherMove.IsSzykmanHold)
                 {
                     if (destinationOrder.Status is OrderStatus.Failure or OrderStatus.Invalid)
                     {

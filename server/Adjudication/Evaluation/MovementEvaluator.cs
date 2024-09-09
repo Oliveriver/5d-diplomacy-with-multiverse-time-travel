@@ -3,51 +3,20 @@ using Enums;
 
 namespace Adjudication;
 
-public class MovementEvaluator(
-    World world,
-    List<Order> activeOrders,
-    List<Region> regions,
-    AdjacencyValidator adjacencyValidator,
-    TouchedOrdersFinder touchedOrdersFinder)
+public class MovementEvaluator(World world, List<Order> activeOrders, List<Region> regions, AdjacencyValidator adjacencyValidator)
 {
     private readonly World world = world;
+    private readonly List<Order> activeOrders = activeOrders;
 
-    private readonly List<Region> regions = regions;
     private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
-    private readonly TouchedOrdersFinder touchedOrdersFinder = touchedOrdersFinder;
-    private readonly CycleFinder cycleFinder = new(adjacencyValidator);
 
     public void EvaluateMovements()
     {
         IdentifyHeadToHeadBattles();
         LinkSupports();
 
-        var initialEvaluator = new OrderTreeEvaluator(world, activeOrders, regions, adjacencyValidator);
-        initialEvaluator.ApplyEvaluationPass();
-
-        var unresolvedMoves = activeOrders.OfType<Move>().Where(m => m.Status == OrderStatus.New).ToList();
-        var unresolvedNonMoves = activeOrders.Where(o => o is not Move && o.Status == OrderStatus.New).ToList();
-
-        if (unresolvedNonMoves.Count > 0 && unresolvedMoves.Count == 0)
-        {
-            IdentifyHeadToHeadBattles();
-            initialEvaluator.ApplyEvaluationPass();
-        }
-
-        while (unresolvedMoves.Count > 0)
-        {
-            IdentifyDependencies(unresolvedMoves);
-
-            foreach (var move in unresolvedMoves)
-            {
-                if (move.Dependencies.Count > 0)
-                {
-                    ResolveDependencies(move);
-                }
-            }
-
-            unresolvedMoves = activeOrders.OfType<Move>().Where(m => m.Status == OrderStatus.New).ToList();
-        }
+        var orderSetResolver = new OrderSetResolver(world, activeOrders, regions, adjacencyValidator);
+        orderSetResolver.RunResolutionAlgorithm();
 
         IdentifyRetreats();
     }
@@ -81,140 +50,6 @@ public class MovementEvaluator(
                 && adjacencyValidator.EqualsOrIsRelated(m.Destination, move.Location)
                 && m.ConvoyPath.Count == 0);
             move.OpposingMove = opposingMove;
-        }
-    }
-
-    private void IdentifyDependencies(List<Move> unresolvedMoves)
-    {
-        foreach (var move in unresolvedMoves)
-        {
-            if (unresolvedMoves.Any(m => m.Dependencies.Contains(move)))
-            {
-                continue;
-            }
-
-            move.Dependencies = touchedOrdersFinder.GetTouchedOrders([move]);
-        }
-    }
-
-    private void ResolveDependencies(Move move)
-    {
-        if (move.Status != OrderStatus.New)
-        {
-            return;
-        }
-
-        var treeEvaluator = new OrderTreeEvaluator(world, move.Dependencies, regions, adjacencyValidator);
-
-        var initialStatuses = move.Dependencies.Select(o => o.Status).ToList();
-        var newStatuses = new List<OrderStatus>();
-
-        while (!initialStatuses.SequenceEqual(newStatuses))
-        {
-            initialStatuses = newStatuses;
-            IdentifyHeadToHeadBattles();
-            treeEvaluator.ApplyEvaluationPass();
-            newStatuses = move.Dependencies.Select(o => o.Status).ToList();
-        }
-
-        if (move.Status == OrderStatus.New)
-        {
-            var initialVirtualHoldStates = move.Dependencies.Select(o => o is Move m && m.IsSzykmanHold).ToList();
-
-            var isConsistentSuccess = TryStatusGuess(move, OrderStatus.Success);
-
-            foreach (var order in move.Dependencies)
-            {
-                order.Status = initialStatuses[move.Dependencies.IndexOf(order)];
-
-                if (order is Move otherMove)
-                {
-                    otherMove.IsSzykmanHold = initialVirtualHoldStates[move.Dependencies.IndexOf(otherMove)];
-                }
-            }
-
-            var isConsistentFailure = TryStatusGuess(move, OrderStatus.Failure);
-
-            foreach (var order in move.Dependencies)
-            {
-                order.Status = initialStatuses[move.Dependencies.IndexOf(order)];
-
-                if (order is Move otherMove)
-                {
-                    otherMove.IsSzykmanHold = initialVirtualHoldStates[move.Dependencies.IndexOf(otherMove)];
-                }
-            }
-
-            if (isConsistentSuccess && !isConsistentFailure)
-            {
-                TryStatusGuess(move, OrderStatus.Success);
-            }
-            else if (isConsistentFailure && !isConsistentSuccess)
-            {
-                TryStatusGuess(move, OrderStatus.Failure);
-            }
-            else if (!isConsistentSuccess && !isConsistentFailure)
-            {
-                ResolveConvoyParadox(move.Dependencies);
-            }
-            else
-            {
-                var cycle = cycleFinder.GetMoveCycle(move.Dependencies);
-
-                if (cycle.Count > 0)
-                {
-                    foreach (var cycleMove in cycle)
-                    {
-                        cycleMove.Status = OrderStatus.Success;
-                    }
-                }
-                else
-                {
-                    ResolveConvoyParadox(move.Dependencies);
-                }
-            }
-        }
-    }
-
-    private bool TryStatusGuess(Move move, OrderStatus status)
-    {
-        move.Status = status;
-
-        var treeEvaluator = new OrderTreeEvaluator(world, move.Dependencies, regions, adjacencyValidator);
-        treeEvaluator.ApplyEvaluationPass();
-
-        var initialGuessStatuses = move.Dependencies.Select(o => o.Status).ToList();
-        var newGuessStatuses = new List<OrderStatus>();
-
-        while (!initialGuessStatuses.SequenceEqual(newGuessStatuses))
-        {
-            initialGuessStatuses = newGuessStatuses;
-            treeEvaluator.ApplyEvaluationPass();
-            newGuessStatuses = move.Dependencies.Select(o => o.Status).ToList();
-
-            if (move.Status != status)
-            {
-                return false;
-            }
-        }
-
-        return move.Status == status;
-    }
-
-    private void ResolveConvoyParadox(List<Order> orders)
-    {
-        var movesViaConvoy = orders.OfType<Move>().Where(m =>
-            m.ConvoyPath.Count > 0 || !adjacencyValidator.IsValidDirectMove(m.Unit!, m.Location, m.Destination));
-        foreach (var move in movesViaConvoy)
-        {
-            var destinationOrder = orders.FirstOrDefault(o => adjacencyValidator.EqualsOrIsRelated(o.Location, move.Destination));
-            if (destinationOrder is not Support)
-            {
-                continue;
-            }
-
-            move.Status = OrderStatus.Failure;
-            move.IsSzykmanHold = true;
         }
     }
 

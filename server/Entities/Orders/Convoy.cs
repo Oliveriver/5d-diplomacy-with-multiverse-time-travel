@@ -14,5 +14,8 @@ public class Convoy : Order
     [NotMapped]
     public override List<Location> TouchedLocations => [Location, Midpoint, Destination];
 
+    [NotMapped]
+    public bool CanProvidePath { get; set; } = true;
+
     public override string ToString() => $"Convoy {Location} from {Midpoint} to {Destination}: {Status}";
 }
