@@ -12,7 +12,6 @@ public class MovementEvaluator(World world, List<Order> activeOrders, List<Regio
 
     public void EvaluateMovements()
     {
-        IdentifyHeadToHeadBattles();
         LinkSupports();
 
         var orderSetResolver = new OrderSetResolver(world, activeOrders, regions, adjacencyValidator);
@@ -29,27 +28,6 @@ public class MovementEvaluator(World world, List<Order> activeOrders, List<Regio
         {
             var supportedOrder = activeOrders.First(o => o.Location == support.Midpoint);
             supportedOrder.Supports.Add(support);
-        }
-    }
-
-    private void IdentifyHeadToHeadBattles()
-    {
-        var moves = activeOrders.OfType<Move>().Where(m => m.Status != OrderStatus.Invalid).ToList();
-
-        foreach (var move in moves)
-        {
-            if (move.ConvoyPath.Count > 0)
-            {
-                continue;
-            }
-
-            var opposingMove = moves.FirstOrDefault(m =>
-                m.Status != OrderStatus.Invalid
-                && !m.IsSzykmanHold
-                && adjacencyValidator.EqualsOrIsRelated(m.Location, move.Destination)
-                && adjacencyValidator.EqualsOrIsRelated(m.Destination, move.Location)
-                && m.ConvoyPath.Count == 0);
-            move.OpposingMove = opposingMove;
         }
     }
 

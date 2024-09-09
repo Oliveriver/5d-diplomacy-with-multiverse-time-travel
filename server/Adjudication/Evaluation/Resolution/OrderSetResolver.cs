@@ -49,6 +49,7 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
         var newStatuses = new List<OrderStatus>();
 
         UpdateConvoyPaths();
+        IdentifyHeadToHeadBattles();
         UpdateOrderStrengths();
 
         while (!initialStatuses.SequenceEqual(newStatuses))
@@ -61,10 +62,32 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
             }
 
             UpdateConvoyPaths();
+            IdentifyHeadToHeadBattles();
             UpdateOrderStrengths();
             UpdateSelfAttackingSupports();
 
             newStatuses = orders.Select(o => o.Status).ToList();
+        }
+    }
+
+    private void IdentifyHeadToHeadBattles()
+    {
+        var moves = orders.OfType<Move>().Where(m => m.Status != OrderStatus.Invalid).ToList();
+
+        foreach (var move in moves)
+        {
+            if (move.ConvoyPath.Count > 0)
+            {
+                continue;
+            }
+
+            var opposingMove = moves.FirstOrDefault(m =>
+                m.Status != OrderStatus.Invalid
+                && !m.IsSzykmanHold
+                && adjacencyValidator.EqualsOrIsRelated(m.Location, move.Destination)
+                && adjacencyValidator.EqualsOrIsRelated(m.Destination, move.Location)
+                && m.ConvoyPath.Count == 0);
+            move.OpposingMove = opposingMove;
         }
     }
 
@@ -148,6 +171,7 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
         }
 
         UpdateConvoyPaths();
+        IdentifyHeadToHeadBattles();
         UpdateOrderStrengths();
 
         orderResolver.TryResolve(order);
