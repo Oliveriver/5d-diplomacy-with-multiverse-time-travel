@@ -11,7 +11,7 @@ public class StrengthCalculator(List<Order> activeOrders, AdjacencyValidator adj
 
     public void UpdateOrderStrength(Order order)
     {
-        if (order is Move move)
+        if (order is Move move && !move.IsSzykmanHold)
         {
             CalculateMoveStrength(move);
             return;

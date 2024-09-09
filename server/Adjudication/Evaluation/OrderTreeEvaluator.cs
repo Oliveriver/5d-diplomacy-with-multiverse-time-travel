@@ -102,7 +102,7 @@ public class OrderTreeEvaluator(World world, List<Order> orders, List<Region> re
 
     private void EvaluateHold(Hold hold)
     {
-        var attackingMoves = moves.Where(m => adjacencyValidator.EqualsOrIsRelated(m.Destination, hold.Location));
+        var attackingMoves = moves.Where(m => !m.IsSzykmanHold && adjacencyValidator.EqualsOrIsRelated(m.Destination, hold.Location));
         if (attackingMoves.Any(m => m.Status == OrderStatus.Success))
         {
             hold.Status = OrderStatus.Failure;
@@ -115,10 +115,39 @@ public class OrderTreeEvaluator(World world, List<Order> orders, List<Region> re
 
     private void EvaluateMove(Move move)
     {
-        var attackingMoves = moves.Where(m => m != move && adjacencyValidator.EqualsOrIsRelated(m.Destination, move.Destination));
+        var attackingMoves = moves.Where(m => m != move && !m.IsSzykmanHold && adjacencyValidator.EqualsOrIsRelated(m.Destination, move.Destination));
 
         var beatsPreventStrength = move.AttackStrength.Min > (attackingMoves.Any() ? attackingMoves.Max(m => m.PreventStrength.Max) : 0);
         var losesToPreventStrength = move.AttackStrength.Max <= (attackingMoves.Any() ? attackingMoves.Min(m => m.PreventStrength.Min) : 0);
+
+        var isPreventedByAllDislodgedConvoys = true;
+
+        foreach (var attackingMove in attackingMoves)
+        {
+            if (attackingMove.Status != OrderStatus.Failure
+                || adjacencyValidator.IsValidDirectMove(attackingMove.Unit!, attackingMove.Location, attackingMove.Destination))
+            {
+                isPreventedByAllDislodgedConvoys = false;
+                break;
+            }
+
+            var attackingConvoys = convoys.Where(c => c.Midpoint == attackingMove.Location && c.Destination == attackingMove.Destination);
+            foreach (var convoy in attackingConvoys)
+            {
+                var isDislodged = moves.Any(m => m.Destination == convoy.Location && m.Status == OrderStatus.Success);
+                if (!isDislodged)
+                {
+                    isPreventedByAllDislodgedConvoys = false;
+                    break;
+                }
+            }
+        }
+
+        if (isPreventedByAllDislodgedConvoys)
+        {
+            beatsPreventStrength = true;
+            losesToPreventStrength = false;
+        }
 
         if (move.OpposingMove != null)
         {
@@ -164,9 +193,41 @@ public class OrderTreeEvaluator(World world, List<Order> orders, List<Region> re
 
     private void EvaluateSupport(Support support)
     {
-        var attackingMoves = moves.Where(m => adjacencyValidator.EqualsOrIsRelated(m.Destination, support.Location));
+        var attackingMoves = moves.Where(m => !m.IsSzykmanHold && adjacencyValidator.EqualsOrIsRelated(m.Destination, support.Location) && !m.IsSzykmanHold);
 
-        if (attackingMoves.All(m => m.Status == OrderStatus.Failure))
+        if (!attackingMoves.Any(m => !adjacencyValidator.EqualsOrIsRelated(m.Location, support.Destination)))
+        {
+            support.Status = OrderStatus.Success;
+            return;
+        }
+
+        var isAttackedByAllDislodgedConvoys = true;
+
+        foreach (var attackingMove in attackingMoves)
+        {
+            if (attackingMove.Status != OrderStatus.Failure
+                || adjacencyValidator.IsValidDirectMove(attackingMove.Unit!, attackingMove.Location, attackingMove.Destination))
+            {
+                isAttackedByAllDislodgedConvoys = false;
+            }
+
+            var attackingConvoys = convoys.Where(c => c.Midpoint == attackingMove.Location && c.Destination == attackingMove.Destination);
+            foreach (var convoy in attackingConvoys)
+            {
+                var isDislodged = moves.Any(m => m.Destination == convoy.Location && m.Status == OrderStatus.Success);
+                if (!isDislodged)
+                {
+                    isAttackedByAllDislodgedConvoys = false;
+                }
+
+                if (convoy.Location == support.Destination)
+                {
+                    return;
+                }
+            }
+        }
+
+        if (isAttackedByAllDislodgedConvoys)
         {
             support.Status = OrderStatus.Success;
             return;
@@ -178,7 +239,7 @@ public class OrderTreeEvaluator(World world, List<Order> orders, List<Region> re
             return;
         }
 
-        var opposingMove = attackingMoves.FirstOrDefault(m => adjacencyValidator.EqualsOrIsRelated(m.Location, support.Destination));
+        var opposingMove = attackingMoves.FirstOrDefault(m => !m.IsSzykmanHold && adjacencyValidator.EqualsOrIsRelated(m.Location, support.Destination));
 
         var isAttackedByUnresolvedConvoy = attackingMoves.Any(m =>
             m.Unit!.Owner != support.Unit!.Owner
@@ -200,7 +261,7 @@ public class OrderTreeEvaluator(World world, List<Order> orders, List<Region> re
 
     private void EvaluateConvoy(Convoy convoy)
     {
-        var attackingMoves = moves.Where(m => m.Destination == convoy.Location);
+        var attackingMoves = moves.Where(m => !m.IsSzykmanHold && m.Destination == convoy.Location);
 
         if (convoy.Status != OrderStatus.Failure && !attackingMoves.Any(m => m.Status != OrderStatus.Failure))
         {

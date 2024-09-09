@@ -30,6 +30,7 @@ public class MovementEvaluator(
 
         if (unresolvedNonMoves.Count > 0 && unresolvedMoves.Count == 0)
         {
+            IdentifyHeadToHeadBattles();
             initialEvaluator.ApplyEvaluationPass();
         }
 
@@ -39,7 +40,10 @@ public class MovementEvaluator(
 
             foreach (var move in unresolvedMoves)
             {
-                ResolveDependencies(move);
+                if (move.Dependencies.Count > 0)
+                {
+                    ResolveDependencies(move);
+                }
             }
 
             unresolvedMoves = activeOrders.OfType<Move>().Where(m => m.Status == OrderStatus.New).ToList();
@@ -72,6 +76,7 @@ public class MovementEvaluator(
 
             var opposingMove = moves.FirstOrDefault(m =>
                 m.Status != OrderStatus.Invalid
+                && !m.IsSzykmanHold
                 && adjacencyValidator.EqualsOrIsRelated(m.Location, move.Destination)
                 && adjacencyValidator.EqualsOrIsRelated(m.Destination, move.Location)
                 && m.ConvoyPath.Count == 0);
@@ -107,17 +112,25 @@ public class MovementEvaluator(
         while (!initialStatuses.SequenceEqual(newStatuses))
         {
             initialStatuses = newStatuses;
+            IdentifyHeadToHeadBattles();
             treeEvaluator.ApplyEvaluationPass();
             newStatuses = move.Dependencies.Select(o => o.Status).ToList();
         }
 
         if (move.Status == OrderStatus.New)
         {
+            var initialVirtualHoldStates = move.Dependencies.Select(o => o is Move m && m.IsSzykmanHold).ToList();
+
             var isConsistentSuccess = TryStatusGuess(move, OrderStatus.Success);
 
             foreach (var order in move.Dependencies)
             {
                 order.Status = initialStatuses[move.Dependencies.IndexOf(order)];
+
+                if (order is Move otherMove)
+                {
+                    otherMove.IsSzykmanHold = initialVirtualHoldStates[move.Dependencies.IndexOf(otherMove)];
+                }
             }
 
             var isConsistentFailure = TryStatusGuess(move, OrderStatus.Failure);
@@ -125,6 +138,11 @@ public class MovementEvaluator(
             foreach (var order in move.Dependencies)
             {
                 order.Status = initialStatuses[move.Dependencies.IndexOf(order)];
+
+                if (order is Move otherMove)
+                {
+                    otherMove.IsSzykmanHold = initialVirtualHoldStates[move.Dependencies.IndexOf(otherMove)];
+                }
             }
 
             if (isConsistentSuccess && !isConsistentFailure)
@@ -185,10 +203,18 @@ public class MovementEvaluator(
 
     private void ResolveConvoyParadox(List<Order> orders)
     {
-        var movesViaConvoy = orders.OfType<Move>().Where(m => m.ConvoyPath.Count > 0);
+        var movesViaConvoy = orders.OfType<Move>().Where(m =>
+            m.ConvoyPath.Count > 0 || !adjacencyValidator.IsValidDirectMove(m.Unit!, m.Location, m.Destination));
         foreach (var move in movesViaConvoy)
         {
+            var destinationOrder = orders.FirstOrDefault(o => adjacencyValidator.EqualsOrIsRelated(o.Location, move.Destination));
+            if (destinationOrder is not Support)
+            {
+                continue;
+            }
+
             move.Status = OrderStatus.Failure;
+            move.IsSzykmanHold = true;
         }
     }
 

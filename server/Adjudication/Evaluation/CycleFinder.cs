@@ -9,7 +9,7 @@ public class CycleFinder(AdjacencyValidator adjacencyValidator)
 
     public List<Move> GetMoveCycle(List<Order> orders)
     {
-        var moves = orders.OfType<Move>().Where(m => m.Status is OrderStatus.New or OrderStatus.Success).ToList();
+        var moves = orders.OfType<Move>().Where(m => m.Status is OrderStatus.New or OrderStatus.Success && !m.IsSzykmanHold).ToList();
 
         var visitedMoves = new List<Move>();
         var cycle = new List<Move>();

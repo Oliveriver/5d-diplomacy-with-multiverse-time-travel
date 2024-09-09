@@ -52,5 +52,8 @@ public class Move : Order
     [NotMapped]
     public OrderStrength PreventStrength { get; set; } = new();
 
+    [NotMapped]
+    public bool IsSzykmanHold { get; set; }
+
     public override string ToString() => $"Move {Location} to {Destination}: {Status}";
 }
