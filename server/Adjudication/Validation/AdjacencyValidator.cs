@@ -142,9 +142,9 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
         {
             var location1Parent = new Location
             {
-                Timeline = location2.Timeline,
-                Year = location2.Year,
-                Phase = location2.Phase,
+                Timeline = location1.Timeline,
+                Year = location1.Year,
+                Phase = location1.Phase,
                 RegionId = location1ParentRegion.Id,
             };
 
