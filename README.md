@@ -75,14 +75,14 @@ With strict adjacencies, a unit can move/support/convoy to:
 
 * Any adjacent region on its own board.
 * The same region on a different board exactly one timeline up or down, e.g. moving from Paris in Timeline 2 to Paris in Timeline 1.
-* The same region on a different board exactly one timeline in the past, e.g. moving from Berlin in Fall 1901 to Berlin in Spring 1901. Note that moving to winter boards is forbidden and these are skipped when determining board adjacencies, so Spring 1902 is adjacent to Fall 1901.
+* The same region on a different board exactly one board in the past, e.g. moving from Berlin in Fall 1901 to Berlin in Spring 1901. Note that moving to winter boards is forbidden and these are skipped when determining board adjacencies, so Spring 1902 is adjacent to Fall 1901.
 * Any region it is successfully convoyed to (see below).
 
 With loose adjacencies, a unit can move/support/convoy to:
 
 * Any adjacent region on its own board.
 * The same region on a different board exactly one timeline up or down, or any region adjacent to that region within its board, e.g. moving from Paris in Timeline 2 to Gascony in Timeline 1.
-* The same region on a different board exactly one timeline in the past, or any region adjacent to that region within its board, e.g. moving from Berlin in Fall 1901 to Kiel in Spring 1901. Winter boards are still ignored.
+* The same region on a different board exactly one board in the past, or any region adjacent to that region within its board, e.g. moving from Berlin in Fall 1901 to Kiel in Spring 1901. Winter boards are still ignored.
 * Any region it is successfully convoyed to (see below).
 
 In either case, note in particular that movement one board diagonally is not permitted (without a convoy).
