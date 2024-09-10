@@ -142,6 +142,13 @@ public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacency
                 return;
             }
 
+            var isDestinationMoveBeingConvoyed = destinationOrder is Move destinationMove && destinationMove.ConvoyPath.Any(c => c.CanProvidePath);
+            if (isDestinationMoveBeingConvoyed)
+            {
+                AddSupportStrength(move.AttackStrength, move.Supports);
+                return;
+            }
+
             var supportsWithDifferentOwner = move.Supports.Where(s => s.Unit!.Owner != destinationOrder.Unit!.Owner).ToList();
             AddSupportStrength(move.AttackStrength, supportsWithDifferentOwner);
             return;
@@ -161,6 +168,14 @@ public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacency
 
         move.PreventStrength.Max = 1;
         move.PreventStrength.Min = 1;
+
+        if (!adjacencyValidator.IsValidDirectMove(move.Unit!, move.Location, move.Destination)
+            && move.ConvoyPath.All(c => !c.CanProvidePath))
+        {
+            move.PreventStrength.Max = 0;
+            move.PreventStrength.Min = 0;
+            return;
+        }
 
         if (move.ConvoyPath.Any(c => c.Status == OrderStatus.New))
         {
