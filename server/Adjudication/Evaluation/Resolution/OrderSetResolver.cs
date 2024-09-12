@@ -266,7 +266,6 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
         {
             c.Status = OrderStatus.Failure;
             c.CanProvidePath = false;
-            Console.WriteLine("Hi");
         }
 
         Resolve(order, []);
