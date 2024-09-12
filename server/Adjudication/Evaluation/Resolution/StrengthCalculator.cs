@@ -11,7 +11,7 @@ public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacency
 
     public void UpdateOrderStrength(Order order)
     {
-        if (order is Move move && !move.IsSzykmanHold)
+        if (order is Move move)
         {
             CalculateMoveStrength(move);
             return;
@@ -114,7 +114,7 @@ public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacency
         {
             if (destinationOrder.Unit!.Owner == move.Unit!.Owner)
             {
-                if (destinationOrder is Move otherMove && !otherMove.IsSzykmanHold)
+                if (destinationOrder is Move)
                 {
                     if (destinationOrder.Status is OrderStatus.Failure or OrderStatus.Invalid)
                     {

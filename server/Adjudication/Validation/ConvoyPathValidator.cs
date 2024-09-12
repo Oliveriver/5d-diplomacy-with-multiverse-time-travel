@@ -40,7 +40,7 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region>
         {
             var successfulDepthFirstSearch = new DepthFirstConvoySearch(successfulConvoysInPath, adjacencyValidator, regions);
             var successfulConvoyPath = successfulDepthFirstSearch.GetPossibleConvoys(unit, location, destination);
-            if (successfulConvoyPath != null)
+            if (successfulConvoyPath.Count > 0)
             {
                 return successfulConvoyPath;
             }

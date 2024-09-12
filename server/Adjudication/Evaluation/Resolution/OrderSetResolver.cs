@@ -20,7 +20,7 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
 
     public void RunResolutionAlgorithm()
     {
-        ApplyInitialPass();
+        ApplyResolutionPass();
 
         var unresolvedOrders = orders.Where(o => o.Status == OrderStatus.New).ToList();
 
@@ -28,7 +28,7 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
         {
             foreach (var order in unresolvedOrders)
             {
-                Resolve(order, []);
+                RecursivelyResolve(order, []);
             }
 
             var newUnresolvedOrders = orders.Where(o => o.Status == OrderStatus.New).ToList();
@@ -43,14 +43,15 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
         UpdateDependentOrders();
     }
 
-    private void ApplyInitialPass()
+    private void ApplyResolutionPass()
     {
-        var initialStatuses = orders.Select(o => o.Status).ToList();
-        var newStatuses = new List<OrderStatus>();
-
         UpdateConvoyPaths();
         IdentifyHeadToHeadBattles();
         UpdateOrderStrengths();
+        UpdateSelfAttackingSupports();
+
+        var initialStatuses = orders.Select(o => o.Status).ToList();
+        var newStatuses = new List<OrderStatus>();
 
         while (!initialStatuses.SequenceEqual(newStatuses))
         {
@@ -83,7 +84,6 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
 
             var opposingMove = moves.FirstOrDefault(m =>
                 m.Status != OrderStatus.Invalid
-                && !m.IsSzykmanHold
                 && adjacencyValidator.EqualsOrIsRelated(m.Location, move.Destination)
                 && adjacencyValidator.EqualsOrIsRelated(m.Destination, move.Location)
                 && m.ConvoyPath.Count == 0);
@@ -162,7 +162,7 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
         }
     }
 
-    private void Resolve(Order order, List<Order> currentStack)
+    private void RecursivelyResolve(Order order, List<Order> currentStack)
     {
         if (currentStack.Contains(order))
         {
@@ -170,13 +170,9 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
             return;
         }
 
-        UpdateConvoyPaths();
-        IdentifyHeadToHeadBattles();
-        UpdateOrderStrengths();
+        ApplyResolutionPass();
 
-        orderResolver.TryResolve(order);
-
-        if (order is not Move && order.Status != OrderStatus.New || order is Move move && (order.Status == OrderStatus.Success || move.ConvoyPath == null))
+        if (order is not Move && order.Status != OrderStatus.New || order is Move && order.Status == OrderStatus.Success)
         {
             return;
         }
@@ -187,7 +183,7 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
 
         foreach (var dependent in dependents)
         {
-            Resolve(dependent, currentStack);
+            RecursivelyResolve(dependent, currentStack);
         }
 
         currentStack.Remove(order);
@@ -203,16 +199,16 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
         if (isConsistentSuccess && !isConsistentFailure)
         {
             guessedOrder.Status = OrderStatus.Success;
-            Resolve(guessedOrder, []);
+            ApplyResolutionPass();
         }
         else if (isConsistentFailure && !isConsistentSuccess)
         {
             guessedOrder.Status = OrderStatus.Failure;
-            Resolve(guessedOrder, []);
+            ApplyResolutionPass();
         }
         else if (!isConsistentSuccess && !isConsistentFailure)
         {
-            ApplySzykmanRule(guessedOrder, currentStack);
+            ApplySzykmanRule(currentStack);
         }
         else
         {
@@ -234,11 +230,11 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
             if (isCycle)
             {
                 guessedOrder.Status = OrderStatus.Success;
-                Resolve(guessedOrder, []);
+                ApplyResolutionPass();
             }
             else
             {
-                ApplySzykmanRule(guessedOrder, currentStack);
+                ApplySzykmanRule(currentStack);
             }
         }
     }
@@ -248,7 +244,7 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
         var initialStatuses = orders.Select(o => o.Status).ToList();
 
         order.Status = status;
-        Resolve(order, []);
+        ApplyResolutionPass();
 
         var isConsistent = order.Status == status;
 
@@ -260,14 +256,14 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
         return isConsistent;
     }
 
-    private void ApplySzykmanRule(Order order, List<Order> currentStack)
+    private void ApplySzykmanRule(List<Order> currentStack)
     {
-        foreach (var c in currentStack.OfType<Convoy>())
+        foreach (var convoy in currentStack.OfType<Convoy>())
         {
-            c.Status = OrderStatus.Failure;
-            c.CanProvidePath = false;
+            convoy.Status = OrderStatus.Failure;
+            convoy.CanProvidePath = false;
         }
 
-        Resolve(order, []);
+        ApplyResolutionPass();
     }
 }

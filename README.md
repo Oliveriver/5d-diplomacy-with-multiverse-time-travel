@@ -1,7 +1,5 @@
 # 5D Diplomacy With Multiverse Time Travel
 
-**Currently a WIP. At the time of writing, everything appears to work except convoy paradoxes. If you encounter any other bugs, please create an issue.**
-
 A new standard in measuring how galaxy-brained you are, 5D Diplomacy With Multiverse Time Travel combines the classic game of pure negotiation with the modern classic game of pure disorientation. Can you convince your opponent to support an attack in the present while simultaneously backstabbing them five years ago and seven timelines over?
 
 ![Game screenshot](client/public/screenshot.png)
@@ -73,17 +71,17 @@ Units in spring or fall turns can be given hold, move, support or convoy orders.
 
 With strict adjacencies, a unit can move/support/convoy to:
 
-* Any adjacent region on its own board.
-* The same region on a different board exactly one timeline up or down, e.g. moving from Paris in Timeline 2 to Paris in Timeline 1.
-* The same region on a different board exactly one board in the past, e.g. moving from Berlin in Fall 1901 to Berlin in Spring 1901. Note that moving to winter boards is forbidden and these are skipped when determining board adjacencies, so Spring 1902 is adjacent to Fall 1901.
-* Any region it is successfully convoyed to (see below).
+- Any adjacent region on its own board.
+- The same region on a different board exactly one timeline up or down, e.g. moving from Paris in Timeline 2 to Paris in Timeline 1.
+- The same region on a different board exactly one board in the past, e.g. moving from Berlin in Fall 1901 to Berlin in Spring 1901. Note that moving to winter boards is forbidden and these are skipped when determining board adjacencies, so Spring 1902 is adjacent to Fall 1901.
+- Any region it is successfully convoyed to (see below).
 
 With loose adjacencies, a unit can move/support/convoy to:
 
-* Any adjacent region on its own board.
-* The same region on a different board exactly one timeline up or down, or any region adjacent to that region within its board, e.g. moving from Paris in Timeline 2 to Gascony in Timeline 1.
-* The same region on a different board exactly one board in the past, or any region adjacent to that region within its board, e.g. moving from Berlin in Fall 1901 to Kiel in Spring 1901. Winter boards are still ignored.
-* Any region it is successfully convoyed to (see below).
+- Any adjacent region on its own board.
+- The same region on a different board exactly one timeline up or down, or any region adjacent to that region within its board, e.g. moving from Paris in Timeline 2 to Gascony in Timeline 1.
+- The same region on a different board exactly one board in the past, or any region adjacent to that region within its board, e.g. moving from Berlin in Fall 1901 to Kiel in Spring 1901. Winter boards are still ignored.
+- Any region it is successfully convoyed to (see below).
 
 In either case, note in particular that movement one board diagonally is not permitted (without a convoy).
 
@@ -101,8 +99,8 @@ In particular, new orders could affect a prior resolution of existing orders, e.
 
 For a given board:
 
-* If the new resolution matches an existing child board that spawned from this one, then no new timeline splits. So if two units bounced and both receive one new support from their relative future next turn, they still bounce and no new board is created (assuming no other changes elsewhere on this board).
-* If the new resolution does not match an existing child board that spawned from this one, a new timeline appears. New timelines always appear below all existing timelines, and are always created in a canonical order (earliest board first; if boards are of equal age, lowest timeline number first).
+- If the new resolution matches an existing child board that spawned from this one, then no new timeline splits. So if two units bounced and both receive one new support from their relative future next turn, they still bounce and no new board is created (assuming no other changes elsewhere on this board).
+- If the new resolution does not match an existing child board that spawned from this one, a new timeline appears. New timelines always appear below all existing timelines, and are always created in a canonical order (earliest board first; if boards are of equal age, lowest timeline number first).
 
 Note that this is different to 5D Chess where boards can spawn above or below existing timelines, potentially changing the coordinates of existing boards. There's no concept of a turn belonging to a player in Diplomacy (instead, they belong to everyone simultaneously) and 5D Diplomacy extends this thinking, so timelines spawn in only one direction. Board coordinates also never change.
 
@@ -116,5 +114,5 @@ If any board requires retreats, adjudication pauses for all board without retrea
 
 A player achieves victory under one of the following conditions:
 
-* They are the only player to control at least 18 unique supply centres across all active boards. Unique here means unique by region name, so controlling Serbia in Timeline 1 and Serbia in Timeline 2 counts as only one supply centre.
-* If more than one player controls more than 18 unique supply centres, they are the only one with a clear majority. It's possible for two players to reach 18 centres in the same turn, e.g. if they have targeted different timelines.
+- They are the only player to control at least 18 unique supply centres across all active boards. Unique here means unique by region name, so controlling Serbia in Timeline 1 and Serbia in Timeline 2 counts as only one supply centre.
+- If more than one player controls more than 18 unique supply centres, they are the only one with a clear majority. It's possible for two players to reach 18 centres in the same turn, e.g. if they have targeted different timelines.

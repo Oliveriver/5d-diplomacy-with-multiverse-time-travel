@@ -45,9 +45,7 @@ public class OrderResolver(List<Order> orders, AdjacencyValidator adjacencyValid
 
     private void TryResolveHold(Hold hold)
     {
-        var attackingMoves = moves.Where(m =>
-            !m.IsSzykmanHold
-            && adjacencyValidator.EqualsOrIsRelated(m.Destination, hold.Location));
+        var attackingMoves = moves.Where(m => adjacencyValidator.EqualsOrIsRelated(m.Destination, hold.Location));
 
         if (attackingMoves.Any(m => m.Status == OrderStatus.Success))
         {
@@ -61,17 +59,14 @@ public class OrderResolver(List<Order> orders, AdjacencyValidator adjacencyValid
 
     private void TryResolveMove(Move move)
     {
-        var competingMoves = moves.Where(m =>
-            m != move
-            && !m.IsSzykmanHold
-            && adjacencyValidator.EqualsOrIsRelated(m.Destination, move.Destination));
+        var competingMoves = moves.Where(m => m != move && adjacencyValidator.EqualsOrIsRelated(m.Destination, move.Destination));
 
         var beatsPreventStrength = move.AttackStrength.Min > competingMoves.Select(m => m.PreventStrength.Max).DefaultIfEmpty(0).Max();
         var losesToPreventStrength = move.AttackStrength.Max <= competingMoves.Select(m => m.PreventStrength.Min).DefaultIfEmpty(0).Max();
 
         var opposingMove = move.OpposingMove;
 
-        if (opposingMove != null && !opposingMove.IsSzykmanHold)
+        if (opposingMove != null)
         {
             var beatsDefendStrength = move.AttackStrength.Min > opposingMove.DefendStrength.Max;
             var losesToDefendStrength = move.AttackStrength.Max <= opposingMove.DefendStrength.Min;
@@ -118,9 +113,7 @@ public class OrderResolver(List<Order> orders, AdjacencyValidator adjacencyValid
 
     private void TryResolveSupport(Support support)
     {
-        var attackingMoves = moves.Where(m =>
-            !m.IsSzykmanHold
-            && adjacencyValidator.EqualsOrIsRelated(m.Destination, support.Location));
+        var attackingMoves = moves.Where(m => adjacencyValidator.EqualsOrIsRelated(m.Destination, support.Location));
 
         if (attackingMoves.All(m =>
             m.Unit!.Owner == support.Unit!.Owner

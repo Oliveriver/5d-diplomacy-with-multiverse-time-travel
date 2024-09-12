@@ -19,8 +19,8 @@ jobs:
         dotnet-version: 8.0.x
     - name: Build
       run: cd server && dotnet build
-    # - name: Test
-    #   run: cd server && dotnet test
+    - name: Test
+      run: cd server && dotnet test --blame-crash --blame-hang --verbosity normal
   check_client:
     name: Check client
     runs-on: windows-latest

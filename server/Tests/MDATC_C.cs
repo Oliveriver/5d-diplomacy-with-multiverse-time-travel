@@ -100,7 +100,7 @@ public class MDATC_C : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "C0.4. Retreat in past to new location forks timeline")]
+    [Fact(DisplayName = "C.04. Retreat in past to new location forks timeline")]
     public void MDATC_C_4()
     {
         // A continuation of MDATC B 3 to match the original MDATC's scenario.

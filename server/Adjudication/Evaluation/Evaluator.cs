@@ -41,6 +41,8 @@ public class Evaluator
             movementEvaulator.EvaluateMovements();
             adjustmentEvaluator.EvaluateAdjustments();
         }
+
+        SetSafetyFailures();
     }
 
     private List<Order> GetActiveOrders()
@@ -87,5 +89,16 @@ public class Evaluator
         }
 
         return activeOrders;
+    }
+
+    private void SetSafetyFailures()
+    {
+        foreach (var order in world.Orders)
+        {
+            if (order.Status == OrderStatus.New)
+            {
+                order.Status = OrderStatus.Failure;
+            }
+        }
     }
 }
