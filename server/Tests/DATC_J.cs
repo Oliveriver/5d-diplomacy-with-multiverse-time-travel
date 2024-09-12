@@ -13,7 +13,7 @@ namespace Tests;
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class DATC_J : AdjudicationTestBase
 {
-    [Fact(DisplayName = "J.01. Too many disband orders")]
+    [Fact(DisplayName = "DATC J.01. Too many disband orders")]
     public void DATC_J_1()
     {
         // Arrange
@@ -56,7 +56,7 @@ public class DATC_J : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "J.02. Removing the same unit twice")]
+    [Fact(DisplayName = "DATC J.02. Removing the same unit twice")]
     public void DATC_J_2()
     {
         // Arrange
@@ -84,7 +84,7 @@ public class DATC_J : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "J.03. Civil disorder two armies with different distance", Skip = "Decided against")]
+    [Fact(DisplayName = "DATC J.03. Civil disorder two armies with different distance", Skip = "Decided against")]
     public void DATC_J_3()
     {
         // Due to the effort involved in implementing a distance-based auto-disband system, we have elected to choose
@@ -93,49 +93,49 @@ public class DATC_J : AdjudicationTestBase
         // players have submitted.
     }
 
-    [Fact(DisplayName = "J.04. Civil disorder two armies with equal distance", Skip = "Decided against")]
+    [Fact(DisplayName = "DATC J.04. Civil disorder two armies with equal distance", Skip = "Decided against")]
     public void DATC_J_4()
     {
         // See note in DATC J 3.
     }
 
-    [Fact(DisplayName = "J.05. Civil disorder two fleets with different distance", Skip = "Decided against")]
+    [Fact(DisplayName = "DATC J.05. Civil disorder two fleets with different distance", Skip = "Decided against")]
     public void DATC_J_5()
     {
         // See note in DATC J 3.
     }
 
-    [Fact(DisplayName = "J.06. Civil disorder two fleets with equal distance", Skip = "Decided against")]
+    [Fact(DisplayName = "DATC J.06. Civil disorder two fleets with equal distance", Skip = "Decided against")]
     public void DATC_J_6()
     {
         // See note in DATC J 3.
     }
 
-    [Fact(DisplayName = "J.07. Civil disorder two fleets and army with equal distance", Skip = "Decided against")]
+    [Fact(DisplayName = "DATC J.07. Civil disorder two fleets and army with equal distance", Skip = "Decided against")]
     public void DATC_J_7()
     {
         // See note in DATC J 3.
     }
 
-    [Fact(DisplayName = "J.08. Civil disorder a fleet with shorter distance than the army", Skip = "Decided against")]
+    [Fact(DisplayName = "DATC J.08. Civil disorder a fleet with shorter distance than the army", Skip = "Decided against")]
     public void DATC_J_8()
     {
         // See note in DATC J 3.
     }
 
-    [Fact(DisplayName = "J.09. Civil disorder must be counted from both coasts", Skip = "Decided against")]
+    [Fact(DisplayName = "DATC J.09. Civil disorder must be counted from both coasts", Skip = "Decided against")]
     public void DATC_J_9()
     {
         // See note in DATC J 3.
     }
 
-    [Fact(DisplayName = "J.10. Civil disorder counting convoying distance", Skip = "Decided against")]
+    [Fact(DisplayName = "DATC J.10. Civil disorder counting convoying distance", Skip = "Decided against")]
     public void DATC_J_10()
     {
         // See note in DATC J 3.
     }
 
-    [Fact(DisplayName = "J.11. Distance to owned supply centre", Skip = "Decided against")]
+    [Fact(DisplayName = "DATC J.11. Distance to owned supply centre", Skip = "Decided against")]
     public void DATC_J_11()
     {
         // See note in DATC J 3.

@@ -13,7 +13,7 @@ namespace Tests;
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class DATC_I : AdjudicationTestBase
 {
-    [Fact(DisplayName = "I.01. Too many build orders")]
+    [Fact(DisplayName = "DATC I.01. Too many build orders")]
     public void DATC_I_1()
     {
         // Arrange
@@ -64,7 +64,7 @@ public class DATC_I : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "I.02. Fleets cannot be built in land areas")]
+    [Fact(DisplayName = "DATC I.02. Fleets cannot be built in land areas")]
     public void DATC_I_2()
     {
         // Arrange
@@ -86,7 +86,7 @@ public class DATC_I : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "I.03. Supply centre must be empty for building")]
+    [Fact(DisplayName = "DATC I.03. Supply centre must be empty for building")]
     public void DATC_I_3()
     {
         // Arrange
@@ -113,7 +113,7 @@ public class DATC_I : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "I.04. Both coasts must be empty for building")]
+    [Fact(DisplayName = "DATC I.04. Both coasts must be empty for building")]
     public void DATC_I_4()
     {
         // Arrange
@@ -140,7 +140,7 @@ public class DATC_I : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "I.05. Building in home supply centre that is not owned")]
+    [Fact(DisplayName = "DATC I.05. Building in home supply centre that is not owned")]
     public void DATC_I_5()
     {
         // Arrange
@@ -166,7 +166,7 @@ public class DATC_I : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "I.06. Building in owned supply centre that is not a home supply centre")]
+    [Fact(DisplayName = "DATC I.06. Building in owned supply centre that is not a home supply centre")]
     public void DATC_I_6()
     {
         // Arrange
@@ -188,7 +188,7 @@ public class DATC_I : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "I.07. Only one build in a home supply centre")]
+    [Fact(DisplayName = "DATC I.07. Only one build in a home supply centre")]
     public void DATC_I_7()
     {
         // Arrange

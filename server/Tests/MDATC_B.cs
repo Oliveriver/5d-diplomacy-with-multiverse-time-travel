@@ -13,7 +13,7 @@ namespace Tests;
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class MDATC_B : AdjudicationTestBase
 {
-    [Fact(DisplayName = "B.01. Move into own past forks timeline")]
+    [Fact(DisplayName = "MDATC B.01. Move into own past forks timeline")]
     public void MDATC_B_1()
     {
         // Arrange
@@ -48,7 +48,7 @@ public class MDATC_B : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "B.02. Support to past move repelled by move forks timeline")]
+    [Fact(DisplayName = "MDATC B.02. Support to past move repelled by move forks timeline")]
     public void MDATC_B_2()
     {
         // Arrange
@@ -98,7 +98,7 @@ public class MDATC_B : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "B.03. Support to past move repelled by hold dislodges")]
+    [Fact(DisplayName = "MDATC B.03. Support to past move repelled by hold dislodges")]
     public void MDATC_B_3()
     {
         // Arrange
@@ -150,7 +150,7 @@ public class MDATC_B : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "B.04. Failed move does not fork timeline")]
+    [Fact(DisplayName = "MDATC B.04. Failed move does not fork timeline")]
     public void MDATC_B_4()
     {
         // Arrange
@@ -196,7 +196,7 @@ public class MDATC_B : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "B.05. Superfluous support does not fork timeline")]
+    [Fact(DisplayName = "MDATC B.05. Superfluous support does not fork timeline")]
     public void MDATC_B_5()
     {
         // Arrange
@@ -242,7 +242,7 @@ public class MDATC_B : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "B.06. Cross-timeline support does not fork head")]
+    [Fact(DisplayName = "MDATC B.06. Cross-timeline support does not fork head")]
     public void MDATC_B_6()
     {
         // Arrange
@@ -275,7 +275,7 @@ public class MDATC_B : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "B.07. Cutting cross-timeline support forks timeline")]
+    [Fact(DisplayName = "MDATC B.07. Cutting cross-timeline support forks timeline")]
     public void MDATC_B_7()
     {
         // Arrange
@@ -342,7 +342,7 @@ public class MDATC_B : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "B.08. Multiple powers move to same board")]
+    [Fact(DisplayName = "MDATC B.08. Multiple powers move to same board")]
     public void MDATC_B_8()
     {
         // Arrange
@@ -426,7 +426,7 @@ public class MDATC_B : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "B.09. Grandfather paradox resolved")]
+    [Fact(DisplayName = "MDATC B.09. Grandfather paradox resolved")]
     public void MDATC_B_9()
     {
         // Arrange
@@ -472,7 +472,7 @@ public class MDATC_B : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "B.10. Vanishing in a puff of logic")]
+    [Fact(DisplayName = "MDATC B.10. Vanishing in a puff of logic")]
     public void MDATC_B_10()
     {
         // It should never be possible for this situation to arise in an actual game. If a unit exists on a board and

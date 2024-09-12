@@ -13,7 +13,7 @@ namespace Tests;
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class MDATC_D : AdjudicationTestBase
 {
-    [Fact(DisplayName = "D.01. Bootstrap paradox resolved")]
+    [Fact(DisplayName = "MDATC D.01. Bootstrap paradox resolved")]
     public void MDATC_D_1()
     {
         // Arrange
@@ -42,7 +42,7 @@ public class MDATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.02. Convoy kidnapping across time")]
+    [Fact(DisplayName = "MDATC D.02. Convoy kidnapping across time")]
     public void MDATC_D_2()
     {
         // Arrange
@@ -99,7 +99,7 @@ public class MDATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.03. Jurassic convoy")]
+    [Fact(DisplayName = "MDATC D.03. Jurassic convoy")]
     public void MDATC_D_3()
     {
         // Life, uh...finds a way.

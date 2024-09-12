@@ -13,7 +13,7 @@ namespace Tests;
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class DATC_H : AdjudicationTestBase
 {
-    [Fact(DisplayName = "H.01. No supports during retreat")]
+    [Fact(DisplayName = "DATC H.01. No supports during retreat")]
     public void DATC_H_1()
     {
         // Arrange
@@ -50,7 +50,7 @@ public class DATC_H : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "H.02. No supports from retreating unit")]
+    [Fact(DisplayName = "DATC H.02. No supports from retreating unit")]
     public void DATC_H_2()
     {
         // Arrange
@@ -85,7 +85,7 @@ public class DATC_H : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "H.03. No convoy during retreat")]
+    [Fact(DisplayName = "DATC H.03. No convoy during retreat")]
     public void DATC_H_3()
     {
         // Arrange
@@ -118,7 +118,7 @@ public class DATC_H : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "H.04. No other moves during retreat")]
+    [Fact(DisplayName = "DATC H.04. No other moves during retreat")]
     public void DATC_H_4()
     {
         // Arrange
@@ -152,7 +152,7 @@ public class DATC_H : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "H.05. A unit may not retreat to the area from which it is attacked")]
+    [Fact(DisplayName = "DATC H.05. A unit may not retreat to the area from which it is attacked")]
     public void DATC_H_5()
     {
         // Arrange
@@ -188,7 +188,7 @@ public class DATC_H : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "H.06. Unit may not retreat to a contested area")]
+    [Fact(DisplayName = "DATC H.06. Unit may not retreat to a contested area")]
     public void DATC_H_6()
     {
         // Arrange
@@ -230,7 +230,7 @@ public class DATC_H : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "H.07. Multiple reteat to same area will disband units")]
+    [Fact(DisplayName = "DATC H.07. Multiple reteat to same area will disband units")]
     public void DATC_H_7()
     {
         // Arrange
@@ -261,7 +261,7 @@ public class DATC_H : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "H.08. Triple retreat to same area will disband units")]
+    [Fact(DisplayName = "DATC H.08. Triple retreat to same area will disband units")]
     public void DATC_H_8()
     {
         // Arrange
@@ -296,7 +296,7 @@ public class DATC_H : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "H.09. Dislodged unit will not make attacker's area contested")]
+    [Fact(DisplayName = "DATC H.09. Dislodged unit will not make attacker's area contested")]
     public void DATC_H_9()
     {
         // Arrange
@@ -342,7 +342,7 @@ public class DATC_H : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "H.10. Not retreating to attacker does not mean contested")]
+    [Fact(DisplayName = "DATC H.10. Not retreating to attacker does not mean contested")]
     public void DATC_H_10()
     {
         // Arrange
@@ -390,7 +390,7 @@ public class DATC_H : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "H.11. Retreat when dislodged by adjacent convoy")]
+    [Fact(DisplayName = "DATC H.11. Retreat when dislodged by adjacent convoy")]
     public void DATC_H_11()
     {
         // Arrange
@@ -437,7 +437,7 @@ public class DATC_H : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "H.12. Retreat when dislodged by adjacent convoy while trying to do the same")]
+    [Fact(DisplayName = "DATC H.12. Retreat when dislodged by adjacent convoy while trying to do the same")]
     public void DATC_H_12()
     {
         // Arrange
@@ -496,7 +496,7 @@ public class DATC_H : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "H.13. No retreat with convoy in movement phase")]
+    [Fact(DisplayName = "DATC H.13. No retreat with convoy in movement phase")]
     public void DATC_H_13()
     {
         // Arrange
@@ -529,7 +529,7 @@ public class DATC_H : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "H.14. No retreat with support in movement phase")]
+    [Fact(DisplayName = "DATC H.14. No retreat with support in movement phase")]
     public void DATC_H_14()
     {
         // Arrange
@@ -567,7 +567,7 @@ public class DATC_H : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "H.15. No coastal crawl in retreat")]
+    [Fact(DisplayName = "DATC H.15. No coastal crawl in retreat")]
     public void DATC_H_15()
     {
         // Arrange
@@ -602,7 +602,7 @@ public class DATC_H : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "H.16. Contested for both coasts")]
+    [Fact(DisplayName = "DATC H.16. Contested for both coasts")]
     public void DATC_H_16()
     {
         // Arrange

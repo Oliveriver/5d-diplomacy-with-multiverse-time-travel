@@ -13,7 +13,7 @@ namespace Tests;
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class MDATC_A : AdjudicationTestBase
 {
-    [Fact(DisplayName = "A.01. Move to same region with loose adjacencies")]
+    [Fact(DisplayName = "MDATC A.01. Move to same region with loose adjacencies")]
     public void MDATC_A_1()
     {
         // Arrange
@@ -38,7 +38,7 @@ public class MDATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.02. Move to same region with strict adjacencies")]
+    [Fact(DisplayName = "MDATC A.02. Move to same region with strict adjacencies")]
     public void MDATC_A_2()
     {
         // Arrange
@@ -63,7 +63,7 @@ public class MDATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.03. Move to neighbouring region with loose adjacencies")]
+    [Fact(DisplayName = "MDATC A.03. Move to neighbouring region with loose adjacencies")]
     public void MDATC_A_3()
     {
         // Arrange
@@ -88,7 +88,7 @@ public class MDATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.04. Move to neighbouring region with strict adjacencies")]
+    [Fact(DisplayName = "MDATC A.04. Move to neighbouring region with strict adjacencies")]
     public void MDATC_A_4()
     {
         // Arrange
@@ -113,7 +113,7 @@ public class MDATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.05. Move to non-neighbouring region")]
+    [Fact(DisplayName = "MDATC A.05. Move to non-neighbouring region")]
     public void MDATC_A_5()
     {
         // Arrange
@@ -138,7 +138,7 @@ public class MDATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.06. Can't cross coasts across time")]
+    [Fact(DisplayName = "MDATC A.06. Can't cross coasts across time")]
     public void MDATC_A_6()
     {
         // Arrange
@@ -163,7 +163,7 @@ public class MDATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.07. No diagonal board movement")]
+    [Fact(DisplayName = "MDATC A.07. No diagonal board movement")]
     public void MDATC_A_7()
     {
         // Arrange
@@ -188,7 +188,7 @@ public class MDATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.08. Must be adjacent timeline without convoy")]
+    [Fact(DisplayName = "MDATC A.08. Must be adjacent timeline without convoy")]
     public void MDATC_A_8()
     {
         // Arrange
@@ -215,7 +215,7 @@ public class MDATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.09. Must be immediate past major board without convoy")]
+    [Fact(DisplayName = "MDATC A.09. Must be immediate past major board without convoy")]
     public void MDATC_A_9()
     {
         // Arrange
@@ -250,7 +250,7 @@ public class MDATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.10. No move to winter board")]
+    [Fact(DisplayName = "MDATC A.10. No move to winter board")]
     public void MDATC_A_10()
     {
         // Arrange
@@ -282,7 +282,7 @@ public class MDATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.11. Simultaneous adjustment and movement phases advance together")]
+    [Fact(DisplayName = "MDATC A.11. Simultaneous adjustment and movement phases advance together")]
     public void MDATC_A_11()
     {
         // Arrange

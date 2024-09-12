@@ -13,7 +13,7 @@ namespace Tests;
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class DATC_F : AdjudicationTestBase
 {
-    [Fact(DisplayName = "F.01. No convoys in coastal areas")]
+    [Fact(DisplayName = "DATC F.01. No convoys in coastal areas")]
     public void DATC_F_1()
     {
         // Arrange
@@ -53,7 +53,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.02. An army being convoyed can bounce as normal")]
+    [Fact(DisplayName = "DATC F.02. An army being convoyed can bounce as normal")]
     public void DATC_F_2()
     {
         // Arrange
@@ -89,7 +89,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.03. An army being convoyed can receive support")]
+    [Fact(DisplayName = "DATC F.03. An army being convoyed can receive support")]
     public void DATC_F_3()
     {
         // Arrange
@@ -129,7 +129,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.04. An attacked convoy is not disrupted")]
+    [Fact(DisplayName = "DATC F.04. An attacked convoy is not disrupted")]
     public void DATC_F_4()
     {
         // Arrange
@@ -165,7 +165,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.05. A beleaguered convoy is not disrupted")]
+    [Fact(DisplayName = "DATC F.05. A beleaguered convoy is not disrupted")]
     public void DATC_F_5()
     {
         // Arrange
@@ -213,7 +213,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.06. Dislodged convoy does not cut support")]
+    [Fact(DisplayName = "DATC F.06. Dislodged convoy does not cut support")]
     public void DATC_F_6()
     {
         // Arrange
@@ -270,7 +270,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.07. Dislodged convoy does not cause contested area")]
+    [Fact(DisplayName = "DATC F.07. Dislodged convoy does not cause contested area")]
     public void DATC_F_7()
     {
         // Arrange
@@ -325,7 +325,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.08. Dislodged convoy does not cause a bounce")]
+    [Fact(DisplayName = "DATC F.08. Dislodged convoy does not cause a bounce")]
     public void DATC_F_8()
     {
         // Arrange
@@ -370,7 +370,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.09. Dislodge of multi-route convoy")]
+    [Fact(DisplayName = "DATC F.09. Dislodge of multi-route convoy")]
     public void DATC_F_9()
     {
         // Arrange
@@ -415,7 +415,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.10. Dislodge of multi-route convoy with foreign fleet")]
+    [Fact(DisplayName = "DATC F.10. Dislodge of multi-route convoy with foreign fleet")]
     public void DATC_F_10()
     {
         // Arrange
@@ -460,7 +460,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.11. Dislodge of multi-route convoy with only foreign fleets")]
+    [Fact(DisplayName = "DATC F.11. Dislodge of multi-route convoy with only foreign fleets")]
     public void DATC_F_11()
     {
         // Arrange
@@ -505,7 +505,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.12. Dislodged convoying fleet not on route")]
+    [Fact(DisplayName = "DATC F.12. Dislodged convoying fleet not on route")]
     public void DATC_F_12()
     {
         // Arrange
@@ -550,7 +550,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.13. The unwanted alternative")]
+    [Fact(DisplayName = "DATC F.13. The unwanted alternative")]
     public void DATC_F_13()
     {
         // Arrange
@@ -595,7 +595,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.14. Simple convoy paradox")]
+    [Fact(DisplayName = "DATC F.14. Simple convoy paradox")]
     public void DATC_F_14()
     {
         // Arrange
@@ -636,7 +636,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.15. Simple convoy paradox with additional convoy")]
+    [Fact(DisplayName = "DATC F.15. Simple convoy paradox with additional convoy")]
     public void DATC_F_15()
     {
         // Arrange
@@ -689,7 +689,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.16. Pandin's paradox")]
+    [Fact(DisplayName = "DATC F.16. Pandin's paradox")]
     public void DATC_F_16()
     {
         // Arrange
@@ -737,7 +737,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.17. Pandin's extended paradox")]
+    [Fact(DisplayName = "DATC F.17. Pandin's extended paradox")]
     public void DATC_F_17()
     {
         // Arrange
@@ -789,7 +789,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.18. Betrayal paradox")]
+    [Fact(DisplayName = "DATC F.18. Betrayal paradox")]
     public void DATC_F_18()
     {
         // Arrange
@@ -837,7 +837,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.19. Multi-route convoy disruption paradox")]
+    [Fact(DisplayName = "DATC F.19. Multi-route convoy disruption paradox")]
     public void DATC_F_19()
     {
         // Arrange
@@ -881,7 +881,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.20. Unwanted multi-route convoy paradox")]
+    [Fact(DisplayName = "DATC F.20. Unwanted multi-route convoy paradox")]
     public void DATC_F_20()
     {
         // Arrange
@@ -930,7 +930,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.21. Dad's army convoy")]
+    [Fact(DisplayName = "DATC F.21. Dad's army convoy")]
     public void DATC_F_21()
     {
         // Arrange
@@ -984,7 +984,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.22. Second order paradox with two resolutions")]
+    [Fact(DisplayName = "DATC F.22. Second order paradox with two resolutions")]
     public void DATC_F_22()
     {
         // Arrange
@@ -1041,7 +1041,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.23. Second order paradox with two exclusive convoys")]
+    [Fact(DisplayName = "DATC F.23. Second order paradox with two exclusive convoys")]
     public void DATC_F_23()
     {
         // Arrange
@@ -1105,7 +1105,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.24. Second order paradox with no resolution")]
+    [Fact(DisplayName = "DATC F.24. Second order paradox with no resolution")]
     public void DATC_F_24()
     {
         // Arrange
@@ -1166,7 +1166,7 @@ public class DATC_F : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "F.25. Cut support last")]
+    [Fact(DisplayName = "DATC F.25. Cut support last")]
     public void DATC_F_25()
     {
         // Arrange

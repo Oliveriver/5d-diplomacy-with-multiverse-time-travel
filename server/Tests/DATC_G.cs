@@ -13,7 +13,7 @@ namespace Tests;
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class DATC_G : AdjudicationTestBase
 {
-    [Fact(DisplayName = "G.01. Two units can swap provinces by convoy")]
+    [Fact(DisplayName = "DATC G.01. Two units can swap provinces by convoy")]
     public void DATC_G_1()
     {
         // Arrange
@@ -49,7 +49,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.02. Kidnapping an army")]
+    [Fact(DisplayName = "DATC G.02. Kidnapping an army")]
     public void DATC_G_2()
     {
         // Decision is to allow non-dislodged convoy kidnapping because it's fun, maybe even more so in 5D.
@@ -87,7 +87,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.03. An unwanted convoy to adjacent province")]
+    [Fact(DisplayName = "DATC G.03. An unwanted convoy to adjacent province")]
     public void DATC_G_3()
     {
         // Arrange
@@ -132,7 +132,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.04. An unwanted disrupted convoy to adjacent province and opposite move")]
+    [Fact(DisplayName = "DATC G.04. An unwanted disrupted convoy to adjacent province and opposite move")]
     public void DATC_G_4()
     {
         // Arrange
@@ -181,7 +181,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.05. Swapping with multiple fleets with one own fleet")]
+    [Fact(DisplayName = "DATC G.05. Swapping with multiple fleets with one own fleet")]
     public void DATC_G_5()
     {
         // Arrange
@@ -221,7 +221,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.06. Swapping with unintended intent")]
+    [Fact(DisplayName = "DATC G.06. Swapping with unintended intent")]
     public void DATC_G_6()
     {
         // Arrange
@@ -273,7 +273,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.07. Swapping with illegal intent")]
+    [Fact(DisplayName = "DATC G.07. Swapping with illegal intent")]
     public void DATC_G_7()
     {
         // Another overrule of the DATC to allow non-dislodged convoy kidnapping.
@@ -315,13 +315,13 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.08. Explicit convoy that isn't there", Skip = "Not applicable")]
+    [Fact(DisplayName = "DATC G.08. Explicit convoy that isn't there", Skip = "Not applicable")]
     public void DATC_G_8()
     {
         // 5D Diplomacy does not have a concept of an explicit "via convoy" move, so this case does not apply.
     }
 
-    [Fact(DisplayName = "G.09. Swapped or dislodged?")]
+    [Fact(DisplayName = "DATC G.09. Swapped or dislodged?")]
     public void DATC_G_9()
     {
         // Arrange
@@ -361,7 +361,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.10. Swapped or a head-to-head battle?")]
+    [Fact(DisplayName = "DATC G.10. Swapped or a head-to-head battle?")]
     public void DATC_G_10()
     {
         // Arrange
@@ -416,7 +416,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.11. A convoy to an adjacent province with a paradox")]
+    [Fact(DisplayName = "DATC G.11. A convoy to an adjacent province with a paradox")]
     public void DATC_G_11()
     {
         // Arrange
@@ -461,7 +461,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.12. Swapping two units with two convoys")]
+    [Fact(DisplayName = "DATC G.12. Swapping two units with two convoys")]
     public void DATC_G_12()
     {
         // Arrange
@@ -513,7 +513,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.13. Support cut on attack on itself via convoy")]
+    [Fact(DisplayName = "DATC G.13. Support cut on attack on itself via convoy")]
     public void DATC_G_13()
     {
         // Arrange
@@ -554,7 +554,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.14. Bounce by convoy to adjacent province")]
+    [Fact(DisplayName = "DATC G.14. Bounce by convoy to adjacent province")]
     public void DATC_G_14()
     {
         // Arrange
@@ -609,7 +609,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.15. Bounce and dislodge with double convoy")]
+    [Fact(DisplayName = "DATC G.15. Bounce and dislodge with double convoy")]
     public void DATC_G_15()
     {
         // Arrange
@@ -658,7 +658,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.16. The two unit in one area bug, moving by convoy")]
+    [Fact(DisplayName = "DATC G.16. The two unit in one area bug, moving by convoy")]
     public void DATC_G_16()
     {
         // Arrange
@@ -710,7 +710,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.17. The two unit in one area bug, moving over land")]
+    [Fact(DisplayName = "DATC G.17. The two unit in one area bug, moving over land")]
     public void DATC_G_17()
     {
         // Arrange
@@ -762,7 +762,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.18. The two unit in one area bug, with double convoy")]
+    [Fact(DisplayName = "DATC G.18. The two unit in one area bug, with double convoy")]
     public void DATC_G_18()
     {
         // Arrange
@@ -818,7 +818,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.19. Swapping with intent of unnecesary convoy")]
+    [Fact(DisplayName = "DATC G.19. Swapping with intent of unnecesary convoy")]
     public void DATC_G_19()
     {
         // Another case of overruling the DATC on convoy kidnapping.
@@ -860,7 +860,7 @@ public class DATC_G : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "G.20. Explicit convoy to adjacent province disrupted", Skip = "Not applicable")]
+    [Fact(DisplayName = "DATC G.20. Explicit convoy to adjacent province disrupted", Skip = "Not applicable")]
     public void DATC_G_20()
     {
         // 5D Diplomacy does not have a concept of specifying a move is "via convoy", so this test case is irrelevant.

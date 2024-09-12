@@ -13,7 +13,7 @@ namespace Tests;
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class DATC_D : AdjudicationTestBase
 {
-    [Fact(DisplayName = "D.01. Supported hold can prevent dislodgement")]
+    [Fact(DisplayName = "DATC D.01. Supported hold can prevent dislodgement")]
     public void DATC_D_1()
     {
         // Arrange
@@ -53,7 +53,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.02. A move cuts support on hold")]
+    [Fact(DisplayName = "DATC D.02. A move cuts support on hold")]
     public void DATC_D_2()
     {
         // Arrange
@@ -98,7 +98,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.03. A move cuts support on move")]
+    [Fact(DisplayName = "DATC D.03. A move cuts support on move")]
     public void DATC_D_3()
     {
         // Arrange
@@ -138,7 +138,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.04. Support to hold on unit supporting a hold allowed")]
+    [Fact(DisplayName = "DATC D.04. Support to hold on unit supporting a hold allowed")]
     public void DATC_D_4()
     {
         // Arrange
@@ -178,7 +178,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.05. Support to hold on unit supporting a move allowed")]
+    [Fact(DisplayName = "DATC D.05. Support to hold on unit supporting a move allowed")]
     public void DATC_D_5()
     {
         // Arrange
@@ -222,7 +222,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.06. Support to hold on convoying unit allowed")]
+    [Fact(DisplayName = "DATC D.06. Support to hold on convoying unit allowed")]
     public void DATC_D_6()
     {
         // Arrange
@@ -266,7 +266,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.07. Support to hold on moving unit not allowed")]
+    [Fact(DisplayName = "DATC D.07. Support to hold on moving unit not allowed")]
     public void DATC_D_7()
     {
         // Arrange
@@ -311,7 +311,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.08. Failed convoy cannot receive hold support")]
+    [Fact(DisplayName = "DATC D.08. Failed convoy cannot receive hold support")]
     public void DATC_D_8()
     {
         // Arrange
@@ -354,7 +354,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.09. Support to move on holding unit not allowed")]
+    [Fact(DisplayName = "DATC D.09. Support to move on holding unit not allowed")]
     public void DATC_D_9()
     {
         // Arrange
@@ -395,7 +395,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.10. Self dislodgement prohibited")]
+    [Fact(DisplayName = "DATC D.10. Self dislodgement prohibited")]
     public void DATC_D_10()
     {
         // Arrange
@@ -431,7 +431,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.11. No self dislodgement of returning unit")]
+    [Fact(DisplayName = "DATC D.11. No self dislodgement of returning unit")]
     public void DATC_D_11()
     {
         // Arrange
@@ -471,7 +471,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.12. Supporting a foreign unit to dislodge own unit prohibited")]
+    [Fact(DisplayName = "DATC D.12. Supporting a foreign unit to dislodge own unit prohibited")]
     public void DATC_D_12()
     {
         // Arrange
@@ -507,7 +507,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.13. Supporting a foreign unit to dislodge a returning own unit prohibited")]
+    [Fact(DisplayName = "DATC D.13. Supporting a foreign unit to dislodge a returning own unit prohibited")]
     public void DATC_D_13()
     {
         // Arrange
@@ -547,7 +547,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.14. Supporting a foreign unit is not enough to prevent dislodgement")]
+    [Fact(DisplayName = "DATC D.14. Supporting a foreign unit is not enough to prevent dislodgement")]
     public void DATC_D_14()
     {
         // Arrange
@@ -592,7 +592,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.15. Defender cannot cut support for attack on itself")]
+    [Fact(DisplayName = "DATC D.15. Defender cannot cut support for attack on itself")]
     public void DATC_D_15()
     {
         // Arrange
@@ -629,7 +629,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.16. Convoying a unit dislodging a unit of same power is allowed")]
+    [Fact(DisplayName = "DATC D.16. Convoying a unit dislodging a unit of same power is allowed")]
     public void DATC_D_16()
     {
         // Arrange
@@ -670,7 +670,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.17. Dislodgement cuts support")]
+    [Fact(DisplayName = "DATC D.17. Dislodgement cuts support")]
     public void DATC_D_17()
     {
         // Arrange
@@ -715,7 +715,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.18. A surviving unit will sustain support")]
+    [Fact(DisplayName = "DATC D.18. A surviving unit will sustain support")]
     public void DATC_D_18()
     {
         // Arrange
@@ -762,7 +762,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.19. Even when surviving is in alternative way")]
+    [Fact(DisplayName = "DATC D.19. Even when surviving is in alternative way")]
     public void DATC_D_19()
     {
         // Arrange
@@ -803,7 +803,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.20. Unit cannot cut support of its own country")]
+    [Fact(DisplayName = "DATC D.20. Unit cannot cut support of its own country")]
     public void DATC_D_20()
     {
         // Arrange
@@ -844,7 +844,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.21. Dislodging does not cancel a support cut")]
+    [Fact(DisplayName = "DATC D.21. Dislodging does not cancel a support cut")]
     public void DATC_D_21()
     {
         // Arrange
@@ -893,7 +893,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.22. Impossible fleet move cannot be supported")]
+    [Fact(DisplayName = "DATC D.22. Impossible fleet move cannot be supported")]
     public void DATC_D_22()
     {
         // Arrange
@@ -934,7 +934,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.23. Impossible coast move cannot be supported")]
+    [Fact(DisplayName = "DATC D.23. Impossible coast move cannot be supported")]
     public void DATC_D_23()
     {
         // Arrange
@@ -975,7 +975,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.24. Impossible army move cannot be supported")]
+    [Fact(DisplayName = "DATC D.24. Impossible army move cannot be supported")]
     public void DATC_D_24()
     {
         // Arrange
@@ -1020,7 +1020,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.25. Failing hold support can be supported")]
+    [Fact(DisplayName = "DATC D.25. Failing hold support can be supported")]
     public void DATC_D_25()
     {
         // Arrange
@@ -1060,7 +1060,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.26. Failing move support can be supported")]
+    [Fact(DisplayName = "DATC D.26. Failing move support can be supported")]
     public void DATC_D_26()
     {
         // Arrange
@@ -1100,7 +1100,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.27. Failing convoy can be supported")]
+    [Fact(DisplayName = "DATC D.27. Failing convoy can be supported")]
     public void DATC_D_27()
     {
         // Arrange
@@ -1144,7 +1144,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.28. Impossible move and support")]
+    [Fact(DisplayName = "DATC D.28. Impossible move and support")]
     public void DATC_D_28()
     {
         // Arrange
@@ -1184,7 +1184,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.29. Move to impossible coast and support")]
+    [Fact(DisplayName = "DATC D.29. Move to impossible coast and support")]
     public void DATC_D_29()
     {
         // Arrange
@@ -1224,7 +1224,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.30. Move without coast and support")]
+    [Fact(DisplayName = "DATC D.30. Move without coast and support")]
     public void DATC_D_30()
     {
         // Arrange
@@ -1264,7 +1264,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.31. A tricky impossible scenario")]
+    [Fact(DisplayName = "DATC D.31. A tricky impossible scenario")]
     public void DATC_D_31()
     {
         // Arrange
@@ -1296,7 +1296,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.32. A missing fleet")]
+    [Fact(DisplayName = "DATC D.32. A missing fleet")]
     public void DATC_D_32()
     {
         // Arrange
@@ -1336,7 +1336,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.33. Unwanted support allowed")]
+    [Fact(DisplayName = "DATC D.33. Unwanted support allowed")]
     public void DATC_D_33()
     {
         // Arrange
@@ -1376,7 +1376,7 @@ public class DATC_D : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "D.34. Support targeting own area not allowed")]
+    [Fact(DisplayName = "DATC D.34. Support targeting own area not allowed")]
     public void DATC_D_34()
     {
         // Arrange

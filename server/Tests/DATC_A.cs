@@ -13,7 +13,7 @@ namespace Tests;
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class DATC_A : AdjudicationTestBase
 {
-    [Fact(DisplayName = "A.01. Moving to an area that is not a neighbour")]
+    [Fact(DisplayName = "DATC A.01. Moving to an area that is not a neighbour")]
     public void DATC_A_1()
     {
         // Arrange
@@ -34,7 +34,7 @@ public class DATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.02. Move army to sea")]
+    [Fact(DisplayName = "DATC A.02. Move army to sea")]
     public void DATC_A_2()
     {
         // Arrange
@@ -55,7 +55,7 @@ public class DATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.03. Move fleet to land")]
+    [Fact(DisplayName = "DATC A.03. Move fleet to land")]
     public void DATC_A_3()
     {
         // Arrange
@@ -76,7 +76,7 @@ public class DATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.04. Move to own sector")]
+    [Fact(DisplayName = "DATC A.04. Move to own sector")]
     public void DATC_A_4()
     {
         // Arrange
@@ -97,7 +97,7 @@ public class DATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.05. Move to own sector with convoy")]
+    [Fact(DisplayName = "DATC A.05. Move to own sector with convoy")]
     public void DATC_A_5()
     {
         // Arrange
@@ -142,14 +142,14 @@ public class DATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.06. Ordering a unit of another country", Skip = "Not applicable")]
+    [Fact(DisplayName = "DATC A.06. Ordering a unit of another country", Skip = "Not applicable")]
     public void DATC_A_6()
     {
         // Order ownership is controlled by the client. Once an order reaches the server, it retains no ownership
         // information other than the acting unit. So this test case is not valid for the 5D Diplomacy adjudicator.
     }
 
-    [Fact(DisplayName = "A.07. Only armies can be convoyed")]
+    [Fact(DisplayName = "DATC A.07. Only armies can be convoyed")]
     public void DATC_A_7()
     {
         // Arrange
@@ -181,7 +181,7 @@ public class DATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.08. Support to hold yourself is not possible")]
+    [Fact(DisplayName = "DATC A.08. Support to hold yourself is not possible")]
     public void DATC_A_8()
     {
         // Arrange
@@ -218,7 +218,7 @@ public class DATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.09. Fleets must follow coast if not on sea")]
+    [Fact(DisplayName = "DATC A.09. Fleets must follow coast if not on sea")]
     public void DATC_A_9()
     {
         // Arrange
@@ -239,7 +239,7 @@ public class DATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.10. Support on unreachable destination not possible")]
+    [Fact(DisplayName = "DATC A.10. Support on unreachable destination not possible")]
     public void DATC_A_10()
     {
         // Arrange
@@ -274,7 +274,7 @@ public class DATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.11. Simple bounce")]
+    [Fact(DisplayName = "DATC A.11. Simple bounce")]
     public void DATC_A_11()
     {
         // Arrange
@@ -305,7 +305,7 @@ public class DATC_A : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "A.12. Bounce of three units")]
+    [Fact(DisplayName = "DATC A.12. Bounce of three units")]
     public void DATC_A_12()
     {
         // Arrange

@@ -13,7 +13,7 @@ namespace Tests;
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class DATC_E : AdjudicationTestBase
 {
-    [Fact(DisplayName = "E.01. Dislodged unit has no effect on attacker's area")]
+    [Fact(DisplayName = "DATC E.01. Dislodged unit has no effect on attacker's area")]
     public void DATC_E_1()
     {
         // Arrange
@@ -54,7 +54,7 @@ public class DATC_E : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "E.02. No self dislodgement in head-to-head battle")]
+    [Fact(DisplayName = "DATC E.02. No self dislodgement in head-to-head battle")]
     public void DATC_E_2()
     {
         // Arrange
@@ -90,7 +90,7 @@ public class DATC_E : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "E.03. No help in dislodging own unit")]
+    [Fact(DisplayName = "DATC E.03. No help in dislodging own unit")]
     public void DATC_E_3()
     {
         // Arrange
@@ -126,7 +126,7 @@ public class DATC_E : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "E.04. Non-dislodged loser still has effect")]
+    [Fact(DisplayName = "DATC E.04. Non-dislodged loser still has effect")]
     public void DATC_E_4()
     {
         // Arrange
@@ -190,7 +190,7 @@ public class DATC_E : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "E.05. Loser dislodged by another army still has effect")]
+    [Fact(DisplayName = "DATC E.05. Loser dislodged by another army still has effect")]
     public void DATC_E_5()
     {
         // Arrange
@@ -259,7 +259,7 @@ public class DATC_E : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "E.06. Not dislodge because of own support still has effect")]
+    [Fact(DisplayName = "DATC E.06. Not dislodge because of own support still has effect")]
     public void DATC_E_6()
     {
         // Arrange
@@ -311,7 +311,7 @@ public class DATC_E : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "E.07. No self dislodgement with beleaguered garrison")]
+    [Fact(DisplayName = "DATC E.07. No self dislodgement with beleaguered garrison")]
     public void DATC_E_7()
     {
         // Arrange
@@ -359,7 +359,7 @@ public class DATC_E : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "E.08. No self dislodgement with beleaguered garrison and head-to-head battle")]
+    [Fact(DisplayName = "DATC E.08. No self dislodgement with beleaguered garrison and head-to-head battle")]
     public void DATC_E_8()
     {
         // Arrange
@@ -407,7 +407,7 @@ public class DATC_E : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "E.09. Almost self dislodgement with beleaguered garrison")]
+    [Fact(DisplayName = "DATC E.09. Almost self dislodgement with beleaguered garrison")]
     public void DATC_E_9()
     {
         // Arrange
@@ -455,7 +455,7 @@ public class DATC_E : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "E.10. Almost circular movement with no self dislodgement with beleaguered garrison")]
+    [Fact(DisplayName = "DATC E.10. Almost circular movement with no self dislodgement with beleaguered garrison")]
     public void DATC_E_10()
     {
         // Arrange
@@ -507,7 +507,7 @@ public class DATC_E : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "E.11. No self dislodgement with beleaguered garrison, unit swap with adjacent convoying and two coasts")]
+    [Fact(DisplayName = "DATC E.11. No self dislodgement with beleaguered garrison, unit swap with adjacent convoying and two coasts")]
     public void DATC_E_11()
     {
         // Arrange
@@ -559,7 +559,7 @@ public class DATC_E : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "E.12. Support on attack on own unit can be used for other means")]
+    [Fact(DisplayName = "DATC E.12. Support on attack on own unit can be used for other means")]
     public void DATC_E_12()
     {
         // Arrange
@@ -603,7 +603,7 @@ public class DATC_E : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "E.13. Three way beleaguered garrison")]
+    [Fact(DisplayName = "DATC E.13. Three way beleaguered garrison")]
     public void DATC_E_13()
     {
         // Arrange
@@ -655,7 +655,7 @@ public class DATC_E : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "E.14. Illegal head-to-head battle can still defend")]
+    [Fact(DisplayName = "DATC E.14. Illegal head-to-head battle can still defend")]
     public void DATC_E_14()
     {
         // Arrange
@@ -687,7 +687,7 @@ public class DATC_E : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "E.15. The friendly head-to-head battle")]
+    [Fact(DisplayName = "DATC E.15. The friendly head-to-head battle")]
     public void DATC_E_15()
     {
         // Arrange

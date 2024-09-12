@@ -13,7 +13,7 @@ namespace Tests;
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class MDATC_C : AdjudicationTestBase
 {
-    [Fact(DisplayName = "C.01. Retreats to the past forbidden")]
+    [Fact(DisplayName = "MDATC C.01. Retreats to the past forbidden")]
     public void MDATC_C_1()
     {
         // Arrange
@@ -40,7 +40,7 @@ public class MDATC_C : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "C.02. Retreats to parallel timelines forbidden")]
+    [Fact(DisplayName = "MDATC C.02. Retreats to parallel timelines forbidden")]
     public void MDATC_C_2()
     {
         // Arrange
@@ -67,7 +67,7 @@ public class MDATC_C : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "C.03. No orders elsewhere in the multiverse during retreats")]
+    [Fact(DisplayName = "MDATC C.03. No orders elsewhere in the multiverse during retreats")]
     public void MDATC_C_3()
     {
         // Arrange
@@ -100,7 +100,7 @@ public class MDATC_C : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "C.04. Retreat in past to new location forks timeline")]
+    [Fact(DisplayName = "MDATC C.04. Retreat in past to new location forks timeline")]
     public void MDATC_C_4()
     {
         // A continuation of MDATC B 3 to match the original MDATC's scenario.

@@ -18,7 +18,7 @@ public class MDATC_E : AdjudicationTestBase
 
     public MDATC_E() => allRegionIds = MapFactory.CreateRegions().Select(r => r.Id).ToList();
 
-    [Fact(DisplayName = "E.01. No winner when all centre counts below 18")]
+    [Fact(DisplayName = "MDATC E.01. No winner when all centre counts below 18")]
     public void MDATC_E_1()
     {
         // Arrange
@@ -51,7 +51,7 @@ public class MDATC_E : AdjudicationTestBase
         world.Winner.Should().BeNull();
     }
 
-    [Fact(DisplayName = "E.02. Winner if single nation has at least 18 centres")]
+    [Fact(DisplayName = "MDATC E.02. Winner if single nation has at least 18 centres")]
     public void MDATC_E_2()
     {
         // Arrange
@@ -84,7 +84,7 @@ public class MDATC_E : AdjudicationTestBase
         world.Winner.Should().Be(Nation.England);
     }
 
-    [Fact(DisplayName = "E.03. No winner if two nations on same centre count above 18 centres")]
+    [Fact(DisplayName = "MDATC E.03. No winner if two nations on same centre count above 18 centres")]
     public void MDATC_E_3()
     {
         // Arrange
@@ -105,7 +105,7 @@ public class MDATC_E : AdjudicationTestBase
         world.Winner.Should().BeNull();
     }
 
-    [Fact(DisplayName = "E.04. Winner if one nation has clear majority with more than one above 18 centres")]
+    [Fact(DisplayName = "MDATC E.04. Winner if one nation has clear majority with more than one above 18 centres")]
     public void MDATC_E_4()
     {
         // Arrange
@@ -126,7 +126,7 @@ public class MDATC_E : AdjudicationTestBase
         world.Winner.Should().Be(Nation.England);
     }
 
-    [Fact(DisplayName = "E.05. Past boards don't count towards centre total")]
+    [Fact(DisplayName = "MDATC E.05. Past boards don't count towards centre total")]
     public void MDATC_E_5()
     {
         // Arrange
@@ -147,7 +147,7 @@ public class MDATC_E : AdjudicationTestBase
         world.Winner.Should().BeNull();
     }
 
-    [Fact(DisplayName = "E.06. Victory total must count only unique centres")]
+    [Fact(DisplayName = "MDATC E.06. Victory total must count only unique centres")]
     public void MDATC_E_6()
     {
         // Arrange
@@ -168,7 +168,7 @@ public class MDATC_E : AdjudicationTestBase
         world.Winner.Should().BeNull();
     }
 
-    [Fact(DisplayName = "E.07. Victory can come from distributed centres")]
+    [Fact(DisplayName = "MDATC E.07. Victory can come from distributed centres")]
     public void MDATC_E_7()
     {
         // Arrange
@@ -192,7 +192,7 @@ public class MDATC_E : AdjudicationTestBase
         world.Winner.Should().Be(Nation.England);
     }
 
-    [Fact(DisplayName = "E.08. No further adjudication after victory")]
+    [Fact(DisplayName = "MDATC E.08. No further adjudication after victory")]
     public void MDATC_E_8()
     {
         // Arrange

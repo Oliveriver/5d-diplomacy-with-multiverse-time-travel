@@ -13,7 +13,7 @@ namespace Tests;
 [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 public class DATC_C : AdjudicationTestBase
 {
-    [Fact(DisplayName = "C.01. Three army circular movement")]
+    [Fact(DisplayName = "DATC C.01. Three army circular movement")]
     public void DATC_C_1()
     {
         // Arrange
@@ -49,7 +49,7 @@ public class DATC_C : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "C.02. Three army circular movement with support")]
+    [Fact(DisplayName = "DATC C.02. Three army circular movement with support")]
     public void DATC_C_2()
     {
         // Arrange
@@ -89,7 +89,7 @@ public class DATC_C : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "C.03. A disrupted three army circular movement")]
+    [Fact(DisplayName = "DATC C.03. A disrupted three army circular movement")]
     public void DATC_C_3()
     {
         // Arrange
@@ -129,7 +129,7 @@ public class DATC_C : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "C.04. A circular movement with attacked convoy")]
+    [Fact(DisplayName = "DATC C.04. A circular movement with attacked convoy")]
     public void DATC_C_4()
     {
         // Arrange
@@ -181,7 +181,7 @@ public class DATC_C : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "C.05. A disrupted circular movement due to dislodged convoy")]
+    [Fact(DisplayName = "DATC C.05. A disrupted circular movement due to dislodged convoy")]
     public void DATC_C_5()
     {
         // Arrange
@@ -238,7 +238,7 @@ public class DATC_C : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "C.06. Two armies with two convoys")]
+    [Fact(DisplayName = "DATC C.06. Two armies with two convoys")]
     public void DATC_C_6()
     {
         // Arrange
@@ -278,7 +278,7 @@ public class DATC_C : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "C.07. Disrupted unit swap")]
+    [Fact(DisplayName = "DATC C.07. Disrupted unit swap")]
     public void DATC_C_7()
     {
         // Arrange
@@ -322,7 +322,7 @@ public class DATC_C : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "C.08. No self dislodgement in disrupted circular movement")]
+    [Fact(DisplayName = "DATC C.08. No self dislodgement in disrupted circular movement")]
     public void DATC_C_8()
     {
         // Arrange
@@ -366,7 +366,7 @@ public class DATC_C : AdjudicationTestBase
         world.ShouldHaveAllOrdersResolved();
     }
 
-    [Fact(DisplayName = "C.09. No help in dislodgement of own unit in disrupted circular movement")]
+    [Fact(DisplayName = "DATC C.09. No help in dislodgement of own unit in disrupted circular movement")]
     public void DATC_C_9()
     {
         // Arrange
