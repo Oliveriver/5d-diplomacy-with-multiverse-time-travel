@@ -176,7 +176,7 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
 
         orderResolver.TryResolve(order);
 
-        if (order.Status != OrderStatus.New)
+        if (order is not Move && order.Status != OrderStatus.New || order is Move move && (order.Status == OrderStatus.Success || move.ConvoyPath == null))
         {
             return;
         }
@@ -262,11 +262,10 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
 
     private void ApplySzykmanRule(Order order, List<Order> currentStack)
     {
-        var movesViaConvoy = currentStack.OfType<Move>().Where(m => m.ConvoyPath.Count > 0);
-        foreach (var move in movesViaConvoy)
+        foreach (var c in currentStack.OfType<Convoy>())
         {
-            move.Status = OrderStatus.Failure;
-            move.IsSzykmanHold = true;
+            c.Status = OrderStatus.Failure;
+            c.CanProvidePath = false;
         }
 
         Resolve(order, []);

@@ -124,7 +124,9 @@ public class OrderResolver(List<Order> orders, AdjacencyValidator adjacencyValid
 
         if (attackingMoves.All(m =>
             m.Unit!.Owner == support.Unit!.Owner
-            || adjacencyValidator.EqualsOrIsRelated(m.Location, support.Destination) && m.Status == OrderStatus.Failure))
+            || adjacencyValidator.EqualsOrIsRelated(m.Location, support.Destination) && m.Status == OrderStatus.Failure
+            || !adjacencyValidator.IsValidDirectMove(m.Unit!, m.Location, m.Destination) && m.ConvoyPath.Count == 0
+            ))
         {
             support.Status = OrderStatus.Success;
             return;
@@ -134,6 +136,13 @@ public class OrderResolver(List<Order> orders, AdjacencyValidator adjacencyValid
         {
             support.Status = OrderStatus.Failure;
             return;
+        }
+
+        if (attackingMoves.Any(m =>
+            !adjacencyValidator.IsValidDirectMove(m.Unit!, m.Location, m.Destination)
+            && m.ConvoyPath.All(c => c.Status == OrderStatus.Success)))
+        {
+            support.Status = OrderStatus.Failure;
         }
 
         if (attackingMoves.Any(m =>
