@@ -31,20 +31,20 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region>
             return [];
         }
 
-        //var successfulConvoysInPath = convoys.Where(c =>
-        //c.Midpoint == location
-        //&& c.Destination == destination
-        //&& c.Status == OrderStatus.Success).ToList();
+        var successfulConvoysInPath = convoys.Where(c =>
+        c.Midpoint == location
+        && c.Destination == destination
+        && c.Status == OrderStatus.Success).ToList();
 
-        //if (successfulConvoysInPath.Count != 0)
-        //{
-        //    var successfulDepthFirstSearch = new DepthFirstConvoySearch(successfulConvoysInPath, adjacencyValidator, regions);
-        //    var successfulConvoyPath = successfulDepthFirstSearch.GetPossibleConvoys(unit, location, destination);
-        //    if (successfulConvoyPath != null)
-        //    {
-        //        return successfulConvoyPath;
-        //    }
-        //}
+        if (successfulConvoysInPath.Count != 0)
+        {
+            var successfulDepthFirstSearch = new DepthFirstConvoySearch(successfulConvoysInPath, adjacencyValidator, regions);
+            var successfulConvoyPath = successfulDepthFirstSearch.GetPossibleConvoys(unit, location, destination);
+            if (successfulConvoyPath != null)
+            {
+                return successfulConvoyPath;
+            }
+        }
 
         var convoysInPath = convoys.Where(c =>
             c.Midpoint == location

@@ -139,6 +139,13 @@ public class OrderResolver(List<Order> orders, AdjacencyValidator adjacencyValid
         }
 
         if (attackingMoves.Any(m =>
+            !adjacencyValidator.IsValidDirectMove(m.Unit!, m.Location, m.Destination)
+            && m.ConvoyPath.All(c => c.Status == OrderStatus.Success)))
+        {
+            support.Status = OrderStatus.Failure;
+        }
+
+        if (attackingMoves.Any(m =>
             m.Unit!.Owner != support.Unit!.Owner
             && m.Status == OrderStatus.Failure
             && adjacencyValidator.IsValidDirectMove(m.Unit!, m.Location, m.Destination)
