@@ -262,11 +262,11 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
 
     private void ApplySzykmanRule(Order order, List<Order> currentStack)
     {
-        var movesViaConvoy = currentStack.OfType<Move>().Where(m => m.ConvoyPath.Count > 0);
-        foreach (var move in movesViaConvoy)
+        foreach (var c in currentStack.OfType<Convoy>())
         {
-            move.Status = OrderStatus.Failure;
-            move.IsSzykmanHold = true;
+            c.Status = OrderStatus.Failure;
+            c.CanProvidePath = false;
+            Console.WriteLine("Hi");
         }
 
         Resolve(order, []);
