@@ -176,7 +176,7 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
 
         orderResolver.TryResolve(order);
 
-        if (order.Status != OrderStatus.New)
+        if (order is not Move && order.Status != OrderStatus.New || order is Move move && (order.Status == OrderStatus.Success || move.ConvoyPath == null))
         {
             return;
         }

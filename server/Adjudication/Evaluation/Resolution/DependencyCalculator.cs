@@ -39,8 +39,7 @@ public class DependencyCalculator(List<Order> orders, AdjacencyValidator adjacen
             && adjacencyValidator.EqualsOrIsRelated(m.Destination, support.Location));
 
         var opposingConvoyMoves = moves.Where(m =>
-            adjacencyValidator.EqualsOrIsRelated(m.Destination, support.Location)
-            && m.ConvoyPath.Any(c => c.Location == support.Destination));
+            adjacencyValidator.EqualsOrIsRelated(m.Destination, support.Location));
 
         return [.. holdSupports, .. opposingDirectMoves, .. opposingConvoyMoves];
     }
