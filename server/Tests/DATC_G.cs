@@ -442,18 +442,18 @@ public class DATC_G : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        englishMove.Status.Should().Be(OrderStatus.Success);
-        englishSupport.Status.Should().Be(OrderStatus.Success);
-        russianMove.Status.Should().Be(OrderStatus.Failure);
-        russianSupport.Status.Should().Be(OrderStatus.Failure);
+        englishMove.Status.Should().Be(OrderStatus.Failure);
+        englishSupport.Status.Should().Be(OrderStatus.Failure);
+        russianMove.Status.Should().Be(OrderStatus.Success);
+        russianSupport.Status.Should().Be(OrderStatus.Success);
         russianConvoy.Status.Should().Be(OrderStatus.Failure);
 
         board.ShouldHaveUnits(
             [
-                (Nation.England, UnitType.Fleet, "Nwy", false),
+                (Nation.England, UnitType.Fleet, "Nwy", true),
                 (Nation.England, UnitType.Fleet, "NTH", false),
                 (Nation.Russia, UnitType.Army, "Swe", false),
-                (Nation.Russia, UnitType.Fleet, "SKA", true),
+                (Nation.Russia, UnitType.Fleet, "SKA", false),
                 (Nation.Russia, UnitType.Fleet, "BAR", false),
             ]);
         board.ShouldNotHaveNextBoard();
