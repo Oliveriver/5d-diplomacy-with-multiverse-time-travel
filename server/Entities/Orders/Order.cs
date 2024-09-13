@@ -1,4 +1,5 @@
 ﻿using Enums;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities;
@@ -11,8 +12,10 @@ public abstract class Order
     public virtual World World { get; set; } = null!;
 
     public OrderStatus Status { get; set; }
-    public int? UnitId { get; set; }
-    public virtual Unit? Unit { get; set; }
+    public int UnitId { get; set; }
+
+    [DeleteBehavior(DeleteBehavior.ClientCascade)]
+    public virtual Unit Unit { get; set; } = null!;
     public Location Location { get; set; } = null!;
 
     [NotMapped]

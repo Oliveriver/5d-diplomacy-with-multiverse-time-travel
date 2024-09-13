@@ -28,8 +28,8 @@ public class Validator
         this.centres = centres;
         this.adjacencyValidator = adjacencyValidator;
 
-        nonRetreats = world.Orders.Where(o => o.NeedsValidation && !o.Unit!.MustRetreat).ToList();
-        retreats = world.Orders.Where(o => o.NeedsValidation && o.Unit!.MustRetreat).ToList();
+        nonRetreats = world.Orders.Where(o => o.NeedsValidation && !o.Unit.MustRetreat).ToList();
+        retreats = world.Orders.Where(o => o.NeedsValidation && o.Unit.MustRetreat).ToList();
 
         moves = nonRetreats.OfType<Move>().ToList();
         supports = nonRetreats.OfType<Support>().ToList();
@@ -65,9 +65,9 @@ public class Validator
     {
         foreach (var move in moves)
         {
-            var canDirectMove = adjacencyValidator.IsValidDirectMove(move.Unit!, move.Location, move.Destination);
+            var canDirectMove = adjacencyValidator.IsValidDirectMove(move.Unit, move.Location, move.Destination);
 
-            move.ConvoyPath = convoyPathValidator.GetPossibleConvoys(move.Unit!, move.Location, move.Destination);
+            move.ConvoyPath = convoyPathValidator.GetPossibleConvoys(move.Unit, move.Location, move.Destination);
             var canConvoyMove = move.ConvoyPath.Count > 0;
 
             move.Status = canDirectMove || canConvoyMove ? OrderStatus.New : OrderStatus.Invalid;
@@ -76,7 +76,7 @@ public class Validator
         var existingMoves = world.Orders.OfType<Move>().Except(moves);
         foreach (var move in existingMoves)
         {
-            var newConvoyPath = convoyPathValidator.GetPossibleConvoys(move.Unit!, move.Location, move.Destination);
+            var newConvoyPath = convoyPathValidator.GetPossibleConvoys(move.Unit, move.Location, move.Destination);
             if (newConvoyPath.Count > 0)
             {
                 move.ConvoyPath = newConvoyPath;
@@ -89,12 +89,12 @@ public class Validator
     {
         var stationaryOrders = world.Orders.Where(o =>
             o is Hold or Support or Convoy
-            || o is Move m && m.Status == OrderStatus.Invalid && m.Location != m.Destination && !convoyPathValidator.CouldHaveConvoyed(m.Unit!, m.Location, m.Destination));
+            || o is Move m && m.Status == OrderStatus.Invalid && m.Location != m.Destination && !convoyPathValidator.CouldHaveConvoyed(m.Unit, m.Location, m.Destination));
         var allMoves = world.Orders.OfType<Move>();
 
         foreach (var support in supports)
         {
-            var canSupport = adjacencyValidator.IsValidDirectMove(support.Unit!, support.Location, support.Destination, allowDestinationSibling: true);
+            var canSupport = adjacencyValidator.IsValidDirectMove(support.Unit, support.Location, support.Destination, allowDestinationSibling: true);
 
             var hasMatchingHold = support.Midpoint == support.Destination
                 && stationaryOrders.Any(o => adjacencyValidator.EqualsOrIsRelated(o.Location, support.Destination));
@@ -172,7 +172,7 @@ public class Validator
             }
 
             var currentCentre = board.Centres.First(c => c.Location.RegionId == originalCentre.Location.RegionId);
-            var unit = build.Unit!;
+            var unit = build.Unit;
 
             var isCompatibleRegion = originalCentre.Owner == unit.Owner && currentCentre.Owner == unit.Owner;
             var isCompatibleUnit = unit.Type == UnitType.Army && region.Type != RegionType.Sea
@@ -209,7 +209,7 @@ public class Validator
         {
             retreat.Status = retreat switch
             {
-                Move move => adjacencyValidator.IsValidDirectMove(move.Unit!, move.Location, move.Destination)
+                Move move => adjacencyValidator.IsValidDirectMove(move.Unit, move.Location, move.Destination)
                     ? OrderStatus.New
                     : OrderStatus.Invalid,
                 Disband => OrderStatus.New,

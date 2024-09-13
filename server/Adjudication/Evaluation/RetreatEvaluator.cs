@@ -34,7 +34,7 @@ public class RetreatEvaluator(World world, List<Order> activeOrders, AdjacencyVa
 
     private void EvaluateRetreatMoves()
     {
-        var retreats = activeOrders.OfType<Move>().Where(m => m.Unit!.MustRetreat && m.Status != OrderStatus.Invalid).ToList();
+        var retreats = activeOrders.OfType<Move>().Where(m => m.Unit.MustRetreat && m.Status != OrderStatus.Invalid).ToList();
         var holds = world.Orders.OfType<Hold>();
         var moves = world.Orders.OfType<Move>();
         var supports = world.Orders.OfType<Support>();

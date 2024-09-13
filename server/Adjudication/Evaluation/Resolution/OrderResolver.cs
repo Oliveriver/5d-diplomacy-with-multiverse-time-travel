@@ -86,7 +86,7 @@ public class OrderResolver(List<Order> orders, AdjacencyValidator adjacencyValid
         var destinationOrder = orders.FirstOrDefault(o => adjacencyValidator.EqualsOrIsRelated(o.Location, move.Destination));
 
         if (destinationOrder is Move destinationMove
-            && destinationMove.Unit!.Owner == move.Unit!.Owner
+            && destinationMove.Unit.Owner == move.Unit.Owner
             && destinationMove.OpposingMove != null
             && competingMoves.All(m => m == destinationMove.OpposingMove))
         {
@@ -116,9 +116,9 @@ public class OrderResolver(List<Order> orders, AdjacencyValidator adjacencyValid
         var attackingMoves = moves.Where(m => adjacencyValidator.EqualsOrIsRelated(m.Destination, support.Location));
 
         if (attackingMoves.All(m =>
-            m.Unit!.Owner == support.Unit!.Owner
+            m.Unit.Owner == support.Unit.Owner
             || adjacencyValidator.EqualsOrIsRelated(m.Location, support.Destination) && m.Status == OrderStatus.Failure
-            || !adjacencyValidator.IsValidDirectMove(m.Unit!, m.Location, m.Destination) && m.ConvoyPath.Count == 0
+            || !adjacencyValidator.IsValidDirectMove(m.Unit, m.Location, m.Destination) && m.ConvoyPath.Count == 0
             ))
         {
             support.Status = OrderStatus.Success;
@@ -132,16 +132,16 @@ public class OrderResolver(List<Order> orders, AdjacencyValidator adjacencyValid
         }
 
         if (attackingMoves.Any(m =>
-            !adjacencyValidator.IsValidDirectMove(m.Unit!, m.Location, m.Destination)
+            !adjacencyValidator.IsValidDirectMove(m.Unit, m.Location, m.Destination)
             && m.ConvoyPath.All(c => c.Status == OrderStatus.Success)))
         {
             support.Status = OrderStatus.Failure;
         }
 
         if (attackingMoves.Any(m =>
-            m.Unit!.Owner != support.Unit!.Owner
+            m.Unit.Owner != support.Unit.Owner
             && m.Status == OrderStatus.Failure
-            && adjacencyValidator.IsValidDirectMove(m.Unit!, m.Location, m.Destination)
+            && adjacencyValidator.IsValidDirectMove(m.Unit, m.Location, m.Destination)
             && !adjacencyValidator.EqualsOrIsRelated(m.Location, support.Destination)
             && m.ConvoyPath.All(c => c.Status != OrderStatus.New && c.CanProvidePath)))
         {

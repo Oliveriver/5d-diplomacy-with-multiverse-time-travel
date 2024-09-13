@@ -108,8 +108,8 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region>
                 if (location == convoys.FirstOrDefault()?.Midpoint)
                 {
                     var directConvoys = convoys.Where(c =>
-                        adjacencyValidator.IsValidDirectMove(c.Unit!, c.Location, destination, allowDestinationChild: true)
-                        && adjacencyValidator.IsValidDirectMove(c.Unit!, c.Location, location, allowDestinationChild: true));
+                        adjacencyValidator.IsValidDirectMove(c.Unit, c.Location, destination, allowDestinationChild: true)
+                        && adjacencyValidator.IsValidDirectMove(c.Unit, c.Location, location, allowDestinationChild: true));
 
                     if (directConvoys.Any())
                     {
@@ -138,11 +138,11 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region>
             var adjacentConvoys = convoys
                 .Where(c =>
                     !visitedConvoys.Contains(c)
-                    && adjacencyValidator.IsValidDirectMove(c.Unit!, c.Location, location, allowDestinationChild: true))
+                    && adjacencyValidator.IsValidDirectMove(c.Unit, c.Location, location, allowDestinationChild: true))
                 .ToList();
 
             var onwardConvoys = adjacentConvoys
-                .SelectMany(c => GetPossibleConvoys(c.Unit!, c.Location, destination))
+                .SelectMany(c => GetPossibleConvoys(c.Unit, c.Location, destination))
                 .ToList();
 
             return convoy == null || onwardConvoys.Count == 0 ? [.. onwardConvoys] : [.. onwardConvoys, convoy];

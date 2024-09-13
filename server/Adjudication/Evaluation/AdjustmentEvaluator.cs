@@ -35,8 +35,8 @@ public class AdjustmentEvaluator(World world, List<Order> activeOrders)
 
     private void EvaluateBoardForNation(Board board, Nation nation, List<Build> boardBuilds, List<Disband> boardDisbands)
     {
-        var nationBuilds = boardBuilds.Where(b => b.Unit!.Owner == nation).ToList();
-        var nationDisbands = boardDisbands.Where(d => d.Unit!.Owner == nation).ToList();
+        var nationBuilds = boardBuilds.Where(b => b.Unit.Owner == nation).ToList();
+        var nationDisbands = boardDisbands.Where(d => d.Unit.Owner == nation).ToList();
 
         var centreCount = board.Centres.Where(c => c.Owner == nation).Count();
         var unitCount = board.Units.Where(u => u.Owner == nation).Count();

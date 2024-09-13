@@ -105,9 +105,9 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
         var convoyPathValidator = new ConvoyPathValidator(world, possibleConvoys, regions, adjacencyValidator);
         foreach (var move in moves)
         {
-            var newConvoyPath = convoyPathValidator.GetPossibleConvoys(move.Unit!, move.Location, move.Destination);
+            var newConvoyPath = convoyPathValidator.GetPossibleConvoys(move.Unit, move.Location, move.Destination);
 
-            var canDirectMove = adjacencyValidator.IsValidDirectMove(move.Unit!, move.Location, move.Destination);
+            var canDirectMove = adjacencyValidator.IsValidDirectMove(move.Unit, move.Location, move.Destination);
             if (newConvoyPath.Count == 0 && !canDirectMove)
             {
                 move.Status = OrderStatus.Failure;
@@ -149,7 +149,7 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
 
             var destinationOrder = orders.FirstOrDefault(o => adjacencyValidator.EqualsOrIsRelated(o.Location, support.Destination));
 
-            if (destinationOrder == null || destinationOrder.Unit!.Owner != support.Unit!.Owner)
+            if (destinationOrder == null || destinationOrder.Unit.Owner != support.Unit.Owner)
             {
                 continue;
             }

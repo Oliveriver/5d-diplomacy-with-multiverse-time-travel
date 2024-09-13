@@ -8,7 +8,7 @@ public class Unit
 
     public int BoardId { get; set; }
     public virtual Board Board { get; set; } = null!;
-    public virtual Order? Order { get; set; }
+    public virtual List<Order> Orders { get; set; } = [];
 
     public Location Location { get; set; } = null!;
     public Nation Owner { get; set; }

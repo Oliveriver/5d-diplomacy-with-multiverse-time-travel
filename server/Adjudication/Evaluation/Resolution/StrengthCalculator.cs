@@ -112,7 +112,7 @@ public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacency
 
         if (destinationOrder != null)
         {
-            if (destinationOrder.Unit!.Owner == move.Unit!.Owner)
+            if (destinationOrder.Unit.Owner == move.Unit.Owner)
             {
                 if (destinationOrder is Move)
                 {
@@ -149,7 +149,7 @@ public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacency
                 return;
             }
 
-            var supportsWithDifferentOwner = move.Supports.Where(s => s.Unit!.Owner != destinationOrder.Unit!.Owner).ToList();
+            var supportsWithDifferentOwner = move.Supports.Where(s => s.Unit.Owner != destinationOrder.Unit.Owner).ToList();
             AddSupportStrength(move.AttackStrength, supportsWithDifferentOwner);
             return;
         }
@@ -169,7 +169,7 @@ public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacency
         move.PreventStrength.Max = 1;
         move.PreventStrength.Min = 1;
 
-        if (!adjacencyValidator.IsValidDirectMove(move.Unit!, move.Location, move.Destination)
+        if (!adjacencyValidator.IsValidDirectMove(move.Unit, move.Location, move.Destination)
             && move.ConvoyPath.All(c => !c.CanProvidePath))
         {
             move.PreventStrength.Max = 0;

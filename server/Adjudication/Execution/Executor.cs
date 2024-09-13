@@ -80,7 +80,7 @@ public class Executor(World world, List<Region> regions)
             (o is not Move || o.Status != OrderStatus.Success)
             && !disbands.Any(d => d.Unit == o.Unit)
             && previousBoard.Contains(o.Location)
-            && !originalRetreatingUnits.Contains(o.Unit!));
+            && !originalRetreatingUnits.Contains(o.Unit));
         var incomingMoves = world.Orders.OfType<Move>().Where(m =>
             (m.Status == OrderStatus.Success || m.Status == OrderStatus.Retreat)
             && previousBoard.Contains(m.Destination));
@@ -89,7 +89,7 @@ public class Executor(World world, List<Region> regions)
 
         foreach (var hold in holds)
         {
-            var unit = hold.Unit!.Clone();
+            var unit = hold.Unit.Clone();
             unit.Location.Timeline = timeline;
             unit.Location.Year = year;
             unit.Location.Phase = phase;
@@ -98,7 +98,7 @@ public class Executor(World world, List<Region> regions)
 
         foreach (var move in incomingMoves)
         {
-            var unit = move.Unit!.Clone();
+            var unit = move.Unit.Clone();
             unit.Location.Timeline = timeline;
             unit.Location.Year = year;
             unit.Location.Phase = phase;
@@ -155,7 +155,7 @@ public class Executor(World world, List<Region> regions)
 
         var units = previousBoard.Units
             .Where(u => !disbands.Any(d => d.Unit == u))
-            .Concat(builds.Select(b => b.Unit!))
+            .Concat(builds.Select(b => b.Unit))
             .Select(u => u.Clone())
             .ToList();
 

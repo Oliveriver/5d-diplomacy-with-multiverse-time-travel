@@ -53,33 +53,13 @@ public class MovementEvaluator(World world, List<Order> activeOrders, List<Regio
                 continue;
             }
 
-            var unit = order.Unit!;
+            var unit = order.Unit;
+            var canEscape = CanEscape(unit, stationaryOrders, moves.ToList());
 
-            var escapeRoutes = adjacencyValidator.GetAdjacentRegions(unit);
-
-            foreach (var escapeRoute in escapeRoutes)
+            if (canEscape)
             {
-                var successfulHold = stationaryOrders.FirstOrDefault(o => adjacencyValidator.EqualsOrIsRelated(o.Location, escapeRoute));
-
-                var incomingMoves = moves.Where(m => adjacencyValidator.EqualsOrIsRelated(m.Destination, escapeRoute));
-
-                var successfulIncomingMove = incomingMoves.FirstOrDefault(m => m.Status == OrderStatus.Success);
-                var bouncedIncomingMoves = incomingMoves
-                    .Where(m => m.Status == OrderStatus.Failure && m.ConvoyPath.All(c => c.Status == OrderStatus.Success));
-
-                var isDestinationOccupied = successfulHold != null || successfulIncomingMove != null;
-                var hadBounceInDestination = bouncedIncomingMoves.Count() >= 2;
-                var hasOpposingMove = moves.Any(m =>
-                    m.Status == OrderStatus.Success
-                    && adjacencyValidator.EqualsOrIsRelated(m.Location, escapeRoute)
-                    && adjacencyValidator.EqualsOrIsRelated(m.Destination, unit.Location)
-                    && m.ConvoyPath.Count == 0);
-
-                if (!isDestinationOccupied && !hadBounceInDestination && !hasOpposingMove)
-                {
-                    unit.MustRetreat = true;
-                    continue;
-                }
+                unit.MustRetreat = true;
+                continue;
             }
 
             var disband = new Disband
@@ -91,6 +71,37 @@ public class MovementEvaluator(World world, List<Order> activeOrders, List<Regio
             };
             world.Orders.Add(disband);
         }
+    }
+
+    private bool CanEscape(Unit unit, List<Order> stationaryOrders, List<Move> moves)
+    {
+        var escapeRoutes = adjacencyValidator.GetAdjacentRegions(unit);
+
+        foreach (var escapeRoute in escapeRoutes)
+        {
+            var successfulHold = stationaryOrders.FirstOrDefault(o => o.Unit != unit && adjacencyValidator.EqualsOrIsRelated(o.Location, escapeRoute));
+
+            var incomingMoves = moves.Where(m => adjacencyValidator.EqualsOrIsRelated(m.Destination, escapeRoute));
+
+            var successfulIncomingMove = incomingMoves.FirstOrDefault(m => m.Status == OrderStatus.Success);
+            var bouncedIncomingMoves = incomingMoves
+                .Where(m => m.Status == OrderStatus.Failure && m.ConvoyPath.All(c => c.Status == OrderStatus.Success));
+
+            var isDestinationOccupied = successfulHold != null || successfulIncomingMove != null;
+            var hadBounceInDestination = bouncedIncomingMoves.Count() >= 2;
+            var hasOpposingMove = moves.Any(m =>
+                m.Status == OrderStatus.Success
+                && adjacencyValidator.EqualsOrIsRelated(m.Location, escapeRoute)
+                && adjacencyValidator.EqualsOrIsRelated(m.Destination, unit.Location)
+                && m.ConvoyPath.Count == 0);
+
+            if (!isDestinationOccupied && !hadBounceInDestination && !hasOpposingMove)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 
