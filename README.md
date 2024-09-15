@@ -107,7 +107,7 @@ With loose adjacencies, a unit can move/support/convoy to:
 
 In either case, note in particular that movement one board diagonally is not permitted (without a convoy).
 
-Convoys extend the quirk of standard Diplomacy that allows armies to move an arbitrary distance in a single turn if a chain of convoying fleets exists. So providing each fleet is adjacent to the next and all are ordered to perform the same convoy, an army could go almost anywhere.
+Convoys extend the quirk of standard Diplomacy that allows armies to move an arbitrary distance in a single turn if a chain of convoying fleets exists. Providing each fleet is adjacent to the next and all are ordered to perform the same convoy, an army could go almost anywhere.
 
 Units are however forbidden from moving into boards that don't exist yet, even with convoys. Convoys and supports though can anticipate a future unit moving back in time, so the player can use the ghost board to enter supports/convoys via an arbitrary location in the multiverse.
 
@@ -130,7 +130,7 @@ Main turns (spring and fall) and winter boards adjudicate simultaneously if all 
 
 Build/disband counts are per board. If a player controls fewer centres than they have units in one timeline but more in another, the difference does not cancel out: they must disband in the former and may build only in the latter. If they fail to enter enough disbands on a given board, units are removed from that board at random.
 
-If any board requires retreats, adjudication pauses for all board without retreats. Retreats may only move to an adjacent region on the same board.
+If any board requires retreats, adjudication pauses for all boards without retreats. Retreats may only move to an adjacent region on the same board.
 
 #### Victory Condition
 
@@ -150,4 +150,4 @@ Modifying the server to adjudicate custom variants in 5D is simple. You need onl
 - Modify `regions.json` to change regions.
 - Modify `units.json` to change starting units.
 
-Modifying the client is tricker as it is much more tied to this particular Diplomacy board. While `client/src/data/regions.ts` contains the list of regions and associated data, you will also need to replace the SVG files in `src/assets/map` and then reference them in `src/hooks/useRegionSvg`.
+Modifying the client is tricker as it is much more tied to this particular Diplomacy board. While `client/src/data/regions.ts` contains the list of regions and associated data, you will also need to replace the SVG files in `client/src/assets/map` and then reference them in `client/src/hooks/useRegionSvg`.
