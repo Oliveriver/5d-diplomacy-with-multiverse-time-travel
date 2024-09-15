@@ -20,6 +20,8 @@ const GameRoot = () => {
         limitToBounds={false}
         minScale={0.05}
         maxScale={3}
+        smooth
+        wheel={{ smoothStep: 0.0005 }}
         initialScale={initialScale}
         initialPositionX={getDefaultOffsetX()}
         initialPositionY={getDefaultOffsetY()}
