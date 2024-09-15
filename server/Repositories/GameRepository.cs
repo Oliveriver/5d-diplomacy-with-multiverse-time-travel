@@ -19,7 +19,7 @@ public class GameRepository(ILogger<GameRepository> logger, GameContext context,
 
         var defaultWorld = defaultWorldFactory.CreateWorld();
 
-        var chosenPlayer = player ?? GetRandomNation();
+        var chosenPlayer = player ?? GetRandomNation([]);
         var game = new Game
         {
             IsSandbox = false,
@@ -67,17 +67,9 @@ public class GameRepository(ILogger<GameRepository> logger, GameContext context,
             throw new InvalidOperationException("Can't join sandbox game when requesting to join normal game");
         }
 
-        if (player == null && game.Players.Count >= Constants.Nations.Count)
-        {
-            throw new InvalidOperationException("Can't rejoin full game as random nation");
-        }
-
-        var chosenPlayer = player ?? GetRandomNation();
-        if (!game.Players.Contains(chosenPlayer) && game.Players.Count < Constants.Nations.Count)
-        {
-            game.Players.Add(chosenPlayer);
-            await context.SaveChangesAsync();
-        }
+        var chosenPlayer = player ?? GetRandomNation(game.Players);
+        game.Players.Add(chosenPlayer);
+        await context.SaveChangesAsync();
 
         return (game, chosenPlayer);
     }
@@ -93,9 +85,15 @@ public class GameRepository(ILogger<GameRepository> logger, GameContext context,
             : throw new InvalidOperationException("Can't join non-sandbox when requesting to join sandbox game");
     }
 
-    private Nation GetRandomNation()
+    private Nation GetRandomNation(List<Nation> existingNations)
     {
-        var player = Constants.Nations.ElementAt(random.Next(Constants.Nations.Count));
+        var availableNations = Constants.Nations.Except(existingNations);
+        if (!availableNations.Any())
+        {
+            throw new InvalidOperationException("Can't rejoin full game as random nation");
+        }
+
+        var player = availableNations.ElementAt(random.Next(availableNations.Count()));
         logger.LogInformation("Selected random nation {Player}", player);
         return player;
     }
