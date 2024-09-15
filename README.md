@@ -8,6 +8,14 @@ Inspired by and indebted to the board game [Diplomacy](https://instructions.hasb
 
 _Diplomacy_ is a trademark of Avalon Hill. _5D Chess With Multiverse Time Travel_ is a trademark of Thunkspace, LLC. _5D Diplomacy With Multiverse Time Travel_ and its creators are not affiliated with either _Diplomacy_ or _5D Chess With Multiverse Time Travel_.
 
+## Contibuting
+
+If you find a bug, please raise an [issue](https://github.com/Oliveriver/5d-diplomacy-with-multiverse-time-travel/issues).
+
+If you have design questions or suggestions, please don't use the issue board and instead use the [5D Diplomacy Discord server](https://discord.gg/g7TvjPfkVu).
+
+Code contributions from others are welcome, although the creators retain the right to refuse feature changes. Feel free to fork this repo and modify the code there if you wish to experiment with more radical changes to the rules or UI.
+
 ## Installation
 
 The two components - found in the `server` and `client` directories - may be run together or independently. The client always requires a server instance (local or remote) for the game to function beyond the welcome and setup screens.
