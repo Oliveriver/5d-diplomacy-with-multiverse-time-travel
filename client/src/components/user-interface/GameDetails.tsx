@@ -12,6 +12,8 @@ const GameDetails = () => {
 
   const onGameIdCopied = () => navigator.clipboard.writeText(id.toString());
 
+  const adjacencySettingText = `Adjacencies: ${game.hasStrictAdjacencies ? 'Strict' : 'Loose'}`;
+
   return (
     <div
       className="flex flex-col gap-2 rounded p-4 w-max"
@@ -36,6 +38,7 @@ const GameDetails = () => {
       >
         {player ?? 'Sandbox'}
       </p>
+      <p className="text-xs opacity-50">{adjacencySettingText}</p>
     </div>
   );
 };

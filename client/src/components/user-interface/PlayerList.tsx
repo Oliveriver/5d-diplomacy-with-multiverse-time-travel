@@ -29,7 +29,7 @@ const PlayerList = () => {
     }))
     .sort((player1, player2) => player2.centres.length - player1.centres.length);
 
-  const maxHeight = window.innerHeight - 272;
+  const maxHeight = window.innerHeight - 296;
 
   return (
     <div className="absolute left-10 top-10 flex flex-col gap-4">
