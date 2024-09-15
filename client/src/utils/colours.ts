@@ -18,8 +18,8 @@ const colours = {
 
   orderNew: baseColours.black,
   orderSuccess: baseColours.black,
-  orderFailure: baseColours.red[500],
-  orderRetreat: baseColours.orange[400],
+  orderFailure: baseColours.red[600],
+  orderRetreat: baseColours.orange[600],
   orderHighlight: baseColours.lime[500],
 
   sea: baseColours.sky[200],
