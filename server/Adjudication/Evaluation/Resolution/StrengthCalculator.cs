@@ -123,7 +123,9 @@ public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacency
                         return;
                     }
 
-                    if (destinationOrder.Status != OrderStatus.Success)
+                    AddSupportStrength(move.AttackStrength, move.Supports);
+
+                    if (destinationOrder.Status == OrderStatus.New)
                     {
                         move.AttackStrength.Min = 0;
                     }
@@ -132,8 +134,9 @@ public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacency
                 {
                     move.AttackStrength.Max = 0;
                     move.AttackStrength.Min = 0;
-                    return;
                 }
+
+                return;
             }
 
             if (destinationOrder.Status == OrderStatus.Success)
