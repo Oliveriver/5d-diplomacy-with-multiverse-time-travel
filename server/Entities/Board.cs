@@ -1,5 +1,4 @@
 ﻿using Enums;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities;
 
@@ -16,8 +15,6 @@ public class Board
     public List<int> ChildTimelines { get; set; } = [];
     public virtual List<Centre> Centres { get; set; } = [];
     public virtual List<Unit> Units { get; set; } = [];
-
-    [NotMapped]
     public bool MightAdvance { get; set; }
 
     public bool Contains(Location location)

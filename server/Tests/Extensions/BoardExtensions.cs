@@ -18,20 +18,24 @@ internal static class BoardExtensions
             Phase = board.Phase,
             RegionId = regionId,
         };
+
+        var unit = new Unit
+        {
+            Board = board,
+            Owner = owner,
+            Type = type,
+            Location = location,
+        };
+
         var build = new Build
         {
             World = world,
             Status = status,
             Location = location,
-            Unit = new()
-            {
-                Board = board,
-                Owner = owner,
-                Type = type,
-                Location = location,
-            },
+            Unit = unit,
         };
 
+        board.Units.Add(unit);
         world.Orders.Add(build);
         return build;
     }

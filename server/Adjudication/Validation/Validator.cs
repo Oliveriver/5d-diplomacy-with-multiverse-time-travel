@@ -164,7 +164,7 @@ public class Validator
                 continue;
             }
 
-            var isOccupied = board.Units.Any(u => adjacencyValidator.EqualsOrIsRelated(u.Location, build.Location));
+            var isOccupied = board.Units.Any(u => !builds.Any(b => b.Unit == u) && adjacencyValidator.EqualsOrIsRelated(u.Location, build.Location));
             if (isOccupied)
             {
                 build.Status = OrderStatus.Invalid;

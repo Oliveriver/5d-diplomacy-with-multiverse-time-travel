@@ -146,16 +146,15 @@ public class Executor(World world, List<Region> regions)
         var year = previousBoard.Year + 1;
         var phase = Phase.Spring;
 
-        var localOrders = world.Orders.Where(o =>
-            o.Status == OrderStatus.Success
-            && previousBoard.Contains(o.Location));
+        var localOrders = world.Orders.Where(o => previousBoard.Contains(o.Location));
 
         var builds = localOrders.OfType<Build>();
         var disbands = localOrders.OfType<Disband>();
 
         var units = previousBoard.Units
-            .Where(u => !disbands.Any(d => d.Unit == u))
-            .Concat(builds.Select(b => b.Unit))
+            .Where(u =>
+                !disbands.Any(d => d.Unit == u && d.Status == OrderStatus.Success)
+                && !builds.Any(b => b.Unit == u && b.Status != OrderStatus.Success))
             .Select(u => u.Clone())
             .ToList();
 

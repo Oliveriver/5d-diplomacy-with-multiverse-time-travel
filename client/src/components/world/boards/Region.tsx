@@ -76,7 +76,7 @@ const Region = ({ id, timeline, year, phase, owner, unit, isVisible = true }: Re
   };
 
   return (
-    <>
+    <div title={id}>
       {isVisible && (
         <Svg
           className="absolute w-full h-full"
@@ -98,7 +98,7 @@ const Region = ({ id, timeline, year, phase, owner, unit, isVisible = true }: Re
         {unit && <UnitIcon unit={unit} scaleFactor={scaleFactor} />}
         <BuildOptions location={location} owner={owner} scaleFactor={scaleFactor} />
       </div>
-    </>
+    </div>
   );
 };
 

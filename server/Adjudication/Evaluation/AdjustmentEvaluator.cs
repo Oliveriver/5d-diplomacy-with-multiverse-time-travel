@@ -39,7 +39,9 @@ public class AdjustmentEvaluator(World world, List<Order> activeOrders)
         var nationDisbands = boardDisbands.Where(d => d.Unit.Owner == nation).ToList();
 
         var centreCount = board.Centres.Where(c => c.Owner == nation).Count();
-        var unitCount = board.Units.Where(u => u.Owner == nation).Count();
+        var unitCount = board.Units.Where(u =>
+            !activeOrders.OfType<Build>().Any(o => o.Unit == u)
+            && u.Owner == nation).Count();
 
         var adjustmentCount = centreCount - unitCount;
 
