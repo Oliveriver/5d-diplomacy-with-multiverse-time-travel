@@ -143,11 +143,11 @@ A player achieves victory under one of the following conditions:
 
 As with regular Diplomacy, it's possible for 5D Diplomacy to feature variant maps with completely different region arrangements. Other variants, such as variants with new rules, are not supported.
 
-Modifying the server to adjudicate custom variants in 5D is simple. You need only edit the JSON files in the folder `server/Data` to match the intended board. Any subsequent run of the server will use those to create and adjudicate worlds.
+Modifying the server to adjudicate custom variants in 5D is simple. First, edit the list of nations in `server/Enums/Nation.cs`. Then edit the JSON files in the folder `server/Data` to match the intended board. Any subsequent run of the server will use those to create and adjudicate worlds.
 
 - Modify `centres.json` to change supply centres and starting/home centres.
 - Modify `connections.json` to change connections between regions.
 - Modify `regions.json` to change regions.
 - Modify `units.json` to change starting units.
 
-Modifying the client is tricker as it is much more tied to this particular Diplomacy board. While `client/src/data/regions.ts` contains the list of regions and associated data, you will also need to replace the SVG files in `client/src/assets/map` and then reference them in `client/src/hooks/useRegionSvg`.
+Modifying the client is tricker as it is much more tied to this particular Diplomacy board. While `client/src/data/regions.ts` contains the list of regions and associated data, you will also need to replace the SVG files in `client/src/assets/map` and then reference them in `client/src/hooks/useRegionSvg.tsx`.
