@@ -47,15 +47,29 @@ Steps:
 
 ## Gameplay
 
+For a basic demonstration of the game and how to play, see [VIDEO LINK TBA].
+
 ### Setup
+
+First see installation instructions above. 5D Diplomacy can be set to run normal games (where seven players join and enter orders individually) or sandbox games (where a single user enters all orders).
+
+If you wish to play a normal game or let other people see one of your sandbox games, you'll need to expose the domains of your client and/or server (if everyone has set up the client themselves, only a server needs to be exposed). There are various ways to do this, although this guide does not cover them.
 
 #### Normal Game
 
-TBA
+To create a normal game, one player must choose the new game option from the main menu. They must choose the adjacency setting (see game rules below). After a game has been created, the initiating player enters the game and sees the game ID in the top left corner, which they must copy and send to other players.
+
+Other players can then use the join game option from the main menu to join with the supplied game ID.
+
+Note that 5D Diplomacy has no in-built messaging system. Unless you want to play without press, you require a separate program to send and receive press, e.g. a messaging app or voice calls.
+
+A possible exploit exists when playing multiplayer games. Since 5D Diplomacy has no user logins or verification, a player can join as someone else and enter their orders before them. The alternative - allowing each nation to join only once - would mean players can't rejoin after a break or connection issues. While Diplomacy is a game about breaking trust, you'll simply have to trust players not to be quite this devious.
 
 #### Sandbox Game
 
-TBA
+To create a sandbox game, select new game from the main menu and choose the sandbox option. Also set the adjacency setting (see game rules below).
+
+In sandbox mode, turns advance after submission whether all nations have orders or not.
 
 ### Game Rules
 
@@ -116,3 +130,16 @@ A player achieves victory under one of the following conditions:
 
 - They are the only player to control at least 18 unique supply centres across all active boards. Unique here means unique by region name, so controlling Serbia in Timeline 1 and Serbia in Timeline 2 counts as only one supply centre.
 - If more than one player controls more than 18 unique supply centres, they are the only one with a clear majority. It's possible for two players to reach 18 centres in the same turn, e.g. if they have targeted different timelines.
+
+## Variants
+
+As with regular Diplomacy, it's possible for 5D Diplomacy to feature variant maps with completely different region arrangements. Other variants, such as variants with new rules, are not supported.
+
+Modifying the server to adjudicate custom variants in 5D is simple. You need only edit the JSON files in the folder `server/Data` to match the intended board. Any subsequent run of the server will use those to create and adjudicate worlds.
+
+- Modify `centres.json` to change supply centres and starting/home centres.
+- Modify `connections.json` to change connections between regions.
+- Modify `regions.json` to change regions.
+- Modify `units.json` to change starting units.
+
+Modifying the client is tricker as it is much more tied to this particular Diplomacy board. While `client/src/data/regions.ts` contains the list of regions and associated data, you will also need to replace the SVG files in `src/assets/map` and then reference them in `src/hooks/useRegionSvg`.
