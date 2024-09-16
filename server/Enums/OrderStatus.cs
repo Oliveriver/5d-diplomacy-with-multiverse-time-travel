@@ -6,5 +6,8 @@ public enum OrderStatus
     Success,
     Failure,
     Invalid,
-    Retreat,
+    RetreatNew,
+    RetreatSuccess,
+    RetreatFailure,
+    RetreatInvalid,
 }

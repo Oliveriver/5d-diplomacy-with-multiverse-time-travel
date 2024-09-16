@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Enums;
 
 namespace Adjudication;
 
@@ -29,6 +30,15 @@ public class TouchedOrdersFinder(World world, AdjacencyValidator adjacencyValida
 
         public void AddTouchedOrders(Order order)
         {
+            if (order.Status is OrderStatus.RetreatNew
+                or OrderStatus.RetreatSuccess
+                or OrderStatus.RetreatFailure
+                or OrderStatus.RetreatInvalid)
+            {
+                TouchedOrders.Remove(order);
+                return;
+            }
+
             if (!TouchedOrders.Contains(order))
             {
                 TouchedOrders.Add(order);

@@ -210,10 +210,10 @@ public class Validator
             retreat.Status = retreat switch
             {
                 Move move => adjacencyValidator.IsValidDirectMove(move.Unit, move.Location, move.Destination)
-                    ? OrderStatus.New
-                    : OrderStatus.Invalid,
-                Disband => OrderStatus.New,
-                _ => OrderStatus.Invalid,
+                    ? OrderStatus.RetreatNew
+                    : OrderStatus.RetreatInvalid,
+                Disband => OrderStatus.RetreatNew,
+                _ => OrderStatus.RetreatInvalid,
             };
         }
     }

@@ -54,6 +54,19 @@ public class MovementEvaluator(World world, List<Order> activeOrders, List<Regio
             }
 
             var unit = order.Unit;
+
+            var existingRetreat = world.Orders.FirstOrDefault(o =>
+                o.Unit == unit
+                && o.Status is OrderStatus.RetreatNew
+                or OrderStatus.RetreatSuccess
+                or OrderStatus.RetreatFailure
+                or OrderStatus.RetreatInvalid);
+
+            if (existingRetreat != null)
+            {
+                world.Orders.Remove(existingRetreat);
+            }
+
             var canEscape = CanEscape(unit, stationaryOrders, moves.ToList());
 
             if (canEscape)
@@ -64,7 +77,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, List<Regio
 
             var disband = new Disband
             {
-                Status = OrderStatus.Retreat,
+                Status = OrderStatus.RetreatSuccess,
                 Unit = unit,
                 UnitId = unit.Id,
                 Location = unit.Location,

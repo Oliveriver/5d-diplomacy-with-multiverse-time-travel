@@ -16,7 +16,10 @@ export enum OrderStatus {
   Success = 'Success',
   Failure = 'Failure',
   Invalid = 'Invalid',
-  Retreat = 'Retreat',
+  RetreatNew = 'RetreatNew',
+  RetreatSuccess = 'RetreatSuccess',
+  RetreatFailure = 'RetreatFailure',
+  RetreatInvalid = 'RetreatInvalid',
 }
 
 type Hold = {
@@ -78,7 +81,10 @@ export const getOrderColour = (order: Order | OrderStatus, isHighlighted: boolea
     [OrderStatus.Success]: colours.orderSuccess,
     [OrderStatus.Failure]: colours.orderFailure,
     [OrderStatus.Invalid]: colours.orderFailure,
-    [OrderStatus.Retreat]: colours.orderRetreat,
+    [OrderStatus.RetreatNew]: colours.orderNew,
+    [OrderStatus.RetreatSuccess]: colours.orderRetreat,
+    [OrderStatus.RetreatFailure]: colours.orderFailure,
+    [OrderStatus.RetreatInvalid]: colours.orderFailure,
   }[typeof order === 'object' ? order.status : order];
 };
 

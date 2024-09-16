@@ -167,7 +167,10 @@ const OrderPath = ({
         [OrderStatus.Success]: successMarkerId,
         [OrderStatus.Failure]: failureMarkerId,
         [OrderStatus.Invalid]: failureMarkerId,
-        [OrderStatus.Retreat]: retreatMarkerId,
+        [OrderStatus.RetreatNew]: newMarkerId,
+        [OrderStatus.RetreatSuccess]: retreatMarkerId,
+        [OrderStatus.RetreatFailure]: failureMarkerId,
+        [OrderStatus.RetreatInvalid]: failureMarkerId,
       }[status];
 
   return (

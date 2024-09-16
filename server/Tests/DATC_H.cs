@@ -38,9 +38,9 @@ public class DATC_H : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        austrianMove.Status.Should().Be(OrderStatus.Failure);
+        austrianMove.Status.Should().Be(OrderStatus.RetreatFailure);
         austrianSupport.Status.Should().Be(OrderStatus.Invalid);
-        turkishMove.Status.Should().Be(OrderStatus.Failure);
+        turkishMove.Status.Should().Be(OrderStatus.RetreatFailure);
 
         board.Next().ShouldHaveUnits(
             [
@@ -76,9 +76,9 @@ public class DATC_H : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        englishMove.Status.Should().Be(OrderStatus.Failure);
-        russianMove.Status.Should().Be(OrderStatus.Failure);
-        russianSupport.Status.Should().Be(OrderStatus.Invalid);
+        englishMove.Status.Should().Be(OrderStatus.RetreatFailure);
+        russianMove.Status.Should().Be(OrderStatus.RetreatFailure);
+        russianSupport.Status.Should().Be(OrderStatus.RetreatInvalid);
 
         board.Next().ShouldHaveUnits([]);
 
@@ -107,7 +107,7 @@ public class DATC_H : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        englishMove.Status.Should().Be(OrderStatus.Invalid);
+        englishMove.Status.Should().Be(OrderStatus.RetreatInvalid);
         englishConvoy.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits(
@@ -140,7 +140,7 @@ public class DATC_H : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        englishMove1.Status.Should().Be(OrderStatus.Retreat);
+        englishMove1.Status.Should().Be(OrderStatus.RetreatSuccess);
         englishMove2.Status.Should().Be(OrderStatus.Invalid);
 
         board.Next().ShouldHaveUnits(
@@ -177,7 +177,7 @@ public class DATC_H : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        move.Status.Should().Be(OrderStatus.Failure);
+        move.Status.Should().Be(OrderStatus.RetreatFailure);
 
         board.Next().ShouldHaveUnits(
             [
@@ -217,7 +217,7 @@ public class DATC_H : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        move.Status.Should().Be(OrderStatus.Failure);
+        move.Status.Should().Be(OrderStatus.RetreatFailure);
 
         board.Next().ShouldHaveUnits(
             [
@@ -253,8 +253,8 @@ public class DATC_H : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        move1.Status.Should().Be(OrderStatus.Failure);
-        move2.Status.Should().Be(OrderStatus.Failure);
+        move1.Status.Should().Be(OrderStatus.RetreatFailure);
+        move2.Status.Should().Be(OrderStatus.RetreatFailure);
 
         board.Next().ShouldHaveUnits([]);
 
@@ -287,9 +287,9 @@ public class DATC_H : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        englishMove.Status.Should().Be(OrderStatus.Failure);
-        russianMove1.Status.Should().Be(OrderStatus.Failure);
-        russianMove2.Status.Should().Be(OrderStatus.Failure);
+        englishMove.Status.Should().Be(OrderStatus.RetreatFailure);
+        russianMove1.Status.Should().Be(OrderStatus.RetreatFailure);
+        russianMove2.Status.Should().Be(OrderStatus.RetreatFailure);
 
         board.Next().ShouldHaveUnits([]);
 
@@ -328,7 +328,7 @@ public class DATC_H : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        move.Status.Should().Be(OrderStatus.Retreat);
+        move.Status.Should().Be(OrderStatus.RetreatSuccess);
 
         board.Next().ShouldHaveUnits(
             [
@@ -375,8 +375,8 @@ public class DATC_H : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        englishMove.Status.Should().Be(OrderStatus.Failure);
-        germanMove.Status.Should().Be(OrderStatus.Retreat);
+        englishMove.Status.Should().Be(OrderStatus.RetreatFailure);
+        germanMove.Status.Should().Be(OrderStatus.RetreatSuccess);
 
         board.Next().ShouldHaveUnits(
             [
@@ -422,7 +422,7 @@ public class DATC_H : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        italianMove.Status.Should().Be(OrderStatus.Retreat);
+        italianMove.Status.Should().Be(OrderStatus.RetreatSuccess);
 
         board.Next().ShouldHaveUnits(
             [
@@ -478,7 +478,7 @@ public class DATC_H : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        englishMove.Status.Should().Be(OrderStatus.Retreat);
+        englishMove.Status.Should().Be(OrderStatus.RetreatSuccess);
 
         board.Next().ShouldHaveUnits(
             [
@@ -519,7 +519,7 @@ public class DATC_H : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        move.Status.Should().Be(OrderStatus.Invalid);
+        move.Status.Should().Be(OrderStatus.RetreatInvalid);
 
         board.Next().ShouldHaveUnits(
             [
@@ -543,7 +543,7 @@ public class DATC_H : AdjudicationTestBase
                 (Nation.France, UnitType.Army, "Bur"),
             ]);
 
-        units.Get("Pic").Hold(status: OrderStatus.Failure);
+        units.Get("Pic").Hold(status: OrderStatus.RetreatFailure);
         units.Get("ENG").Support(units.Get("Pic"), "Bel", status: OrderStatus.Invalid);
         units.Get("Bur").Hold(status: OrderStatus.Failure);
         units.Get("Pic").MustRetreat = true;
@@ -556,8 +556,8 @@ public class DATC_H : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        englishMove.Status.Should().Be(OrderStatus.Failure);
-        frenchMove.Status.Should().Be(OrderStatus.Failure);
+        englishMove.Status.Should().Be(OrderStatus.RetreatFailure);
+        frenchMove.Status.Should().Be(OrderStatus.RetreatFailure);
 
         board.Next().ShouldHaveUnits(
             [
@@ -631,7 +631,7 @@ public class DATC_H : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        move.Status.Should().Be(OrderStatus.Failure);
+        move.Status.Should().Be(OrderStatus.RetreatFailure);
 
         board.Next().ShouldHaveUnits(
             [

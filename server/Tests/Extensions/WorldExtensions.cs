@@ -24,7 +24,13 @@ internal static class WorldExtensions
     {
         foreach (var order in world.Orders)
         {
-            order.Status.Should().BeOneOf(OrderStatus.Invalid, OrderStatus.Success, OrderStatus.Failure, OrderStatus.Retreat);
+            order.Status.Should().BeOneOf(
+                OrderStatus.Invalid,
+                OrderStatus.Success,
+                OrderStatus.Failure,
+                OrderStatus.RetreatInvalid,
+                OrderStatus.RetreatSuccess,
+                OrderStatus.RetreatFailure);
         }
     }
 }

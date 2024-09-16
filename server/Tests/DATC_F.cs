@@ -312,7 +312,7 @@ public class DATC_F : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        englishRetreat.Status.Should().Be(OrderStatus.Retreat);
+        englishRetreat.Status.Should().Be(OrderStatus.RetreatSuccess);
 
         board.Next().ShouldHaveUnits(
             [

@@ -125,7 +125,7 @@ const handleBasicOrderCreation = (
       ...state,
       currentOrder: {
         $type: OrderType.Move,
-        status: OrderStatus.New,
+        status: unit.mustRetreat ? OrderStatus.RetreatNew : OrderStatus.New,
         unit,
         location,
         destination: null,
@@ -145,7 +145,7 @@ const handleBasicOrderCreation = (
         ...filteredOrders,
         {
           $type: OrderType.Hold,
-          status: OrderStatus.New,
+          status: unit.mustRetreat ? OrderStatus.RetreatNew : OrderStatus.New,
           unit,
           location,
         },
@@ -194,7 +194,7 @@ const handleBasicOrderCreation = (
       ...state,
       currentOrder: {
         $type: OrderType.Support,
-        status: OrderStatus.New,
+        status: unit.mustRetreat ? OrderStatus.RetreatNew : OrderStatus.New,
         unit,
         location,
         destination: null,
@@ -247,7 +247,7 @@ const handleBasicOrderCreation = (
       ...state,
       currentOrder: {
         $type: OrderType.Convoy,
-        status: OrderStatus.New,
+        status: unit.mustRetreat ? OrderStatus.RetreatNew : OrderStatus.New,
         unit,
         location,
         destination: null,
@@ -302,7 +302,7 @@ const handleBasicOrderCreation = (
         ...filteredOrders,
         {
           $type: OrderType.Disband,
-          status: OrderStatus.New,
+          status: OrderStatus.RetreatNew,
           unit,
           location,
         },
@@ -346,7 +346,7 @@ const handleInputModeChange = (
         ...orders,
         {
           $type: OrderType.Hold,
-          status: OrderStatus.New,
+          status: currentOrder.status,
           unit: currentOrder.unit,
           location: currentOrder.location,
         },
@@ -431,7 +431,8 @@ const orderEntryReducer = (
         highlightedOrder:
           state.orders.find(
             (order) =>
-              getOrderKey(order) === `${getLocationKey(action.location)} ${OrderStatus.New}`,
+              getOrderKey(order) === `${getLocationKey(action.location)} ${OrderStatus.New}` ||
+              getOrderKey(order) === `${getLocationKey(action.location)} ${OrderStatus.RetreatNew}`,
           ) ?? null,
       };
     case OrderEntryActionType.HighlightStop:

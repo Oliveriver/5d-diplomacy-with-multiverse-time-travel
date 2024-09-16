@@ -47,7 +47,6 @@ public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacency
         switch (move.Status)
         {
             case OrderStatus.Success:
-            case OrderStatus.Retreat:
                 {
                     move.HoldStrength.Max = 0;
                     move.HoldStrength.Min = 0;
@@ -68,12 +67,17 @@ public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacency
                     break;
                 }
             case OrderStatus.New:
-            default:
                 {
                     move.HoldStrength.Max = 1;
                     move.HoldStrength.Min = 0;
                     break;
                 }
+            case OrderStatus.RetreatNew:
+            case OrderStatus.RetreatSuccess:
+            case OrderStatus.RetreatFailure:
+            case OrderStatus.RetreatInvalid:
+            default:
+                break;
         }
     }
 
@@ -221,7 +225,10 @@ public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacency
                     }
                 case OrderStatus.Invalid:
                 case OrderStatus.Failure:
-                case OrderStatus.Retreat:
+                case OrderStatus.RetreatNew:
+                case OrderStatus.RetreatSuccess:
+                case OrderStatus.RetreatFailure:
+                case OrderStatus.RetreatInvalid:
                 default:
                     break;
             }

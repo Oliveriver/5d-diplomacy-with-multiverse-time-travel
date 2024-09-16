@@ -47,7 +47,7 @@ public class Evaluator
 
     private List<Order> GetActiveOrders()
     {
-        var newOrders = world.Orders.Where(o => o.Status == OrderStatus.New).ToList();
+        var newOrders = world.Orders.Where(o => o.Status is OrderStatus.New or OrderStatus.RetreatNew).ToList();
 
         if (world.HasRetreats)
         {
@@ -98,6 +98,10 @@ public class Evaluator
             if (order.Status == OrderStatus.New)
             {
                 order.Status = OrderStatus.Failure;
+            }
+            else if (order.Status == OrderStatus.RetreatNew)
+            {
+                order.Status = OrderStatus.RetreatFailure;
             }
         }
     }

@@ -74,7 +74,7 @@ public class Executor(World world, List<Region> regions)
         var year = previousBoard.Year;
         var phase = previousBoard.Phase.NextPhase();
 
-        var disbands = world.Orders.OfType<Disband>().Where(d => d.Status == OrderStatus.Retreat);
+        var disbands = world.Orders.OfType<Disband>().Where(d => d.Status == OrderStatus.RetreatSuccess);
 
         var holds = world.Orders.Where(o =>
             (o is not Move || o.Status != OrderStatus.Success)
@@ -82,7 +82,7 @@ public class Executor(World world, List<Region> regions)
             && previousBoard.Contains(o.Location)
             && !originalRetreatingUnits.Contains(o.Unit));
         var incomingMoves = world.Orders.OfType<Move>().Where(m =>
-            (m.Status == OrderStatus.Success || m.Status == OrderStatus.Retreat)
+            (m.Status == OrderStatus.Success || m.Status == OrderStatus.RetreatSuccess)
             && previousBoard.Contains(m.Destination));
 
         var units = new List<Unit>();

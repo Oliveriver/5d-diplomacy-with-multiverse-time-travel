@@ -32,7 +32,7 @@ public class MDATC_C : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        order.Status.Should().Be(OrderStatus.Invalid);
+        order.Status.Should().Be(OrderStatus.RetreatInvalid);
 
         presentBoard.Next().ShouldHaveUnits([]);
         pastBoard.ShouldNotHaveNextBoard(timeline: 2);
@@ -59,7 +59,7 @@ public class MDATC_C : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        order.Status.Should().Be(OrderStatus.Invalid);
+        order.Status.Should().Be(OrderStatus.RetreatInvalid);
 
         topBoard.Next().ShouldHaveUnits([]);
         bottomBoard.Next().ShouldHaveUnits([]);
@@ -91,7 +91,7 @@ public class MDATC_C : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        englishMove.Status.Should().Be(OrderStatus.Retreat);
+        englishMove.Status.Should().Be(OrderStatus.RetreatSuccess);
         italianMove.Status.Should().Be(OrderStatus.Invalid);
 
         topBoard.Next().ShouldHaveUnits([(Nation.England, UnitType.Army, "Wal", false)]);
@@ -137,7 +137,7 @@ public class MDATC_C : AdjudicationTestBase
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
-        order.Status.Should().Be(OrderStatus.Retreat);
+        order.Status.Should().Be(OrderStatus.RetreatSuccess);
 
         presentBoard.Next().ShouldHaveUnits(
             [

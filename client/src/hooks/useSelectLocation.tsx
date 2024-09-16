@@ -27,7 +27,6 @@ const canSelectMajorLocation = (
 
   if (isRetreatTurn(world)) {
     const canStartRetreat =
-      isActiveBoard &&
       (currentOrder === null || currentOrder.unit === null) &&
       (currentMode === InputMode.None ||
         currentMode === InputMode.Move ||

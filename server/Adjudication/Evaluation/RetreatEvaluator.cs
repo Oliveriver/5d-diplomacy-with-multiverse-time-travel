@@ -28,13 +28,13 @@ public class RetreatEvaluator(World world, List<Order> activeOrders, AdjacencyVa
         var disbands = activeOrders.OfType<Disband>().Where(d => d.Location.Phase != Phase.Winter);
         foreach (var disband in disbands)
         {
-            disband.Status = OrderStatus.Retreat;
+            disband.Status = OrderStatus.RetreatSuccess;
         }
     }
 
     private void EvaluateRetreatMoves()
     {
-        var retreats = activeOrders.OfType<Move>().Where(m => m.Unit.MustRetreat && m.Status != OrderStatus.Invalid).ToList();
+        var retreats = activeOrders.OfType<Move>().Where(m => m.Unit.MustRetreat && m.Status != OrderStatus.RetreatInvalid).ToList();
         var holds = world.Orders.OfType<Hold>();
         var moves = world.Orders.OfType<Move>();
         var supports = world.Orders.OfType<Support>();
@@ -63,11 +63,11 @@ public class RetreatEvaluator(World world, List<Order> activeOrders, AdjacencyVa
 
             if (isDestinationOccupied || hadBounceInDestination || hasOpposingMove)
             {
-                retreat.Status = OrderStatus.Failure;
+                retreat.Status = OrderStatus.RetreatFailure;
 
                 var disband = new Disband
                 {
-                    Status = OrderStatus.Retreat,
+                    Status = OrderStatus.RetreatSuccess,
                     Unit = retreat.Unit,
                     UnitId = retreat.UnitId,
                     Location = retreat.Location,
@@ -77,18 +77,18 @@ public class RetreatEvaluator(World world, List<Order> activeOrders, AdjacencyVa
             }
         }
 
-        var remainingRetreats = retreats.Where(r => r.Status == OrderStatus.New).ToList();
+        var remainingRetreats = retreats.Where(r => r.Status == OrderStatus.RetreatNew).ToList();
 
         foreach (var retreat in remainingRetreats)
         {
             var hasOpposingRetreat = remainingRetreats.Any(r => r != retreat && r.Destination == retreat.Destination);
             if (hasOpposingRetreat)
             {
-                retreat.Status = OrderStatus.Failure;
+                retreat.Status = OrderStatus.RetreatFailure;
 
                 var disband = new Disband
                 {
-                    Status = OrderStatus.Retreat,
+                    Status = OrderStatus.RetreatSuccess,
                     Unit = retreat.Unit,
                     UnitId = retreat.UnitId,
                     Location = retreat.Location,
@@ -98,7 +98,7 @@ public class RetreatEvaluator(World world, List<Order> activeOrders, AdjacencyVa
             }
             else
             {
-                retreat.Status = OrderStatus.Retreat;
+                retreat.Status = OrderStatus.RetreatSuccess;
             }
         }
     }
@@ -112,11 +112,11 @@ public class RetreatEvaluator(World world, List<Order> activeOrders, AdjacencyVa
         foreach (var unit in retreatingUnits)
         {
             var order = activeOrders.FirstOrDefault(o => o.Unit == unit);
-            if (order == null || order.Status != OrderStatus.Retreat)
+            if (order == null || order.Status != OrderStatus.RetreatSuccess)
             {
                 var disband = new Disband
                 {
-                    Status = OrderStatus.Retreat,
+                    Status = OrderStatus.RetreatSuccess,
                     Unit = unit,
                     UnitId = unit.Id,
                     Location = unit.Location,
