@@ -55,7 +55,7 @@ Steps:
 
 ## Gameplay
 
-For a basic demonstration of the game and how to play, see [VIDEO LINK TBA].
+For a basic demonstration of the game and how to play, see [the accompanying video](https://www.youtube.com/watch?v=P_5QCJO4ELI).
 
 ### Setup
 
