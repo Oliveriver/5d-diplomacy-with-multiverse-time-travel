@@ -12,7 +12,7 @@ type OrderListTimelineProps = {
 };
 
 const OrderListTimeline = ({ timeline, orders }: OrderListTimelineProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
 
   return (
     <div
