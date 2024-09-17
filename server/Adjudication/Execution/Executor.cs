@@ -148,13 +148,13 @@ public class Executor(World world, List<Region> regions)
 
         var localOrders = world.Orders.Where(o => previousBoard.Contains(o.Location));
 
-        var builds = localOrders.OfType<Build>();
+        var builds = localOrders.OfType<Build>().Where(b => b.Status == OrderStatus.Success);
         var disbands = localOrders.OfType<Disband>();
 
         var units = previousBoard.Units
-            .Where(u =>
-                !disbands.Any(d => d.Unit == u && d.Status == OrderStatus.Success)
-                && !builds.Any(b => b.Unit == u && b.Status != OrderStatus.Success))
+            .Concat(builds.Select(b => b.Unit))
+            .Where(u => !disbands.Any(d => d.Location == u.Location && d.Status == OrderStatus.Success))
+            .Distinct()
             .Select(u => u.Clone())
             .ToList();
 

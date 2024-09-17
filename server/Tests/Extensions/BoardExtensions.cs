@@ -35,7 +35,6 @@ internal static class BoardExtensions
             Unit = unit,
         };
 
-        board.Units.Add(unit);
         world.Orders.Add(build);
         return build;
     }
