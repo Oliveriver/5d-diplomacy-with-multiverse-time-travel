@@ -12,4 +12,4 @@ This program uses the following third party assets and content:
 * Diplomacy Adjudicator Test Cases: Copyright (C) 2001-2024 Lucas B. Kruijswijk
 * Diplomacy standard map: Creative Commons BY-SA 3.0 Copyright (C) 2009 Martin Asal
 * Multiversal Diplomacy Adjudicator Test Cases: GNU General Public License v3.0 Copyright (C) 2022-2024 Tim Van Baak
-* The Time Machinations: Copyright (C) 2024 Matthew Pickard, AKA Lady Razor
+* Back to the Board and The Time Machinations: Copyright (C) 2024 Matthew Pickard, AKA Lady Razor
