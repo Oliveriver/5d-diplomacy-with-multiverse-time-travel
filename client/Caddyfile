@@ -1,0 +1,8 @@
+http://:8080 {
+	file_server /* {
+		root /dist
+	}
+	handle_path /api/* {
+		reverse_proxy http://backend:8080
+	}
+}

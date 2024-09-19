@@ -18,6 +18,30 @@ Code contributions from others are welcome, although the creators retain the rig
 
 ## Installation
 
+The server, client and database can be easily ran in Docker:
+
+- Install [Docker](https://docker.com/) and docker-compose (generally included in a docker installation)
+- Clone the repository
+- Run: `docker compose build frontend backend`
+- Run: `docker compose up -d`
+- Access the game frontend at http://localhost:5173
+
+Database files will be stored in `mssql-data` directory.
+
+To read the server logs, run `docker compose logs -f backend`.
+
+To update the code in the future, run these commands:
+```
+docker compose down -rmi
+git pull
+docker compose build frontend backend
+docker compose up -d
+```
+
+If you cannot use Docker or would like a development setup, follow the instructions below.
+
+## Development setup
+
 The two components - found in the `server` and `client` directories - may be run together or independently. The client always requires a server instance (local or remote) for the game to function beyond the welcome and setup screens.
 
 The `prototype` directory contains the original proof of concept from 2021. None of its contents are required for running the latest version of 5D Diplomacy.
