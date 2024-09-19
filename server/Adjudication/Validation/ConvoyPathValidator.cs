@@ -103,7 +103,7 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region>
 
         public List<Convoy> GetPossibleConvoys(Unit unit, Location location, Location destination)
         {
-            if (adjacencyValidator.IsValidDirectMove(unit, location, destination))
+            if (adjacencyValidator.IsValidDirectMove(unit, location, destination, allowDestinationChild: true))
             {
                 if (location == convoys.FirstOrDefault()?.Midpoint)
                 {
