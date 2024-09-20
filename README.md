@@ -26,13 +26,15 @@ The server, client and database can be easily ran in Docker:
 - Run: `docker compose up -d`
 - Access the game frontend at http://localhost:5173
 
+You may have to wait a few seconds after the `docker compose up -d` command before the server is ready, while the database is being set up.
+
 Database files will be stored in `mssql-data` directory.
 
 To read the server logs, run `docker compose logs -f backend`.
 
 To update the code in the future, run these commands:
 ```
-docker compose down -rmi
+docker compose down --rmi local
 git pull
 docker compose build frontend backend
 docker compose up -d
