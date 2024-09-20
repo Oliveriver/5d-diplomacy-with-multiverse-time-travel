@@ -8,7 +8,7 @@ Inspired by and indebted to the board game [Diplomacy](https://instructions.hasb
 
 _Diplomacy_ is a trademark of Avalon Hill. _5D Chess With Multiverse Time Travel_ is a trademark of Thunkspace, LLC. _5D Diplomacy With Multiverse Time Travel_ and its creators are not affiliated with either _Diplomacy_ or _5D Chess With Multiverse Time Travel_.
 
-## Contibuting
+## Contributing
 
 If you find a bug, please raise an [issue](https://github.com/Oliveriver/5d-diplomacy-with-multiverse-time-travel/issues).
 
