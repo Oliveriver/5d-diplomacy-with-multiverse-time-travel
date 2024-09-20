@@ -18,53 +18,31 @@ Code contributions from others are welcome, although the creators retain the rig
 
 ## Installation
 
-The server, client and database can be easily ran in Docker:
+There are currently two options for installing 5D Diplomacy. If you wish to make code changes as part of your installation, you should use the manual installation option. Otherwise, installation via Docker may be more suitable.
 
-- Install [Docker](https://docker.com/) and docker-compose (generally included in a docker installation)
-- Clone the repository
-- Run: `docker compose build frontend backend`
-- Run: `docker compose up -d`
-- Access the game frontend at http://localhost:5173
-
-You may have to wait a few seconds after the `docker compose up -d` command before the server is ready, while the database is being set up.
-
-Database files will be stored in `mssql-data` directory.
-
-To read the server logs, run `docker compose logs -f backend`.
-
-To update the code in the future, run these commands:
-```
-docker compose down --rmi local
-git pull
-docker compose build frontend backend
-docker compose up -d
-```
-
-If you cannot use Docker or would like a development setup, follow the instructions below.
-
-## Development setup
+### Manual Installation
 
 The two components - found in the `server` and `client` directories - may be run together or independently. The client always requires a server instance (local or remote) for the game to function beyond the welcome and setup screens.
 
 The `prototype` directory contains the original proof of concept from 2021. None of its contents are required for running the latest version of 5D Diplomacy.
 
-### Server
+#### Server
 
 Requirements:
 
 - [.NET SDK 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
 - [Entity Framework Core command line tools](https://learn.microsoft.com/en-us/ef/core/cli/dotnet). If .NET has been installed, these can be installed by running `dotnet tool install --global dotnet-ef`.
-- A blank database instance running on [SQL Server](https://www.microsoft.com/en-gb/sql-server/sql-server-downloads).
+- A blank database instance running on [SQL Server](https://www.microsoft.com/en-gb/sql-server/sql-server-downloads). We recommend using SQL Server Developer Edition or SQL Server Express Edition as they're both free.
 
 Steps:
 
 - Navigate to the `server` directory.
-- Copy `appsettings.json` to a new file, `appsettings.Development.json`, and inside the new file, replace `DATABASE_CONNECTION_STRING` with the connection string for the active database instance.
+- Copy `appsettings.json` to a new file in the same directory, `appsettings.Development.json`, and inside the new file, replace `DATABASE_CONNECTION_STRING` with the connection string for the active database instance.
 - Run `dotnet build`.
 - Run `dotnet ef database update`.
 - Run `dotnet run` to start the server.
 
-### Client
+#### Client
 
 Requirements:
 
@@ -75,9 +53,27 @@ Requirements:
 Steps:
 
 - Navigate to the `client` directory.
-- Copy `.env` to a new file, `.env.local`, and inside the new file, replace `SERVER_URL` with the base domain of the active server instance.
+- Copy `.env` to a new file in the same directory, `.env.local`, and inside the new file, replace `SERVER_URL` with the base domain of the active server instance.
 - Run `yarn install`.
 - Run `yarn dev` to start the client in the default browser.
+
+### Installation via Docker
+
+Requirements:
+
+- [Docker](https://docker.com/) and [Docker Compose](https://docs.docker.com/compose/). Note that Docker Compose will generally be installed alongside Docker automatically.
+
+Steps:
+
+- Ensure Docker is running.
+- Run `docker compose build frontend backend`.
+- Run `docker compose up -d`.
+- Wait at least a minute for the database to initialise. If you encounter errors creating games after opening the client, you may need to wait longer.
+- Access the game client at http://localhost:5173.
+
+To read server logs, run `docker compose logs -f backend`. Database files will be stored in `mssql-data` directory.
+
+If you ever update the code (manually or via a pull from this repository), you will need to run `docker compose down --rmi local`, then run through the steps above again.
 
 ## Gameplay
 
