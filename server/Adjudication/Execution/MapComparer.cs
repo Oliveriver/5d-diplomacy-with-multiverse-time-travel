@@ -2,10 +2,12 @@
 
 namespace Adjudication;
 
-public class MapComparer : EqualityComparer<Board>
+public class MapComparer(List<Build> builds) : EqualityComparer<Board>
 {
     private readonly CentreComparer centreComparer = new();
     private readonly UnitComparer unitComparer = new();
+
+    private readonly List<Build> builds = builds;
 
     public override bool Equals(Board? x, Board? y)
     {
@@ -24,10 +26,10 @@ public class MapComparer : EqualityComparer<Board>
             return false;
         }
 
-        var hasMatchingUnits = x.Units
-            .OrderBy(u => u.Location.RegionId)
-            .SequenceEqual(y.Units.OrderBy(u => u.Location.RegionId),
-            unitComparer);
+        var xUnits = x.Units.Where(u => !builds.Any(b => b.Unit == u)).OrderBy(u => u.Location.RegionId);
+        var yUnits = y.Units.Where(u => !builds.Any(b => b.Unit == u)).OrderBy(u => u.Location.RegionId);
+
+        var hasMatchingUnits = xUnits.SequenceEqual(yUnits, unitComparer);
 
         return hasMatchingUnits;
     }

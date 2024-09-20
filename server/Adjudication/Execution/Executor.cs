@@ -10,7 +10,7 @@ public class Executor(World world, List<Region> regions)
     private readonly List<Unit> originalRetreatingUnits = world.Boards.SelectMany(b => b.Units).Where(u => u!.MustRetreat).ToList();
 
     private readonly List<Region> regions = regions;
-    private readonly MapComparer mapComparer = new();
+    private readonly MapComparer mapComparer = new(world.Orders.OfType<Build>().ToList());
 
     public void ExecuteOrders()
     {
