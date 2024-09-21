@@ -412,7 +412,7 @@ public class MDATC_B : AdjudicationTestBase
                 (Nation.Germany, UnitType.Army, "Kie", false),
                 (Nation.Russia, UnitType.Army, "Mos", false),
                 (Nation.Russia, UnitType.Army, "Stp", false),
-                (Nation.Turkey, UnitType.Army, "Con",false),
+                (Nation.Turkey, UnitType.Army, "Con", false),
                 (Nation.Turkey, UnitType.Army, "Bul", false),
                 (Nation.Austria, UnitType.Army, "Vie", false),
                 (Nation.Austria, UnitType.Army, "Bud", false),
