@@ -35,7 +35,6 @@ const UnitIcon = ({ unit, scaleFactor = 1, variant = 'world' }: UnitIconProps) =
         pointerEvents: isWorldVariant ? 'none' : 'auto',
       }}
     >
-
     </Svg>
   );
 }
