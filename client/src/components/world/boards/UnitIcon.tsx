@@ -13,7 +13,7 @@ type UnitIconProps = {
 
 const UnitIcon = ({ unit, scaleFactor = 1, variant = 'world' }: UnitIconProps) => {
   const isWorldVariant = variant === 'world';
-  const shadow = unit.mustRetreat ? '0px 0px 20px 15px red' : '0px 0px 2px black';
+  const shadow = unit.mustRetreat ? '0px 0px 2px red' : '0px 0px 2px black';
   let Svg: any;
   if (displayUnit(unit) == 'A') {
     Svg = Army;
