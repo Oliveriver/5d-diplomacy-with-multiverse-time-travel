@@ -1,9 +1,10 @@
 import { getNationColour } from '../../../types/enums/nation';
-import Unit, { displayUnit } from '../../../types/unit';
+import Unit from '../../../types/unit';
+import UnitType from '../../../types/enums/unitType';
 import { unitWidth } from '../../../utils/constants';
 
-import Army from '../../../assets/icons/Army.svg?react';
-import Fleet from '../../../assets/icons/Fleet.svg?react';
+import ArmyIcon from '../../../assets/icons/Army.svg?react';
+import FleetIcon from '../../../assets/icons/Fleet.svg?react';
 
 type UnitIconProps = {
   unit: Unit;
@@ -14,13 +15,8 @@ type UnitIconProps = {
 const UnitIcon = ({ unit, scaleFactor = 1, variant = 'world' }: UnitIconProps) => {
   const isWorldVariant = variant === 'world';
   const shadow = unit.mustRetreat ? '0px 0px 2px red' : '0px 0px 2px black';
-  let Svg: any;
-  if (displayUnit(unit) == 'A') {
-    Svg = Army;
-  }
-  else {
-    Svg = Fleet;
-  }
+  const Svg = (unit.type === UnitType.Army ? ArmyIcon : FleetIcon);
+
   return (
     <Svg
       className="flex justify-center"
