@@ -22,6 +22,11 @@ internal static class UnitExtensions
     {
         var world = unit.Board.World;
 
+        if (unit.MustRetreat && status == OrderStatus.New)
+        {
+            status = OrderStatus.RetreatNew;
+        }
+
         var hold = new Hold
         {
             World = world,
@@ -37,6 +42,11 @@ internal static class UnitExtensions
     public static Move Move(this Unit unit, string regionId, int timeline = 1, int year = 1901, Phase phase = Phase.Spring, OrderStatus status = OrderStatus.New)
     {
         var world = unit.Board.World;
+
+        if (unit.MustRetreat && status == OrderStatus.New)
+        {
+            status = OrderStatus.RetreatNew;
+        }
 
         var move = new Move
         {
@@ -60,6 +70,11 @@ internal static class UnitExtensions
     public static Support Support(this Unit unit, Unit supportedUnit, string? regionId = null, int timeline = 1, int year = 1901, Phase phase = Phase.Spring, OrderStatus status = OrderStatus.New)
     {
         var world = unit.Board.World;
+
+        if (unit.MustRetreat && status == OrderStatus.New)
+        {
+            status = OrderStatus.RetreatNew;
+        }
 
         var support = new Support
         {
@@ -85,6 +100,11 @@ internal static class UnitExtensions
     {
         var world = unit.Board.World;
 
+        if (unit.MustRetreat && status == OrderStatus.New)
+        {
+            status = OrderStatus.RetreatNew;
+        }
+
         var convoy = new Convoy
         {
             World = world,
@@ -108,6 +128,11 @@ internal static class UnitExtensions
     public static Disband Disband(this Unit unit, OrderStatus status = OrderStatus.New)
     {
         var world = unit.Board.World;
+
+        if (unit.MustRetreat && status == OrderStatus.New)
+        {
+            status = OrderStatus.RetreatNew;
+        }
 
         var disband = new Disband
         {

@@ -22,11 +22,16 @@ public class MDATC_C : AdjudicationTestBase
         var presentBoard = world.AddBoard(phase: Phase.Fall);
         var pastBoard = world.AddBoard();
 
-        var units = presentBoard.AddUnits([(Nation.England, UnitType.Army, "Lon")]);
+        List<Unit> units =
+            [
+                .. pastBoard.AddUnits([(Nation.England, UnitType.Army, "Lon")]),
+                .. presentBoard.AddUnits([(Nation.England, UnitType.Army, "Lon")]),
+            ];
 
+        units.Get("Lon").Hold(status: OrderStatus.Success);
         units.Get("Lon", phase: Phase.Fall).MustRetreat = true;
 
-        var order = units.Get("Lon", phase: Phase.Fall).Move("Lon");
+        var order = units.Get("Lon", phase: Phase.Fall).Move("Wal");
 
         // Act
         new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();

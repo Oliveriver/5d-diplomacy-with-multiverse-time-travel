@@ -9,7 +9,7 @@ public class TouchedOrdersFinder(World world, AdjacencyValidator adjacencyValida
 
     private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
 
-    public List<Order> GetTouchedOrders(List<Order> orders)
+    public List<Order> GetTouchedOrders(List<Order> orders, bool hasRetreats)
     {
         var depthFirstSearch = new DepthFirstSearch(world, orders, adjacencyValidator);
         foreach (var order in orders)
@@ -17,7 +17,13 @@ public class TouchedOrdersFinder(World world, AdjacencyValidator adjacencyValida
             depthFirstSearch.AddTouchedOrders(order);
         }
 
-        return depthFirstSearch.TouchedOrders;
+        var retreats = depthFirstSearch.TouchedOrders.Where(o =>
+            o.Status is OrderStatus.RetreatNew
+            or OrderStatus.RetreatSuccess
+            or OrderStatus.RetreatFailure
+            or OrderStatus.RetreatInvalid).ToList();
+
+        return hasRetreats ? retreats : depthFirstSearch.TouchedOrders.Except(retreats).ToList();
     }
 
     private class DepthFirstSearch(World world, List<Order> newOrders, AdjacencyValidator adjacencyValidator)
@@ -30,15 +36,6 @@ public class TouchedOrdersFinder(World world, AdjacencyValidator adjacencyValida
 
         public void AddTouchedOrders(Order order)
         {
-            if (order.Status is OrderStatus.RetreatNew
-                or OrderStatus.RetreatSuccess
-                or OrderStatus.RetreatFailure
-                or OrderStatus.RetreatInvalid)
-            {
-                TouchedOrders.Remove(order);
-                return;
-            }
-
             if (!TouchedOrders.Contains(order))
             {
                 TouchedOrders.Add(order);

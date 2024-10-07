@@ -28,5 +28,7 @@ public class Unit
             RegionId = Location.RegionId,
         }
     };
+
+    public override string ToString() => $"{Owner} {Type} at {Location}";
 }
 

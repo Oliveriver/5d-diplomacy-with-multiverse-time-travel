@@ -7,7 +7,7 @@ namespace Adjudication;
 public class Executor(World world, List<Region> regions)
 {
     private readonly World world = world;
-    private readonly List<Unit> originalRetreatingUnits = world.Boards.SelectMany(b => b.Units).Where(u => u!.MustRetreat).ToList();
+    private readonly List<Unit> originalRetreatingUnits = world.Boards.SelectMany(b => b.Units).Where(u => u.MustRetreat).ToList();
 
     private readonly List<Region> regions = regions;
     private readonly MapComparer mapComparer = new(world.Orders.OfType<Build>().ToList());
@@ -74,15 +74,15 @@ public class Executor(World world, List<Region> regions)
         var year = previousBoard.Year;
         var phase = previousBoard.Phase.NextPhase();
 
-        var disbands = world.Orders.OfType<Disband>().Where(d => d.Status == OrderStatus.RetreatSuccess);
+        var retreats = world.Orders.Where(o => o.Status is OrderStatus.RetreatSuccess or OrderStatus.RetreatFailure or OrderStatus.RetreatInvalid);
 
         var holds = world.Orders.Where(o =>
-            (o is not Move || o.Status != OrderStatus.Success)
-            && !disbands.Any(d => d.Unit == o.Unit)
+            (o is not Move || o.Status != OrderStatus.Success && o.Status != OrderStatus.RetreatSuccess)
+            && !retreats.Any(r => r.Unit == o.Unit)
             && previousBoard.Contains(o.Location)
             && !originalRetreatingUnits.Contains(o.Unit));
         var incomingMoves = world.Orders.OfType<Move>().Where(m =>
-            (m.Status == OrderStatus.Success || m.Status == OrderStatus.RetreatSuccess)
+            m.Status is OrderStatus.Success or OrderStatus.RetreatSuccess
             && previousBoard.Contains(m.Destination));
 
         var units = new List<Unit>();
