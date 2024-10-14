@@ -29,7 +29,7 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                 name: "Connections",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
+                    Id = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -41,9 +41,9 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                 name: "Regions",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
-                    ParentId = table.Column<string>(type: "nvarchar(5)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: false),
+                    ParentId = table.Column<string>(type: "varchar(5)", nullable: true),
+                    Name = table.Column<string>(type: "varchar", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -60,8 +60,8 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                 name: "ConnectionMappings",
                 columns: table => new
                 {
-                    ConnectionsId = table.Column<string>(type: "nvarchar(11)", nullable: false),
-                    RegionsId = table.Column<string>(type: "nvarchar(5)", nullable: false)
+                    ConnectionsId = table.Column<string>(type: "varchar(11)", nullable: false),
+                    RegionsId = table.Column<string>(type: "varchar(5)", nullable: false)
                 },
                 constraints: table =>
                 {

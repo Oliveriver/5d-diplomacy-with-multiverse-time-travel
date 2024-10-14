@@ -16,7 +16,7 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                 name: "Connections",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
+                    Id = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -28,10 +28,10 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                 name: "Games",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "serial", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Players = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PlayersSubmitted = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Players = table.Column<int[]>(type: "int[]", nullable: false),
+                    PlayersSubmitted = table.Column<int[]>(type: "int[]", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,10 +42,10 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                 name: "Regions",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
-                    ParentId = table.Column<string>(type: "nvarchar(5)", nullable: true),
+                    Id = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: false),
+                    ParentId = table.Column<string>(type: "varchar(5)", nullable: true),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "varchar", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -61,7 +61,7 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                 name: "Worlds",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "serial", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GameId = table.Column<int>(type: "int", nullable: false),
                     Iteration = table.Column<int>(type: "int", nullable: false),
@@ -82,8 +82,8 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                 name: "ConnectionMappings",
                 columns: table => new
                 {
-                    ConnectionsId = table.Column<string>(type: "nvarchar(11)", nullable: false),
-                    RegionsId = table.Column<string>(type: "nvarchar(5)", nullable: false)
+                    ConnectionsId = table.Column<string>(type: "varchar(11)", nullable: false),
+                    RegionsId = table.Column<string>(type: "varchar(5)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -106,13 +106,13 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                 name: "Boards",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "serial", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     WorldId = table.Column<int>(type: "int", nullable: false),
                     Timeline = table.Column<int>(type: "int", nullable: false),
                     Year = table.Column<int>(type: "int", nullable: false),
                     Phase = table.Column<int>(type: "int", nullable: false),
-                    ChildTimelines = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ChildTimelines = table.Column<string>(type: "int[]", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -129,12 +129,12 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                 name: "Centres",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "serial", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BoardId = table.Column<int>(type: "int", nullable: false),
                     Owner = table.Column<int>(type: "int", nullable: true),
                     Location_Phase = table.Column<int>(type: "int", nullable: false),
-                    Location_RegionId = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
+                    Location_RegionId = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: false),
                     Location_Timeline = table.Column<int>(type: "int", nullable: false),
                     Location_Year = table.Column<int>(type: "int", nullable: false)
                 },
@@ -153,14 +153,14 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                 name: "Units",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "serial", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BoardId = table.Column<int>(type: "int", nullable: false),
                     Owner = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    MustRetreat = table.Column<bool>(type: "bit", nullable: false),
+                    MustRetreat = table.Column<bool>(type: "bool", nullable: false),
                     Location_Phase = table.Column<int>(type: "int", nullable: false),
-                    Location_RegionId = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
+                    Location_RegionId = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: false),
                     Location_Timeline = table.Column<int>(type: "int", nullable: false),
                     Location_Year = table.Column<int>(type: "int", nullable: false)
                 },
@@ -179,22 +179,22 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "serial", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     WorldId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     UnitId = table.Column<int>(type: "int", nullable: true),
-                    Discriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
+                    Discriminator = table.Column<string>(type: "varchar(8)", maxLength: 8, nullable: false),
                     Location_Phase = table.Column<int>(type: "int", nullable: false),
-                    Location_RegionId = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
+                    Location_RegionId = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: false),
                     Location_Timeline = table.Column<int>(type: "int", nullable: false),
                     Location_Year = table.Column<int>(type: "int", nullable: false),
                     Destination_Phase = table.Column<int>(type: "int", nullable: true),
-                    Destination_RegionId = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
+                    Destination_RegionId = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: true),
                     Destination_Timeline = table.Column<int>(type: "int", nullable: true),
                     Destination_Year = table.Column<int>(type: "int", nullable: true),
                     Midpoint_Phase = table.Column<int>(type: "int", nullable: true),
-                    Midpoint_RegionId = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
+                    Midpoint_RegionId = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: true),
                     Midpoint_Timeline = table.Column<int>(type: "int", nullable: true),
                     Midpoint_Year = table.Column<int>(type: "int", nullable: true)
                 },
@@ -1004,7 +1004,7 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                 table: "Orders",
                 column: "UnitId",
                 unique: true,
-                filter: "[UnitId] IS NOT NULL");
+                filter: "\"UnitId\" IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_WorldId",

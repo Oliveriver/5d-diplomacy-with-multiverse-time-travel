@@ -34,9 +34,9 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ChildTimelines")
+                    b.Property<int[]>("ChildTimelines")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("int[]");
 
                     b.Property<int>("Phase")
                         .HasColumnType("int");
@@ -81,7 +81,7 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                             b1.Property<string>("RegionId")
                                 .IsRequired()
                                 .HasMaxLength(5)
-                                .HasColumnType("nvarchar(5)");
+                                .HasColumnType("varchar(5)");
 
                             b1.Property<int>("Timeline")
                                 .HasColumnType("int");
@@ -106,18 +106,18 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("HasStrictAdjacencies")
-                        .HasColumnType("bit");
+                        .HasColumnType("bool");
 
                     b.Property<bool>("IsSandbox")
-                        .HasColumnType("bit");
+                        .HasColumnType("bool");
 
-                    b.Property<string>("Players")
+                    b.Property<int[]>("Players")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("int[]");
 
-                    b.Property<string>("PlayersSubmitted")
+                    b.Property<int[]>("PlayersSubmitted")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("int[]");
 
                     b.HasKey("Id");
 
@@ -135,7 +135,7 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                        .HasColumnType("varchar(8)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -156,7 +156,7 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                             b1.Property<string>("RegionId")
                                 .IsRequired()
                                 .HasMaxLength(5)
-                                .HasColumnType("nvarchar(5)");
+                                .HasColumnType("varchar(5)");
 
                             b1.Property<int>("Timeline")
                                 .HasColumnType("int");
@@ -192,7 +192,7 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("MustRetreat")
-                        .HasColumnType("bit");
+                        .HasColumnType("bool");
 
                     b.Property<int>("Owner")
                         .HasColumnType("int");
@@ -210,7 +210,7 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                             b1.Property<string>("RegionId")
                                 .IsRequired()
                                 .HasMaxLength(5)
-                                .HasColumnType("nvarchar(5)");
+                                .HasColumnType("varchar(5)");
 
                             b1.Property<int>("Timeline")
                                 .HasColumnType("int");
@@ -274,7 +274,7 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                                 .IsRequired()
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasMaxLength(5)
-                                .HasColumnType("nvarchar(5)");
+                                .HasColumnType("varchar(5)");
 
                             b1.Property<int>("Timeline")
                                 .ValueGeneratedOnUpdateSometimes()
@@ -297,7 +297,7 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                                 .IsRequired()
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasMaxLength(5)
-                                .HasColumnType("nvarchar(5)");
+                                .HasColumnType("varchar(5)");
 
                             b1.Property<int>("Timeline")
                                 .ValueGeneratedOnUpdateSometimes()
@@ -341,7 +341,7 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                                 .IsRequired()
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasMaxLength(5)
-                                .HasColumnType("nvarchar(5)");
+                                .HasColumnType("varchar(5)");
 
                             b1.Property<int>("Timeline")
                                 .ValueGeneratedOnUpdateSometimes()
@@ -371,7 +371,7 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                                 .IsRequired()
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasMaxLength(5)
-                                .HasColumnType("nvarchar(5)");
+                                .HasColumnType("varchar(5)");
 
                             b1.Property<int>("Timeline")
                                 .ValueGeneratedOnUpdateSometimes()
@@ -394,7 +394,7 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                                 .IsRequired()
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasMaxLength(5)
-                                .HasColumnType("nvarchar(5)");
+                                .HasColumnType("varchar(5)");
 
                             b1.Property<int>("Timeline")
                                 .ValueGeneratedOnUpdateSometimes()
