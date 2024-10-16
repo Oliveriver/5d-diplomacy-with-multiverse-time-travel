@@ -69,27 +69,25 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
 
         if (allowDestinationSibling)
         {
-            if (destinationRegion.ParentId != null)
+            var destinationRegionSiblings = regions.Where(r =>
+                r != destinationRegion
+                && (destinationRegion.ParentId != null || r.ParentId != null)
+                && (r.ParentId == destinationRegion.ParentId || r.ParentId == destinationRegion.Id || r.Id == destinationRegion.ParentId));
+
+            foreach (var siblingRegion in destinationRegionSiblings)
             {
-                var destinationRegionSiblings = regions.Where(r =>
-                    r != destinationRegion
-                    && r.ParentId == destinationRegion.ParentId);
-
-                foreach (var siblingRegion in destinationRegionSiblings)
+                var sibling = new Location
                 {
-                    var sibling = new Location
-                    {
-                        Timeline = destination.Timeline,
-                        Year = destination.Year,
-                        Phase = destination.Phase,
-                        RegionId = siblingRegion.Id,
-                    };
+                    Timeline = destination.Timeline,
+                    Year = destination.Year,
+                    Phase = destination.Phase,
+                    RegionId = siblingRegion.Id,
+                };
 
-                    var isValidMove = IsValidIntraBoardMove(unit, location, sibling, false, false);
-                    if (isValidMove)
-                    {
-                        return true;
-                    }
+                var isValidMove = IsValidIntraBoardMove(unit, location, sibling, false, false);
+                if (isValidMove)
+                {
+                    return true;
                 }
             }
         }

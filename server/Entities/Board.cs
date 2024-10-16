@@ -19,4 +19,6 @@ public class Board
 
     public bool Contains(Location location)
         => Timeline == location.Timeline && Year == location.Year && Phase == location.Phase;
+
+    public override string ToString() => $"({Timeline}, {Year}, {Phase})";
 }

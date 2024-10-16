@@ -8,7 +8,7 @@ public class EntityMapper
     {
         var visibleOrders = player == null
             ? world.Orders
-            : world.Orders.Where(o => o.Status != OrderStatus.New || o.Unit?.Owner == player);
+            : world.Orders.Where(o => o.Status is not OrderStatus.New and not OrderStatus.RetreatNew || o.Unit?.Owner == player);
 
         var builds = world.Orders.OfType<Entities.Build>().ToList();
 

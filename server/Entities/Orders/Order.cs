@@ -19,7 +19,7 @@ public abstract class Order
     public Location Location { get; set; } = null!;
 
     [NotMapped]
-    public virtual bool NeedsValidation => Status == OrderStatus.New;
+    public virtual bool NeedsValidation => Status is OrderStatus.New or OrderStatus.RetreatNew;
 
     [NotMapped]
     public virtual List<Location> TouchedLocations => [Location];
