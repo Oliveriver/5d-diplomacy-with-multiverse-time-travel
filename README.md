@@ -66,8 +66,9 @@ Requirements:
 Steps:
 
 - Ensure Docker is running.
-- Run `docker compose build frontend backend`.
-- Run `docker compose up -d`.
+- Open a command prompt in the root directory of your clone of this repository.
+- Run `docker compose build frontend backend` via the command line.
+- Run `docker compose up -d` via the command line.
 - Wait at least a minute for the database to initialise. If you encounter errors creating games after opening the client, you may need to wait longer.
 - Access the game client at http://localhost:5173.
 
