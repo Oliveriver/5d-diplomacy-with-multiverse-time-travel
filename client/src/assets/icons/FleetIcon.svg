@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">
+  <!-- Uncomment line 3 and comment out line 4 to have triangular fleets -->
+  <!-- <polygon points="0.22282,6.04574 14,24 27.77718,6.04574" fill=currentColor/> -->
+  <circle cx=14 cy=14 r=14 fill=currentColor/>
+  <text dy=2 x=50% y=50% text-anchor=middle dominant-baseline=middle font-size=16>F</text>
+</svg>  
