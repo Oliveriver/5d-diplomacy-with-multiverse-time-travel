@@ -7,6 +7,4 @@ type Unit = {
   mustRetreat: boolean;
 };
 
-export const displayUnit = (unit: Unit | null) => (unit?.type === UnitType.Fleet ? 'F' : 'A');
-
 export default Unit;

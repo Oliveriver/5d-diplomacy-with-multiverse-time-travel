@@ -1,6 +1,10 @@
 import { getNationColour } from '../../../types/enums/nation';
-import Unit, { displayUnit } from '../../../types/unit';
+import Unit from '../../../types/unit';
+import UnitType from '../../../types/enums/unitType';
 import { unitWidth } from '../../../utils/constants';
+
+import ArmyIcon from '../../../assets/icons/Army.svg?react';
+import FleetIcon from '../../../assets/icons/Fleet.svg?react';
 
 type UnitIconProps = {
   unit: Unit;
@@ -10,14 +14,15 @@ type UnitIconProps = {
 
 const UnitIcon = ({ unit, scaleFactor = 1, variant = 'world' }: UnitIconProps) => {
   const isWorldVariant = variant === 'world';
-  const shadow = unit.mustRetreat ? '0px 0px 20px 15px red' : '0px 0px 2px black';
+  const shadow = unit.mustRetreat ? '0px 0px 2px red' : '0px 0px 2px black';
+  const Svg = (unit.type === UnitType.Army ? ArmyIcon : FleetIcon);
 
   return (
-    <div
-      className="flex justify-center items-center rounded-full"
+    <Svg
+      className="flex justify-center"
       style={{
-        backgroundColor: getNationColour(unit.owner),
-        boxShadow: isWorldVariant ? shadow : '',
+        color: getNationColour(unit.owner),
+        filter: isWorldVariant ? `drop-shadow(${shadow})` : '',
         width: unitWidth * scaleFactor,
         height: unitWidth * scaleFactor,
         margin: isWorldVariant ? -(unitWidth * scaleFactor) / 2 : 0,
@@ -26,9 +31,9 @@ const UnitIcon = ({ unit, scaleFactor = 1, variant = 'world' }: UnitIconProps) =
         pointerEvents: isWorldVariant ? 'none' : 'auto',
       }}
     >
-      <p style={{ fontSize: 16 * scaleFactor }}>{displayUnit(unit)}</p>
-    </div>
+    </Svg>
   );
-};
+}
+
 
 export default UnitIcon;
