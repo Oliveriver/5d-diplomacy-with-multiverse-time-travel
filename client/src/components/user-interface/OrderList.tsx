@@ -39,7 +39,9 @@ const OrderList = () => {
 
   if (orders.length === 0) return null;
 
-  const timelines = filterUnique(orders.map(({ location }) => location.timeline)).sort();
+  const timelines = filterUnique(orders.map(({ location }) => location.timeline)).sort(
+    (a, b) => a - b,
+  );
 
   const maxHeight = window.innerHeight - 168;
 
