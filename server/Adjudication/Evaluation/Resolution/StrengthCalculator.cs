@@ -204,6 +204,11 @@ public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacency
         }
 
         AddSupportStrength(move.PreventStrength, move.Supports);
+
+        if (move.OpposingMove?.Status == OrderStatus.New)
+        {
+            move.PreventStrength.Min = 0;
+        }
     }
 
     private void AddSupportStrength(OrderStrength strength, List<Support> supports)
