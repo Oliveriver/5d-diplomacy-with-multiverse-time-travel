@@ -157,7 +157,22 @@ public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacency
             }
 
             var supportsWithDifferentOwner = move.Supports.Where(s => s.Unit.Owner != destinationOrder.Unit.Owner).ToList();
-            AddSupportStrength(move.AttackStrength, supportsWithDifferentOwner);
+            var supportsWithSameOwner = move.Supports.Where(s => s.Unit.Owner == destinationOrder.Unit.Owner).ToList();
+
+            if (destinationOrder is not Move || destinationOrder.Status is OrderStatus.Invalid or OrderStatus.Failure)
+            {
+                AddSupportStrength(move.AttackStrength, supportsWithDifferentOwner);
+            }
+            else if (destinationOrder is Move && destinationOrder.Status == OrderStatus.Success)
+            {
+                AddSupportStrength(move.AttackStrength, move.Supports);
+            }
+            else
+            {
+                AddSupportStrength(move.AttackStrength, supportsWithDifferentOwner);
+                AddSupportStrength(move.AttackStrength, supportsWithSameOwner, true);
+            }
+
             return;
         }
 
@@ -211,7 +226,7 @@ public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacency
         }
     }
 
-    private void AddSupportStrength(OrderStrength strength, List<Support> supports)
+    private void AddSupportStrength(OrderStrength strength, List<Support> supports, bool isMaxOnly = false)
     {
         foreach (var support in supports)
         {
@@ -219,8 +234,12 @@ public class StrengthCalculator(List<Order> orders, AdjacencyValidator adjacency
             {
                 case OrderStatus.Success:
                     {
+                        if (!isMaxOnly)
+                        {
+                            strength.Min += 1;
+                        }
+
                         strength.Max += 1;
-                        strength.Min += 1;
                         break;
                     }
                 case OrderStatus.New:
