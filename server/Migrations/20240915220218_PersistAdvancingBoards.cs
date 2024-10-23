@@ -13,7 +13,7 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
             migrationBuilder.AddColumn<bool>(
                 name: "MightAdvance",
                 table: "Boards",
-                type: "bit",
+                type: "bool",
                 nullable: false,
                 defaultValue: false);
         }

@@ -13,14 +13,14 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
             migrationBuilder.AddColumn<bool>(
                 name: "HasStrictAdjacencies",
                 table: "Games",
-                type: "bit",
+                type: "bool",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
                 name: "IsSandbox",
                 table: "Games",
-                type: "bit",
+                type: "bool",
                 nullable: false,
                 defaultValue: false);
         }
