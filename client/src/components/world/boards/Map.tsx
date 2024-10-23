@@ -39,10 +39,11 @@ const Map = ({ board, isShowingCoasts = false }: MapProps) => {
           );
         }
 
-        const hasFleet = board.units[region]?.type === UnitType.Fleet;
+        const hasArmy = board.units[baseRegion] !== undefined;
+        const hasFleet = board.units[region] !== undefined;
 
         const showCoast = {
-          [InputMode.None]: hasFleet || board.phase === Phase.Winter,
+          [InputMode.None]: hasFleet || (board.phase === Phase.Winter && !hasArmy),
           [InputMode.Hold]: hasFleet,
           [InputMode.Move]: currentOrder?.unit?.type === UnitType.Fleet,
           [InputMode.Support]:
