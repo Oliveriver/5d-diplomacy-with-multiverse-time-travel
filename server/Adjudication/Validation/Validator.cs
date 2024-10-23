@@ -96,8 +96,7 @@ public class Validator
         {
             var canSupport = adjacencyValidator.IsValidDirectMove(support.Unit, support.Location, support.Destination, allowDestinationSibling: true);
 
-            var hasMatchingHold = support.Midpoint == support.Destination
-                && stationaryOrders.Any(o => adjacencyValidator.EqualsOrIsRelated(o.Location, support.Destination));
+            var hasMatchingHold = support.Midpoint == support.Destination && stationaryOrders.Any(o => o.Location == support.Destination);
 
             var hasMatchingMove = allMoves.Any(m =>
                 m.Location == support.Midpoint
