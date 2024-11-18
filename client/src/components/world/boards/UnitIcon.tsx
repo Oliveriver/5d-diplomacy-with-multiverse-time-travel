@@ -32,7 +32,7 @@ const UnitIcon = ({ unit, scaleFactor = 1, variant = 'world' }: UnitIconProps) =
         }}
       />
       {isWorldVariant && unit.mustRetreat && (
-        <div style={{ boxShadow: '0px 0px 35px 35px red', zIndex: 5 }} />
+        <div style={{ boxShadow: '0px 0px 35px 35px red', zIndex: 5, position: 'relative' }} />
       )}
     </>
   );
