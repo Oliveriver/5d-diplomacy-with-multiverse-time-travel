@@ -81,7 +81,8 @@ public class RetreatEvaluator(World world, List<Order> activeOrders, AdjacencyVa
 
         foreach (var retreat in remainingRetreats)
         {
-            var hasOpposingRetreat = remainingRetreats.Any(r => r != retreat && r.Destination == retreat.Destination);
+            var hasOpposingRetreat = remainingRetreats.Any(r =>
+                r != retreat && adjacencyValidator.EqualsOrIsRelated(r.Destination, retreat.Destination));
             if (hasOpposingRetreat)
             {
                 retreat.Status = OrderStatus.RetreatFailure;
