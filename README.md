@@ -65,7 +65,7 @@ Steps:
 
 Requirements:
 
-- [Node.js](https://nodejs.org/en/download/prebuilt-installer).
+- [Node.js v20](https://nodejs.org/en/download/prebuilt-installer).
 - [Yarn package manager](https://yarnpkg.com/). If Node.js has been installed, this can be installed by running `npm install --global yarn`.
 - A running instance of the server, whether local or remote.
 
