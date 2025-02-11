@@ -2,7 +2,7 @@ services:
   frontend:
     build: client/
     ports:
-      - 127.0.0.1:5173:8080
+      - 5173:8080
     restart: always
   backend:
     build: server/
