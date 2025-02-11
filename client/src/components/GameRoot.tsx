@@ -26,7 +26,7 @@ const GameRoot = () => {
         initialPositionX={getDefaultOffsetX()}
         initialPositionY={getDefaultOffsetY()}
         doubleClick={{ disabled: true }}
-        panning={{ excluded: ['input', 'select'] }}
+        panning={{ excluded: ['input', 'select'], velocityDisabled: true }}
       >
         {error && <WorldError error={error} retry={retry} isLoading={isLoading} />}
         {!world && <WorldLoading />}
