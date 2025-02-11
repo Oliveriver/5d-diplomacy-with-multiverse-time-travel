@@ -1,13 +1,14 @@
 import Nation, { getNationColour } from '../../../types/enums/nation';
 import Board from '../../../types/board';
-import { boardBorderWidth } from '../../../utils/constants';
+import { boardBorderWidth, pastTurnOpacity } from '../../../utils/constants';
 import SignIcon from '../../user-interface/common/SignIcon';
 
 type AdjustmentProps = {
   board: Board;
+  isActive: boolean;
 };
 
-const Adjustment = ({ board }: AdjustmentProps) => {
+const Adjustment = ({ board, isActive }: AdjustmentProps) => {
   const nations = Object.values(Nation);
   const centreOwners = Object.values(board.centres);
   const units = Object.values(board.units);
@@ -22,7 +23,11 @@ const Adjustment = ({ board }: AdjustmentProps) => {
   return (
     <div
       className="absolute w-full flex py-2"
-      style={{ paddingLeft: boardBorderWidth, paddingRight: boardBorderWidth }}
+      style={{
+        paddingLeft: boardBorderWidth,
+        paddingRight: boardBorderWidth,
+        opacity: isActive ? 1 : pastTurnOpacity,
+      }}
     >
       <div className="flex-grow flex-shrink flex flex-col gap-1">
         {adjustments.map((count, i) => {

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { getNextMajorPhase } from '../../../types/enums/phase';
+import { getNextMajorPhase, getPhaseIndex } from '../../../types/enums/phase';
 import { filterUnique } from '../../../utils/listUtils';
 import Board from './Board';
 import BoardSkip from './BoardSkip';
@@ -44,10 +44,18 @@ const BoardLayer = () => {
 
             const key = `${board.year}-${board.phase}`;
 
-            return possibleBoard ? (
-              <Board key={key} board={possibleBoard} winner={winner} />
-            ) : (
-              <BoardSkip key={key} board={{ ...board, timeline }} />
+            if (!possibleBoard) return <BoardSkip key={key} board={{ ...board, timeline }} />;
+
+            const hasNextBoard = world.boards.some(
+              (worldBoard) =>
+                worldBoard.timeline === timeline &&
+                (worldBoard.year > board.year ||
+                  (worldBoard.year === board.year &&
+                    getPhaseIndex(worldBoard.phase) > getPhaseIndex(board.phase))),
+            );
+
+            return (
+              <Board key={key} board={possibleBoard} winner={winner} isActive={!hasNextBoard} />
             );
           })}
           {timeline === selectedLocation?.timeline && ghostBoard}

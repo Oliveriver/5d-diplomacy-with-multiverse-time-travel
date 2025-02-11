@@ -15,6 +15,8 @@ const colours = {
   boardBackground: baseColours.white,
   boardArrowHead: baseColours.green[300],
   boardArrowBody: baseColours.green[200],
+  yearDivider: baseColours.indigo[50],
+  yearDividerText: baseColours.indigo[200],
 
   orderNew: baseColours.black,
   orderSuccess: baseColours.black,

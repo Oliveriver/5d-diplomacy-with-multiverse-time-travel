@@ -1,29 +1,37 @@
+import { useContext } from 'react';
 import Phase from '../../../types/enums/phase';
 import {
   boardBorderWidth,
   boardSeparation,
   majorBoardWidth,
   minorBoardWidth,
+  pastTurnOpacity,
 } from '../../../utils/constants';
 import Map from './Map';
 import BoardData, { getBoardName } from '../../../types/board';
 import Adjustment from './Adjustment';
 import Nation, { getNationColour } from '../../../types/enums/nation';
 import colours from '../../../utils/colours';
+import OrderEntryContext from '../../context/OrderEntryContext';
+import { OrderType } from '../../../types/order';
 
 type BoardProps = {
   board: BoardData;
   winner: Nation | null;
+  isActive: boolean;
 };
 
-const Board = ({ board, winner }: BoardProps) => {
+const Board = ({ board, winner, isActive }: BoardProps) => {
   const { phase } = board;
+
+  const { currentOrder } = useContext(OrderEntryContext);
+  const canMove = isActive || (currentOrder !== null && currentOrder.$type !== OrderType.Build);
 
   const width = phase === Phase.Winter ? minorBoardWidth : majorBoardWidth;
 
   return (
     <div
-      className="flex-col content-center relative"
+      className="flex-col content-center relative bg-white"
       style={{
         minHeight: majorBoardWidth,
         height: majorBoardWidth,
@@ -40,13 +48,14 @@ const Board = ({ board, winner }: BoardProps) => {
           height: width,
           borderWidth: boardBorderWidth,
           borderColor: winner ? getNationColour(winner) : colours.boardBorder,
-          boxShadow: winner ? `0px 0px 100px 50px ${getNationColour(winner)}` : '',
+          boxShadow: winner && isActive ? `0px 0px 100px 50px ${getNationColour(winner)}` : '',
+          opacity: canMove ? 1 : pastTurnOpacity,
         }}
       >
         <p className="text-md -mt-7">{getBoardName(board)}</p>
         <Map board={board} />
       </div>
-      {phase === Phase.Winter && <Adjustment board={board} />}
+      {phase === Phase.Winter && <Adjustment board={board} isActive={isActive} />}
     </div>
   );
 };

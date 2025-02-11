@@ -7,27 +7,48 @@ import Build from './Build';
 import Disband from './Disband';
 import OrderEntryContext from '../../context/OrderEntryContext';
 import WorldContext from '../../context/WorldContext';
+import { pastTurnOpacity } from '../../../utils/constants';
 
 const OrderLayer = () => {
   const { world } = useContext(WorldContext);
-  const { orders, highlightedOrder } = useContext(OrderEntryContext);
+  const { orders, highlightedOrder, currentOrder } = useContext(OrderEntryContext);
   if (!world) return null;
+
+  const pastOrderOpacity =
+    currentOrder !== null && currentOrder.$type !== OrderType.Build ? 1 : pastTurnOpacity;
 
   return (
     <>
-      {[...world.orders, ...orders].map((order) => {
-        const key = getOrderKey(order);
-        const isHighlighted = highlightedOrder !== null && key === getOrderKey(highlightedOrder);
+      <div className="absolute" style={{ opacity: pastOrderOpacity }}>
+        {[...world.orders].map((order) => {
+          const key = getOrderKey(order);
+          const isHighlighted = highlightedOrder !== null && key === getOrderKey(highlightedOrder);
 
-        return {
-          [OrderType.Hold]: null,
-          [OrderType.Move]: <Move key={key} isHighlighted={isHighlighted} {...order} />,
-          [OrderType.Support]: <Support key={key} isHighlighted={isHighlighted} {...order} />,
-          [OrderType.Convoy]: <Convoy key={key} isHighlighted={isHighlighted} {...order} />,
-          [OrderType.Build]: <Build key={key} isHighlighted={isHighlighted} {...order} />,
-          [OrderType.Disband]: <Disband key={key} isHighlighted={isHighlighted} {...order} />,
-        }[order.$type];
-      })}
+          return {
+            [OrderType.Hold]: null,
+            [OrderType.Move]: <Move key={key} isHighlighted={isHighlighted} {...order} />,
+            [OrderType.Support]: <Support key={key} isHighlighted={isHighlighted} {...order} />,
+            [OrderType.Convoy]: <Convoy key={key} isHighlighted={isHighlighted} {...order} />,
+            [OrderType.Build]: <Build key={key} isHighlighted={isHighlighted} {...order} />,
+            [OrderType.Disband]: <Disband key={key} isHighlighted={isHighlighted} {...order} />,
+          }[order.$type];
+        })}
+      </div>
+      <>
+        {[...orders].map((order) => {
+          const key = getOrderKey(order);
+          const isHighlighted = highlightedOrder !== null && key === getOrderKey(highlightedOrder);
+
+          return {
+            [OrderType.Hold]: null,
+            [OrderType.Move]: <Move key={key} isHighlighted={isHighlighted} {...order} />,
+            [OrderType.Support]: <Support key={key} isHighlighted={isHighlighted} {...order} />,
+            [OrderType.Convoy]: <Convoy key={key} isHighlighted={isHighlighted} {...order} />,
+            [OrderType.Build]: <Build key={key} isHighlighted={isHighlighted} {...order} />,
+            [OrderType.Disband]: <Disband key={key} isHighlighted={isHighlighted} {...order} />,
+          }[order.$type];
+        })}
+      </>
     </>
   );
 };

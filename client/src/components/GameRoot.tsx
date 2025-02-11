@@ -10,6 +10,7 @@ import WorldError from './world/WorldError';
 import BoardArrowLayer from './world/arrows/BoardArrowLayer';
 import WorldContext from './context/WorldContext';
 import { getDefaultOffsetX, getDefaultOffsetY } from '../utils/navigationUtils';
+import BackgroundLayer from './world/BackgroundLayer';
 
 const GameRoot = () => {
   const { world, isLoading, error, retry } = useContext(WorldContext);
@@ -32,6 +33,7 @@ const GameRoot = () => {
         {!world && <WorldLoading />}
         {!error && (
           <TransformComponent>
+            <BackgroundLayer />
             <BoardArrowLayer />
             <BoardLayer />
             <OrderLayer />

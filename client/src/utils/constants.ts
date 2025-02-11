@@ -15,6 +15,7 @@ export const unitWidth = 28;
 export const boardArrowWidth = 200;
 export const orderArrowStartSeparation = 20;
 export const orderArrowEndSeparation = 10;
+export const pastTurnOpacity = 0.4;
 
 // API
 
