@@ -1,0 +1,35 @@
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    border-radius: 0.75rem;
+    background-color: var(--gray-200);
+
+    border: solid 4px var(--gray-100);
+
+    &:hover, &.selected {
+        border-color: var(--lime-500);
+    }
+
+    &:disabled {
+        opacity: .3;
+        border-color: var(--gray-100);
+    }
+}
+
+.innerText {
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.busy {
+    position: absolute;
+    bottom: 1px;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

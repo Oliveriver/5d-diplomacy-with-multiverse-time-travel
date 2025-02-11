@@ -1,4 +1,6 @@
+import cn from 'classnames'
 import colours from '../../../utils/colours';
+import css from './checkbox.module.scss'
 
 type CheckboxProps = {
   title: string;
@@ -7,12 +9,12 @@ type CheckboxProps = {
 };
 
 const Checkbox = ({ title, value, onChange }: CheckboxProps) => (
-  <div className="flex flex-col items-center gap-2 ml-4">
-    <p className="text-sm">{title}</p>
+  <div className={css.container}>
+    <span>{title}</span>
     <button
       type="button"
       aria-label={title}
-      className="w-6 h-6 rounded border-4"
+      className={cn(css.checker, {[css.selected]: value})}
       style={{ backgroundColor: value ? colours.uiHighlight : colours.uiOverlay }}
       onClick={() => onChange(!value)}
     />
