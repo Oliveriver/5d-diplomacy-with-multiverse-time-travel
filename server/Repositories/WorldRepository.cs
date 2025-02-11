@@ -7,12 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Repositories;
 
-public class WorldRepository(ILogger<WorldRepository> logger, GameContext context, MapFactory mapFactory, DefaultWorldFactory defaultWorldFactory)
+public class WorldRepository(ILogger<WorldRepository> logger, GameContext context, MapFactory mapFactory, DefaultWorldFactory defaultWorldFactory, Services.BackgroundTaskQueue backgroundTaskQueue)
 {
     private readonly ILogger<WorldRepository> logger = logger;
     private readonly GameContext context = context;
     private readonly MapFactory mapFactory = mapFactory;
     private readonly DefaultWorldFactory defaultWorldFactory = defaultWorldFactory;
+    private readonly Services.BackgroundTaskQueue backgroundTaskQueue = backgroundTaskQueue;
 
     public async Task<World> GetWorld(int gameId)
     {
@@ -41,19 +42,33 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
         var newPlayersSubmitted = players.Where(p => !game.PlayersSubmitted.Contains(p));
         game.PlayersSubmitted = [.. game.PlayersSubmitted, .. newPlayersSubmitted];
 
+        await context.SaveChangesAsync();
+        //FIXME: game needs a "processing" flag/status column, and we need to prevent races on re-submitted final orders
         if (world.LivingPlayers.Count <= game.PlayersSubmitted.Count)
         {
-            logger.LogInformation("Adjudicating game {GameId}", gameId);
-
-            game.PlayersSubmitted = [];
-
-            var adjudicator = new Adjudicator(world, game.HasStrictAdjacencies, mapFactory, defaultWorldFactory);
-            adjudicator.Adjudicate();
-            world.Iteration++;
-
-            logger.LogInformation("Adjudicated game {GameId}", gameId);
+            backgroundTaskQueue.EnqueueTask(async (sf, ct) =>
+            {
+                using var services = sf.CreateScope();
+                //create a new instance for the background task to rely on, which will have all the services we require.
+                var bg_wr = services.ServiceProvider.GetRequiredService<WorldRepository>();
+                await bg_wr.BackgroundAdjudicate(gameId);
+            });
         }
+    }
+    private async Task BackgroundAdjudicate(int gameId)
+    {
+        logger.LogInformation("Adjudicating game {GameId}", gameId);
 
+        var game = await context.Games.FindAsync(gameId)
+            ?? throw new KeyNotFoundException("Game not found");
+        var world = await GetWorld(gameId);
+        game.PlayersSubmitted = [];
+
+        var adjudicator = new Adjudicator(world, game.HasStrictAdjacencies, mapFactory, defaultWorldFactory);
+        adjudicator.Adjudicate();
+        world.Iteration++;
+
+        logger.LogInformation("Adjudicated game {GameId}", gameId);
         await context.SaveChangesAsync();
     }
 }

@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddResponseCompression();
 builder.Services.AddDbContext<GameContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
 
 builder.Services.AddScoped<EntityMapper>();
@@ -19,8 +20,12 @@ builder.Services.AddScoped<WorldRepository>();
 builder.Services.AddScoped<MapFactory>();
 builder.Services.AddScoped<DefaultWorldFactory>();
 
+builder.Services.AddSingleton<Services.BackgroundTaskQueue>();
+builder.Services.AddHostedService<Services.BackgroundQueueHostedService>();
+
 var app = builder.Build();
 
+app.UseResponseCompression(); //Compression early in the middleware, to compress everything by default
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
