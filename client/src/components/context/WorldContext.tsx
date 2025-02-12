@@ -9,6 +9,7 @@ import {
 import World from '../../types/world';
 import Order, { OrderStatus } from '../../types/order';
 import useGetWorld from '../../hooks/api/useGetWorld';
+import useGetIteration from '../../hooks/api/useGetIteration';
 import useSubmitOrders from '../../hooks/api/useSubmitOrders';
 import { refetchInterval } from '../../utils/constants';
 import GameContext from './GameContext';
@@ -35,7 +36,8 @@ const WorldContext = createContext(initialWorldContextState);
 export const WorldContextProvider = ({ children }: PropsWithChildren) => {
   const { game } = useContext(GameContext);
 
-  const { world, isLoading, error: worldError, refetch } = useGetWorld();
+  const { world, isLoading, error: worldError, refetch: refetchWorld } = useGetWorld();
+  const { error: iterationError, refetch: refetchIteration } = useGetIteration();
   const { submitOrders, isPending: isSubmitting, error: submissionError } = useSubmitOrders();
 
   const [isRefetching, setIsRefetching] = useState(false);
@@ -46,10 +48,11 @@ export const WorldContextProvider = ({ children }: PropsWithChildren) => {
   const refetchUntilUpdate = useCallback(async () => {
     setIsRefetching(true);
     const currentIteration = world?.iteration;
-    const refetched = await refetch();
-    if (refetched.error || currentIteration !== refetched.data?.iteration) {
+    const refetched = await refetchIteration();
+    if (refetched.error || currentIteration !== refetched.data) {
       setIsRefetching(false);
-      return refetched;
+      const worldQuery = await refetchWorld();
+      return worldQuery.data;
     }
 
     await new Promise((resolve) => {
@@ -57,7 +60,7 @@ export const WorldContextProvider = ({ children }: PropsWithChildren) => {
     });
 
     return refetchUntilUpdate();
-  }, [world?.iteration, refetch]);
+  }, [world?.iteration, refetchIteration, refetchWorld]);
 
   const contextValue = useMemo(
     () => ({
@@ -69,7 +72,7 @@ export const WorldContextProvider = ({ children }: PropsWithChildren) => {
         await refetchUntilUpdate();
       },
       isLoading: isLoading || isSubmitting || isRefetching || isWaitingForAdjudication,
-      error: worldError || submissionError,
+      error: worldError || submissionError || iterationError,
       retry: () => refetchUntilUpdate(),
     }),
     [
@@ -82,6 +85,7 @@ export const WorldContextProvider = ({ children }: PropsWithChildren) => {
       isWaitingForAdjudication,
       worldError,
       submissionError,
+      iterationError,
       refetchUntilUpdate,
     ],
   );
