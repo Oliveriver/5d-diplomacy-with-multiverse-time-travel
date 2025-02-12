@@ -29,6 +29,16 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
         return world;
     }
 
+    public async Task<int> GetIteration(int gameId)
+    {
+        logger.LogInformation("Querying iteration for game {GameId}", gameId);
+
+        var world = await context.Worlds.FirstOrDefaultAsync(w => w.GameId == gameId)
+            ?? throw new KeyNotFoundException("World not found");
+
+        return world.Iteration;
+    }
+
     public async Task AddOrders(int gameId, Nation[] players, List<Order> orders)
     {
         logger.LogInformation("Submitting orders for game {GameId}", gameId);
