@@ -5,6 +5,7 @@ import BoardArrow from './BoardArrow';
 import { boardSeparation, majorBoardWidth, minorBoardWidth } from '../../../utils/constants';
 import { getCoordinates } from '../../../types/location';
 import WorldContext from '../../context/WorldContext';
+import ParentIndicator from './ParentIndicator';
 
 const BoardArrowLayer = () => {
   const { world } = useContext(WorldContext);
@@ -57,7 +58,7 @@ const BoardArrowLayer = () => {
   const curvedArrows = world.boards.flatMap((board) =>
     board.childTimelines.map((timeline) => {
       const startBoard = board;
-      const endBoard = getNextPhase(board.year, board.phase);
+      const endBoard = { ...getNextPhase(board.year, board.phase), timeline };
 
       const startCoordinates = getCoordinates({
         timeline: startBoard.timeline,
@@ -85,13 +86,20 @@ const BoardArrowLayer = () => {
       }[endBoard.phase];
 
       return (
-        <BoardArrow
-          key={timeline}
-          startX={startCoordinates.x + startOffset}
-          endX={endCoordinates.x + endOffset}
-          startY={startCoordinates.y}
-          endY={endCoordinates.y}
-        />
+        <div key={timeline}>
+          <BoardArrow
+            startX={startCoordinates.x + startOffset}
+            endX={endCoordinates.x + endOffset}
+            startY={startCoordinates.y}
+            endY={endCoordinates.y}
+          />
+          <ParentIndicator
+            location={endBoard}
+            parentTimeline={board.timeline}
+            x={endCoordinates.x}
+            y={endCoordinates.y}
+          />
+        </div>
       );
     }),
   );

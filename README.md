@@ -20,6 +20,25 @@ Code contributions from others are welcome, although the creators retain the rig
 
 There are currently two options for installing 5D Diplomacy. If you wish to make code changes as part of your installation, you should use the manual installation option. Otherwise, installation via Docker may be more suitable.
 
+### Installation via Docker
+
+Requirements:
+
+- [Docker](https://docker.com/) and [Docker Compose](https://docs.docker.com/compose/). Note that Docker Compose will generally be installed alongside Docker automatically.
+
+Steps:
+
+- Ensure Docker is running.
+- Open a command prompt in the root directory of your clone of this repository.
+- Run `docker compose build frontend backend` via the command line.
+- Run `docker compose up -d` via the command line.
+- Wait at least a minute for the database to initialise. If you encounter errors creating games after opening the client, you may need to wait longer.
+- Access the game client at http://localhost:5173.
+
+To read server logs, run `docker compose logs -f backend`. Database files will be stored in `mssql-data` directory.
+
+If you ever update the code (manually or via a pull from this repository), you will need to run `docker compose down --rmi local`, then run through the steps above again.
+
 ### Manual Installation
 
 The two components - found in the `server` and `client` directories - may be run together or independently. The client always requires a server instance (local or remote) for the game to function beyond the welcome and setup screens.
@@ -46,7 +65,7 @@ Steps:
 
 Requirements:
 
-- [Node.js](https://nodejs.org/en/download/prebuilt-installer).
+- [Node.js v20](https://nodejs.org/en/download/prebuilt-installer).
 - [Yarn package manager](https://yarnpkg.com/). If Node.js has been installed, this can be installed by running `npm install --global yarn`.
 - A running instance of the server, whether local or remote.
 
@@ -57,25 +76,6 @@ Steps:
 - Run `yarn install`.
 - Run `yarn dev` to start the client in the default browser.
 
-### Installation via Docker
-
-Requirements:
-
-- [Docker](https://docker.com/) and [Docker Compose](https://docs.docker.com/compose/). Note that Docker Compose will generally be installed alongside Docker automatically.
-
-Steps:
-
-- Ensure Docker is running.
-- Open a command prompt in the root directory of your clone of this repository.
-- Run `docker compose build frontend backend` via the command line.
-- Run `docker compose up -d` via the command line.
-- Wait at least a minute for the database to initialise. If you encounter errors creating games after opening the client, you may need to wait longer.
-- Access the game client at http://localhost:5173.
-
-To read server logs, run `docker compose logs -f backend`. Database files will be stored in `mssql-data` directory.
-
-If you ever update the code (manually or via a pull from this repository), you will need to run `docker compose down --rmi local`, then run through the steps above again.
-
 ## Gameplay
 
 For a basic demonstration of the game and how to play, see [the accompanying video](https://www.youtube.com/watch?v=P_5QCJO4ELI).
@@ -85,6 +85,8 @@ For a basic demonstration of the game and how to play, see [the accompanying vid
 First see installation instructions above. 5D Diplomacy can be set to run normal games (where seven players join and enter orders individually) or sandbox games (where a single user enters all orders).
 
 If you wish to play a normal game or let other people see one of your sandbox games, you'll need to expose the domains of your client and/or server (if everyone has set up the client themselves, only a server needs to be exposed). There are various ways to do this, although this guide does not cover them.
+
+If you modify the code and host a game that others interact with, **you must provide a link to your modified source code to comply with the terms of the AGPL license.** We suggest updating the link to the source code in `client/src/components/pages/LandingPage.tsx`.
 
 #### Normal Game
 

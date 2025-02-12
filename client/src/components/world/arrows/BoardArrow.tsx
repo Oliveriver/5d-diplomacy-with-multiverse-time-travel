@@ -10,7 +10,7 @@ type BoardArrowProps = {
 };
 
 const BoardArrow = ({ startX, endX, startY, endY, includeHead }: BoardArrowProps) => (
-  <svg className="fixed overflow-visible">
+  <svg className="fixed overflow-visible opacity-50">
     <defs>
       <marker id="boardArrowhead" className="overflow-visible" orient="auto-start-reverse">
         <path
