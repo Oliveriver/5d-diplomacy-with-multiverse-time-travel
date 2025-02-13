@@ -7,6 +7,7 @@ import WorldContext from '../../context/WorldContext';
 import BoardGhost from './BoardGhost';
 import OrderEntryContext from '../../context/OrderEntryContext';
 import InputMode from '../../../types/enums/inputMode';
+import colours from '../../../utils/colours';
 
 const BoardLayer = () => {
   const { world } = useContext(WorldContext);
@@ -30,7 +31,13 @@ const BoardLayer = () => {
   );
 
   return (
-    <div className="flex flex-col w-screen h-screen">
+    <div
+      className="flex flex-col w-screen h-screen dark:[&_g]:stroke-black dark:[&_path]:stroke-black dark:[&_path.sea-region]:fill-[var(--sea-colour)] dark:[&_g.supply-center-dot]:fill-[var(--supply-centre-colour)]"
+      style={{
+        '--sea-colour': colours.sea,
+        '--supply-centre-colour': colours.uiForeground,
+      } as React.CSSProperties}
+    >
       {timelines.map((timeline) => (
         <div className="flex" key={timeline}>
           {boards.map((board) => {

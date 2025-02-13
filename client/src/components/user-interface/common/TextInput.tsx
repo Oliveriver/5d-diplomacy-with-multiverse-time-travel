@@ -6,7 +6,7 @@ type TextInputProps = {
 const TextInput = ({ placeholder, onChange }: TextInputProps) => (
   <input
     type="text"
-    className="w-64 h-16 p-4 border-4 rounded-xl text-lg"
+    className="w-64 h-16 p-4 border-4 rounded-xl text-lg dark:bg-gray-800 dark:text-white"
     placeholder={placeholder}
     onChange={(event) => onChange(event.target.value)}
   />
