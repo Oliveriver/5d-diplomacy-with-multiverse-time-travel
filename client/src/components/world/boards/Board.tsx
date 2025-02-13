@@ -31,29 +31,31 @@ const Board = ({ board, winner, isActive }: BoardProps) => {
 
   return (
     <div
-      className="flex-col content-center relative bg-white"
+      className="flex-col content-center relative"
       style={{
         minHeight: majorBoardWidth,
         height: majorBoardWidth,
         margin: boardSeparation / 2,
       }}
     >
-      <div
-        className="relative rounded-xl"
-        style={{
-          backgroundColor: colours.boardBackground,
-          minWidth: width,
-          width,
-          minHeight: width,
-          height: width,
-          borderWidth: boardBorderWidth,
-          borderColor: winner ? getNationColour(winner) : colours.boardBorder,
-          boxShadow: winner && isActive ? `0px 0px 100px 50px ${getNationColour(winner)}` : '',
-          opacity: canMove ? 1 : pastTurnOpacity,
-        }}
-      >
-        <p className="text-md -mt-7">{getBoardName(board)}</p>
-        <Map board={board} />
+      <div style={{ backgroundColor: colours.boardBackground }}>
+        <div
+          className="relative rounded-xl"
+          style={{
+            backgroundColor: colours.boardBackground,
+            minWidth: width,
+            width,
+            minHeight: width,
+            height: width,
+            borderWidth: boardBorderWidth,
+            borderColor: winner ? getNationColour(winner) : colours.boardBorder,
+            boxShadow: winner && isActive ? `0px 0px 100px 50px ${getNationColour(winner)}` : '',
+            opacity: canMove ? 1 : pastTurnOpacity,
+          }}
+        >
+          <p className="text-md -mt-7">{getBoardName(board)}</p>
+          <Map board={board} />
+        </div>
       </div>
       {phase === Phase.Winter && <Adjustment board={board} isActive={isActive} />}
     </div>
