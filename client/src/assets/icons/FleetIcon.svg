@@ -5,7 +5,7 @@
       <stop offset="100%" stop-color="transparent" />
     </radialGradient>
   </defs>
-  <circle cx=14 cy=14 r=15.5 fill="url(#shadow)" />
-  <circle cx=14 cy=14 r=14 fill=currentColor/>
-  <text dy=2 x=50% y=50% text-anchor=middle dominant-baseline=middle font-size=16>F</text>
+  <circle cx="14" cy="14" r="15.5" fill="url(#shadow)" />
+  <circle cx="14" cy="14" r="14" fill="currentColor"/>
+  <text dy="2" x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-size="16">F</text>
 </svg>  
