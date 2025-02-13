@@ -1,4 +1,4 @@
-import colours from 'tailwindcss/colors';
+import themeColours from '../../utils/colours';
 
 enum Nation {
   England = 'England',
@@ -11,15 +11,15 @@ enum Nation {
 }
 
 export const getNationColour = (nation?: Nation, isEmphasised: boolean = true) => {
-  if (!nation) return colours.orange[isEmphasised ? 300 : 200];
+  if (!nation) return isEmphasised ? themeColours.unclaimedEmphasised : themeColours.unclaimedStandard;
   return {
-    [Nation.England]: colours.fuchsia[isEmphasised ? 500 : 400],
-    [Nation.Germany]: colours.zinc[isEmphasised ? 500 : 400],
-    [Nation.Russia]: colours.purple[isEmphasised ? 500 : 400],
-    [Nation.Turkey]: colours.amber[isEmphasised ? 500 : 400],
-    [Nation.Austria]: colours.red[isEmphasised ? 500 : 400],
-    [Nation.Italy]: colours.emerald[isEmphasised ? 500 : 400],
-    [Nation.France]: colours.blue[isEmphasised ? 500 : 400],
+    [Nation.England]: isEmphasised ? themeColours.englandEmphasised : themeColours.englandStandard,
+    [Nation.Germany]: isEmphasised ? themeColours.germanyEmphasised : themeColours.germanyStandard,
+    [Nation.Russia]: isEmphasised ? themeColours.russiaEmphasised : themeColours.russiaStandard,
+    [Nation.Turkey]: isEmphasised ? themeColours.turkeyEmphasised : themeColours.turkeyStandard,
+    [Nation.Austria]: isEmphasised ? themeColours.austriaEmphasised : themeColours.austriaStandard,
+    [Nation.Italy]: isEmphasised ? themeColours.italyEmphasised : themeColours.italyStandard,
+    [Nation.France]: isEmphasised ? themeColours.franceEmphasised : themeColours.franceStandard,
   }[nation];
 };
 

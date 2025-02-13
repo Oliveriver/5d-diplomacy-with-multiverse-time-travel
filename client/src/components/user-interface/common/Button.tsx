@@ -22,7 +22,8 @@ const Button = ({
   minWidth = 64,
   minHeight = 64,
 }: ButtonProps) => {
-  const baseStyle = 'rounded-xl border-4 pointer-events-auto flex items-center justify-center';
+  const baseStyle =
+    'rounded-xl border-4 pointer-events-auto flex items-center justify-center dark:text-white';
   const hoverStyle = 'hover:border-lime-500';
   const selectedSyle = isSelected ? 'border-lime-500' : 'border-gray-200';
   const disabledSyle = 'disabled:opacity-30 disabled:border-gray-200';
