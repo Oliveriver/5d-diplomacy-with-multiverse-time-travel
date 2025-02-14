@@ -50,11 +50,19 @@ const Board = ({ board, winner, isActive }: BoardProps) => {
             borderWidth: boardBorderWidth,
             borderColor: winner ? getNationColour(winner) : colours.boardBorder,
             boxShadow: winner && isActive ? `0px 0px 100px 50px ${getNationColour(winner)}` : '',
-            opacity: canMove ? 1 : pastTurnOpacity,
           }}
         >
           <p className="text-md -mt-7">{getBoardName(board)}</p>
           <Map board={board} />
+          {!canMove && (
+            <div
+              className="absolute w-full h-full z-10"
+              style={{
+                backgroundColor: colours.boardBackground,
+                opacity: 1 - pastTurnOpacity,
+              }}
+            />
+          )}
         </div>
       </div>
       {phase === Phase.Winter && <Adjustment board={board} isActive={isActive} />}
