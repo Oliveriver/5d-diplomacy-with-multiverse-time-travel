@@ -35,7 +35,7 @@ Steps:
 - Wait at least a minute for the database to initialise. If you encounter errors creating games after opening the client, you may need to wait longer.
 - Access the game client at http://localhost:5173.
 
-To read server logs, run `docker compose logs -f backend`. Database files will be stored in `mssql-data` directory.
+To read server logs, run `docker compose logs -f backend`.
 
 If you ever update the code (manually or via a pull from this repository), you will need to run `docker compose down --rmi local`, then run through the steps above again.
 
@@ -51,7 +51,6 @@ Requirements:
 
 - [.NET SDK 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
 - [Entity Framework Core command line tools](https://learn.microsoft.com/en-us/ef/core/cli/dotnet). If .NET has been installed, these can be installed by running `dotnet tool install --global dotnet-ef`.
-- A blank database instance running on [SQL Server](https://www.microsoft.com/en-gb/sql-server/sql-server-downloads). We recommend using SQL Server Developer Edition or SQL Server Express Edition as they're both free.
 
 Steps:
 
