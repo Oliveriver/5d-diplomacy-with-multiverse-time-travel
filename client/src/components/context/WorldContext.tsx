@@ -1,12 +1,11 @@
 import { createContext, PropsWithChildren, useContext, useMemo, useState } from 'react';
-import useWebSocket from 'react-use-websocket';
 import World from '../../types/world';
 import Order, { OrderStatus } from '../../types/order';
 import useGetWorld from '../../hooks/api/useGetWorld';
 import useSubmitOrders from '../../hooks/api/useSubmitOrders';
 import GameContext from './GameContext';
 import Nation from '../../types/enums/nation';
-import routes from '../../api/routes';
+import useGetWorldWebSockets from '../../hooks/api/useGetWorldWebSockets';
 
 type WorldContextState = {
   world: World | null;
@@ -30,18 +29,10 @@ export const WorldContextProvider = ({ children }: PropsWithChildren) => {
   const { game } = useContext(GameContext);
 
   const { world, isLoading, error: worldError, refetch } = useGetWorld();
+  const { lastMessage } = useGetWorldWebSockets();
   const { submitOrders, isPending: isSubmitting, error: submissionError } = useSubmitOrders();
 
   const [isWaitingForUpdate, setIsWaitingForUpdate] = useState(false);
-
-  const { lastMessage } = useWebSocket(game ? routes.getWorldWebSocket(game.id) : '', {
-    retryOnError: true,
-    reconnectAttempts: 10,
-    reconnectInterval: (attemptNumber) => Math.min(2 ** attemptNumber * 1000, 10000),
-    queryParams: {
-      player: `${game?.player}`,
-    },
-  });
 
   const websocketWorld = useMemo(() => {
     setIsWaitingForUpdate(false);
