@@ -5,6 +5,7 @@ const routes = {
   joinGame: (gameId: number) => `${baseUrl}/game/${gameId}/players`,
   getWorld: (gameId: number) => `${baseUrl}/game/${gameId}`,
   submitOrders: (gameId: number) => `${baseUrl}/game/${gameId}/orders`,
+  getIteration: (gameId: number) => `${baseUrl}/game/${gameId}/iteration`,
   getWorldWebSocket: (gameId: number) => `${baseUrl}/game/${gameId}/ws`,
 };
 

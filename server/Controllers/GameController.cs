@@ -118,6 +118,24 @@ public class GameController(
         }
     }
 
+    [HttpGet]
+    [Route("{gameId}/iteration")]
+    public async Task<ActionResult> GetIteration([FromRoute] int gameId, [FromQuery] Nation player)
+    {
+        logger.LogInformation("Fetching iteration number for game {GameId} as {Player}", gameId, player);
+
+        try
+        {
+            var iteration = await worldRepository.GetIteration(gameId);
+            return Ok(iteration);
+        }
+        catch (KeyNotFoundException)
+        {
+            logger.LogWarning("Failed to find world with ID {GameId}", gameId);
+            return NotFound($"No world with game ID {gameId} found");
+        }
+    }
+
     [HttpPost]
     [Route("{gameId}/orders")]
     public async Task<ActionResult> SubmitOrders([FromRoute] int gameId, [FromBody] OrderSubmissionRequest request)
