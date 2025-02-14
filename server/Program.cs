@@ -1,4 +1,5 @@
 using Context;
+using Controllers;
 using Factories;
 using Mappers;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,8 @@ builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializ
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<GameContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
+
+builder.Services.AddSingleton<WebSocketConnectionManager>();
 
 builder.Services.AddScoped<EntityMapper>();
 builder.Services.AddScoped<ModelMapper>();
@@ -32,5 +35,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
+app.UseWebSockets(new WebSocketOptions
+{
+    KeepAliveInterval = TimeSpan.FromSeconds(30)
+});
 app.MapControllers();
 app.Run();
