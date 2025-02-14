@@ -7,5 +7,6 @@ services:
   backend:
     build: server/
     environment:
-      - "ConnectionStrings__Database=Data Source=5dDiplomacy.db"
+      - "Provider=Sqlite"
+      - "ConnectionStrings__Sqlite=Data Source=5dDiplomacy.db"
     restart: always
