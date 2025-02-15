@@ -9,18 +9,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
+namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations.SqlServer
 {
-    [DbContext(typeof(GameContext))]
-    [Migration("20240913120828_FixOneToManyUnits")]
-    partial class FixOneToManyUnits
+    [DbContext(typeof(SqlServerGameContext))]
+    [Migration("20250214225948_EnableMultiProvider")]
+    partial class EnableMultiProvider
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -36,6 +36,9 @@ namespace _5dDiplomacyWithMultiverseTimeTravel.Migrations
                     b.Property<string>("ChildTimelines")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("MightAdvance")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Phase")
                         .HasColumnType("int");

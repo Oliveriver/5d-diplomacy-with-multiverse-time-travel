@@ -19,8 +19,8 @@ const OrderLayer = () => {
 
   return (
     <>
-      <div className="absolute" style={{ opacity: pastOrderOpacity }}>
-        {[...world.orders].map((order) => {
+      <div className="absolute z-50" style={{ opacity: pastOrderOpacity }}>
+        {world.orders.map((order) => {
           const key = getOrderKey(order);
           const isHighlighted = highlightedOrder !== null && key === getOrderKey(highlightedOrder);
 
@@ -35,7 +35,7 @@ const OrderLayer = () => {
         })}
       </div>
       <>
-        {[...orders].map((order) => {
+        {orders.map((order) => {
           const key = getOrderKey(order);
           const isHighlighted = highlightedOrder !== null && key === getOrderKey(highlightedOrder);
 

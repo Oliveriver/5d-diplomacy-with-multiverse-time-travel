@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Context;
 
-public class GameContext(DbContextOptions<GameContext> options) : DbContext(options)
+public abstract class GameContext : DbContext
 {
     public DbSet<Game> Games { get; set; } = null!;
     public DbSet<World> Worlds { get; set; } = null!;
