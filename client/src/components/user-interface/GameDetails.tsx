@@ -2,10 +2,13 @@ import { useContext } from 'react';
 import colours from '../../utils/colours';
 import { getNationColour } from '../../types/enums/nation';
 import CopyIcon from '../../assets/icons/CopyIcon.svg?react';
+import DownloadIcon from '../../assets/icons/DownloadIcon.svg?react';
 import GameContext from '../context/GameContext';
+import WorldContext from '../context/WorldContext';
 
 const GameDetails = () => {
   const { game } = useContext(GameContext);
+  const { world } = useContext(WorldContext);
 
   if (!game) return null;
   const { id, player } = game;
@@ -13,6 +16,8 @@ const GameDetails = () => {
   const onGameIdCopied = () => navigator.clipboard.writeText(id.toString());
 
   const adjacencySettingText = `Adjacencies: ${game.hasStrictAdjacencies ? 'Strict' : 'Loose'}`;
+
+  const gameJsonFile = URL.createObjectURL(new Blob([JSON.stringify(world, null, 2)]));
 
   return (
     <div
@@ -31,6 +36,17 @@ const GameDetails = () => {
         >
           <CopyIcon />
         </button>
+        <a
+          aria-label="Download game as JSON"
+          className="opacity-30 hover:opacity-70 ml-6"
+          href={gameJsonFile}
+          download="game.json"
+          target="_blank"
+          rel="noreferrer"
+          title="Download game as JSON"
+        >
+          <DownloadIcon />
+        </a>
       </div>
       <p
         className="font-bold text-lg"
