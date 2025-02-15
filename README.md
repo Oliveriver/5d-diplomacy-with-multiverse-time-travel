@@ -12,36 +12,36 @@ _Diplomacy_ is a trademark of Avalon Hill. _5D Chess With Multiverse Time Travel
 
 If you find a bug, please raise an [issue](https://github.com/Oliveriver/5d-diplomacy-with-multiverse-time-travel/issues).
 
-If you have design questions or suggestions, please don't use the issue board and instead use the [5D Diplomacy Discord server](https://discord.gg/g7TvjPfkVu).
+Note that official development of new features has come to an end. Issues requesting new or modified gameplay features will probably be rejected. Only bug fixes, performance improvements, and quality of life adjustments are likely to be accepted as suggestions.
 
-Code contributions from others are welcome, although the creators retain the right to refuse feature changes. Feel free to fork this repo and modify the code there if you wish to experiment with more radical changes to the rules or UI.
+Feel free to fork this repo and modify the code there if you wish to experiment with more radical changes to the rules or UI. Visit the [5D Diplomacy Discord server](https://discord.gg/g7TvjPfkVu) to discuss new rules and theory with others.
 
 ## Installation
 
-There are currently two options for installing 5D Diplomacy. If you wish to make code changes as part of your installation, you should use the manual installation option. Otherwise, installation via Docker may be more suitable.
+There are currently two options for installing 5D Diplomacy. Use quick installation if you just want to play the game. Use manual installation if you want to make code changes.
 
-### Installation via Docker
+### Quick Installation
 
 Requirements:
 
-- [Docker](https://docker.com/) and [Docker Compose](https://docs.docker.com/compose/). Note that Docker Compose will generally be installed alongside Docker automatically.
+- The correct version of [Docker](https://docker.com/) for your operating system.
 
 Steps:
 
-- Ensure Docker is running.
-- Open a command prompt in the root directory of your clone of this repository.
-- Run `docker compose build frontend backend` via the command line.
-- Run `docker compose up -d` via the command line.
-- Wait at least a minute for the database to initialise. If you encounter errors creating games after opening the client, you may need to wait longer.
+- Open Docker and leave it running.
+- Open the CLI for your operating system and navigate inside the folder where you've downloaded this repository. If you don't know how to do this, [use this tutorial](https://www.freecodecamp.org/news/how-to-use-the-cli-beginner-guide/).
+- Via the CLI, run the command `docker compose build frontend backend` and wait for it to complete.
+- Via the CLI, run the command `docker compose up -d` and wait for it to complete.
+- Wait an extra few seconds for the server to start up. If you experience errors creating a game in the next step, try waiting longer.
 - Access the game client at http://localhost:5173.
+
+If you ever update the code (manually or via a pull from this repository), you will need to run `docker compose down --rmi local`, then run through the steps above again. Note that this may result in the database being wiped.
 
 To read server logs, run `docker compose logs -f backend`.
 
-If you ever update the code (manually or via a pull from this repository), you will need to run `docker compose down --rmi local`, then run through the steps above again.
-
 ### Manual Installation
 
-The two components - found in the `server` and `client` directories - may be run together or independently. The client always requires a server instance (local or remote) for the game to function beyond the welcome and setup screens.
+The game consists of two components, found in the `server` and `client` directories. You must set up and run both to play 5D Diplomacy, unless you're connecting to someone else's server or have implemented a custom client.
 
 The `prototype` directory contains the original proof of concept from 2021. None of its contents are required for running the latest version of 5D Diplomacy.
 
@@ -51,14 +51,21 @@ Requirements:
 
 - [.NET SDK 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
 - [Entity Framework Core command line tools](https://learn.microsoft.com/en-us/ef/core/cli/dotnet). If .NET has been installed, these can be installed by running `dotnet tool install --global dotnet-ef`.
+- (Optional) [SQL Server](https://www.microsoft.com/en-gb/sql-server/sql-server-downloads). By default, the game uses an in-built SQLite database, but it also supports connecting to an external SQLite or SQL Server database.
 
 Steps:
 
 - Navigate to the `server` directory.
-- Copy `appsettings.json` to a new file in the same directory, `appsettings.Development.json`, and inside the new file, replace `DATABASE_CONNECTION_STRING` with the connection string for the active database instance.
+- (Optional) If you want to connect to a custom database, copy `appsettings.json` to create a new file in the same directory called `appsettings.Development.json`. Add your database's connection string as the value for the appropriate provider under `ConnectionStrings`, then set the value for `Provider` to match the name of the connection string.
 - Run `dotnet build`.
-- Run `dotnet ef database update`.
+- Run one of the following commands, depending on your configuration:
+  - If you aren't using a custom database, i.e. if you didn't follow the optional step above, run `dotnet ef database update --context SqliteGameContext`.
+  - If you're using a custom SQLite database, run `dotnet ef database update --context SqliteGameContext`.
+  - If you're using a custom SQL Server database, run `dotnet ef database update --context SqlServerGameContext`.
 - Run `dotnet run` to start the server.
+- The server will print its address to the console, likely http://localhost:5000 but it may be different. Note this down for later.
+
+Note that if you ever update the code with changes that affect the database schema (e.g. if you pull a change from this repository that includes a new migration), you will have to run the appropriate `dotnet ef database update` command again.
 
 #### Client
 
@@ -66,12 +73,12 @@ Requirements:
 
 - [Node.js v20](https://nodejs.org/en/download/prebuilt-installer).
 - [Yarn package manager](https://yarnpkg.com/). If Node.js has been installed, this can be installed by running `npm install --global yarn`.
-- A running instance of the server, whether local or remote.
 
 Steps:
 
 - Navigate to the `client` directory.
-- Copy `.env` to a new file in the same directory, `.env.local`, and inside the new file, replace `SERVER_URL` with the base domain of the active server instance.
+- Copy `.env` to create a new file in the same directory called `.env.local`.
+- Inside `.env.local`, replace `SERVER_URL` with the address of the server noted earlier.
 - Run `yarn install`.
 - Run `yarn dev` to start the client in the default browser.
 
