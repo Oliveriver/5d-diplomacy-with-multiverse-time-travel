@@ -17,32 +17,30 @@ const GameRoot = () => {
 
   return (
     <OrderEntryContextProvider>
-      <div className="dark:bg-slate-950 dark:text-white">
-        <TransformWrapper
-          limitToBounds={false}
-          minScale={0.05}
-          maxScale={3}
-          smooth
-          wheel={{ smoothStep: 0.0005 }}
-          initialScale={initialScale}
-          initialPositionX={getDefaultOffsetX()}
-          initialPositionY={getDefaultOffsetY()}
-          doubleClick={{ disabled: true }}
-          panning={{ excluded: ['input', 'select'], velocityDisabled: true }}
-        >
-          {error && <WorldError error={error} retry={retry} isLoading={isLoading} />}
-          {!world && <WorldLoading />}
-          {!error && (
-            <TransformComponent>
-              <BackgroundLayer />
-              <BoardArrowLayer />
-              <BoardLayer />
-              <OrderLayer />
-            </TransformComponent>
-          )}
-          <Overlay />
-        </TransformWrapper>
-      </div>
+      <TransformWrapper
+        limitToBounds={false}
+        minScale={0.05}
+        maxScale={3}
+        smooth
+        wheel={{ smoothStep: 0.0005 }}
+        initialScale={initialScale}
+        initialPositionX={getDefaultOffsetX()}
+        initialPositionY={getDefaultOffsetY()}
+        doubleClick={{ disabled: true }}
+        panning={{ excluded: ['input', 'select'], velocityDisabled: true }}
+      >
+        {error && <WorldError error={error} retry={retry} isLoading={isLoading} />}
+        {!world && <WorldLoading />}
+        {!error && (
+          <TransformComponent>
+            <BackgroundLayer />
+            <BoardArrowLayer />
+            <BoardLayer />
+            <OrderLayer />
+          </TransformComponent>
+        )}
+        <Overlay />
+      </TransformWrapper>
     </OrderEntryContextProvider>
   );
 };

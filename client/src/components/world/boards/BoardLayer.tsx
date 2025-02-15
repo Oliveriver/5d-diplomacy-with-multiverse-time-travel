@@ -32,10 +32,12 @@ const BoardLayer = () => {
 
   return (
     <div
-      className="flex flex-col w-screen h-screen dark:[&_g]:stroke-black dark:[&_path]:stroke-black dark:[&_path.sea-region]:fill-[var(--sea-colour)] dark:[&_g.supply-center-dot]:fill-[var(--supply-centre-colour)]"
+      className="flex flex-col w-screen h-screen [&_path.sea-region]:fill-[var(--sea-colour)] [&_path]:stroke-[var(--map-border-colour)] [&_g.supply-center-dot]:fill-[var(--supply-centre-colour)] [&_g.supply-center-dot_path]:stroke-[var(--supply-centre-border-colour)]"
       style={{
+        '--map-border-colour': colours.boardCountryBorder,
         '--sea-colour': colours.sea,
-        '--supply-centre-colour': colours.uiForeground,
+        '--supply-centre-colour': colours.supplyCenter,
+        '--supply-centre-border-colour': colours.supplyCenterBorder,
       } as React.CSSProperties}
     >
       {timelines.map((timeline) => (

@@ -8,7 +8,7 @@ type LandingPageProps = {
 };
 
 const LandingPage = ({ setViewOption }: LandingPageProps) => (
-  <div className="flex justify-center w-screen min-h-screen dark:text-white">
+  <div className="flex justify-center w-screen min-h-screen">
     <div className="flex flex-col gap-6 py-8">
       <div className="flex flex-col my-8">
         <p className="text-[72px] font-bold">5D Diplomacy</p>

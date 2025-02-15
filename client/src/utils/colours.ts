@@ -3,18 +3,23 @@ import baseColours from 'tailwindcss/colors';
 const lightColours = {
   uiForeground: baseColours.black,
   uiBackground: baseColours.gray[300],
+  uiPageBackground: baseColours.white, // Overriden on the homepage with an image
   uiOverlay: baseColours.white,
   uiBorder: baseColours.gray[200],
   uiHighlight: baseColours.lime[500],
   uiError: baseColours.red[600],
+  uiTextColour: baseColours.black,
 
   iconForeground: baseColours.white,
   iconDelete: baseColours.red[500],
+  supplyCenter: baseColours.white,
+  supplyCenterBorder: baseColours.white,
 
   boardBorder: baseColours.gray[200],
   boardBackground: baseColours.white,
   boardArrowHead: baseColours.green[300],
   boardArrowBody: baseColours.green[200],
+  boardCountryBorder: baseColours.white,
   yearDivider: baseColours.indigo[50],
   yearDividerText: baseColours.indigo[200],
 
@@ -51,10 +56,13 @@ const darkColours = {
 
   uiForeground: baseColours.white,
   uiBackground: baseColours.gray[800],
+  uiPageBackground: baseColours.slate[950],
   uiOverlay: baseColours.gray[700],
   uiBorder: baseColours.gray[700],
+  uiTextColour: baseColours.white,
 
   boardBackground: baseColours.slate[700],
+  boardCountryBorder: baseColours.black,
 
   orderNew: baseColours.white,
   orderSuccess: baseColours.white,
