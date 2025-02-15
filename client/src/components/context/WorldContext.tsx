@@ -1,7 +1,6 @@
-import { createContext, PropsWithChildren, useContext, useMemo, useState } from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react';
 import World from '../../types/world';
 import Order, { OrderStatus } from '../../types/order';
-import useGetWorld from '../../hooks/api/useGetWorld';
 import useSubmitOrders from '../../hooks/api/useSubmitOrders';
 import GameContext from './GameContext';
 import Nation from '../../types/enums/nation';
@@ -28,49 +27,42 @@ const WorldContext = createContext(initialWorldContextState);
 export const WorldContextProvider = ({ children }: PropsWithChildren) => {
   const { game } = useContext(GameContext);
 
-  const { world, isLoading, error: worldError, refetch } = useGetWorld();
-  const { lastMessage } = useGetWorldWebSockets();
+  const { world, error: worldError, isConnecting, retry } = useGetWorldWebSockets();
   const { submitOrders, isPending: isSubmitting, error: submissionError } = useSubmitOrders();
 
   const [isWaitingForUpdate, setIsWaitingForUpdate] = useState(false);
 
-  const websocketWorld = useMemo(() => {
+  useEffect(() => {
     setIsWaitingForUpdate(false);
-    return lastMessage ? (JSON.parse(lastMessage.data) as World) : null;
-  }, [lastMessage]);
-
-  const latestWorld =
-    websocketWorld && (!world || websocketWorld.iteration > world.iteration)
-      ? websocketWorld
-      : world;
+  }, [world]);
 
   const isWaitingForAdjudication =
-    latestWorld?.orders.some((order) => order.status === OrderStatus.New) ?? false;
+    world?.orders.some((order) => order.status === OrderStatus.New) ?? false;
 
   const contextValue = useMemo(
     () => ({
-      world: latestWorld,
+      world,
       submitOrders: async (orders: Order[]) => {
-        if (!game || !latestWorld) return;
+        if (!game || !world) return;
         const players = game.player ? [game.player] : Object.values(Nation);
         setIsWaitingForUpdate(true);
         await submitOrders({ gameId: game.id, players, orders });
       },
-      isLoading: isLoading || isSubmitting || isWaitingForAdjudication || isWaitingForUpdate,
+      isLoading: isSubmitting || isConnecting || isWaitingForAdjudication || isWaitingForUpdate,
       error: worldError || submissionError,
-      retry: () => refetch(),
+      retry,
     }),
     [
       game,
-      latestWorld,
+      world,
       submitOrders,
-      isLoading,
       isSubmitting,
       isWaitingForAdjudication,
       isWaitingForUpdate,
+      isConnecting,
       worldError,
       submissionError,
-      refetch,
+      retry,
     ],
   );
 
