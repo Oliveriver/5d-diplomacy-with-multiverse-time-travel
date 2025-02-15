@@ -1,6 +1,7 @@
 import baseColours from 'tailwindcss/colors';
+import { Colours } from './types';
 
-const lightColours = {
+export const lightColours: Colours = {
   uiForeground: baseColours.black,
   uiBackground: baseColours.gray[300],
   uiPageBackground: baseColours.white, // Overriden on the homepage with an image
@@ -51,7 +52,7 @@ const lightColours = {
   franceEmphasised: baseColours.blue[500],
 };
 
-const darkColours = {
+export const darkColours: Colours = {
   ...lightColours,
 
   uiForeground: baseColours.white,
@@ -74,10 +75,54 @@ const darkColours = {
   germanyEmphasised: baseColours.zinc[400],
 };
 
-export const isDarkMode =
-  window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+export const coloursVariables: Colours = {
+  uiForeground: '--ui-foreground',
+  uiBackground: '--ui-background',
+  uiPageBackground: '--ui-page-background',
+  uiOverlay: '--ui-overlay',
+  uiBorder: '--ui-border',
+  uiHighlight: '--ui-highlight',
+  uiError: '--ui-error',
+  uiTextColour: '--ui-text-colour',
+  iconForeground: '--icon-foreground',
+  iconDelete: '--icon-delete',
+  supplyCenter: '--supply-center',
+  supplyCenterBorder: '--supply-center-border',
+  boardBorder: '--board-border',
+  boardBackground: '--board-background',
+  boardArrowHead: '--board-arrow-head',
+  boardArrowBody: '--board-arrow-body',
+  boardCountryBorder: '--board-country-border',
+  yearDivider: '--year-divider',
+  yearDividerText: '--year-divider-text',
+  orderNew: '--order-new',
+  orderSuccess: '--order-success',
+  orderFailure: '--order-failure',
+  orderRetreat: '--order-retreat',
+  orderHighlight: '--order-highlight',
+  sea: '--sea',
+  seaHover: '--sea-hover',
+  unclaimedStandard: '--unclaimed-standard',
+  unclaimedEmphasised: '--unclaimed-emphasised',
+  englandStandard: '--england-standard',
+  englandEmphasised: '--england-emphasised',
+  germanyStandard: '--germany-standard',
+  germanyEmphasised: '--germany-emphasised',
+  russiaStandard: '--russia-standard',
+  russiaEmphasised: '--russia-emphasised',
+  turkeyStandard: '--turkey-standard',
+  turkeyEmphasised: '--turkey-emphasised',
+  austriaStandard: '--austria-standard',
+  austriaEmphasised: '--austria-emphasised',
+  italyStandard: '--italy-standard',
+  italyEmphasised: '--italy-emphasised',
+  franceStandard: '--france-standard',
+  franceEmphasised: '--france-emphasised',
+};
 
-const themeColours = isDarkMode ? darkColours : lightColours;
+const coloursCssVariables = Object.entries(coloursVariables).reduce(
+  (acc, [key, value]) => ({ ...acc, [key]: `var(${value})` }),
+{}) as Colours;
 
-export default themeColours;
+export default coloursCssVariables;
 

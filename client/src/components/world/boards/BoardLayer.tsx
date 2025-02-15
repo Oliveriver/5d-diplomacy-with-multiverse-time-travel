@@ -7,7 +7,6 @@ import WorldContext from '../../context/WorldContext';
 import BoardGhost from './BoardGhost';
 import OrderEntryContext from '../../context/OrderEntryContext';
 import InputMode from '../../../types/enums/inputMode';
-import colours from '../../../utils/colours';
 
 const BoardLayer = () => {
   const { world } = useContext(WorldContext);
@@ -31,15 +30,9 @@ const BoardLayer = () => {
   );
 
   return (
-    <div
-      className="flex flex-col w-screen h-screen [&_path.sea-region]:fill-[var(--sea-colour)] [&_path]:stroke-[var(--map-border-colour)] [&_g.supply-center-dot]:fill-[var(--supply-centre-colour)] [&_g.supply-center-dot_path]:stroke-[var(--supply-centre-border-colour)]"
-      style={{
-        '--map-border-colour': colours.boardCountryBorder,
-        '--sea-colour': colours.sea,
-        '--supply-centre-colour': colours.supplyCenter,
-        '--supply-centre-border-colour': colours.supplyCenterBorder,
-      } as React.CSSProperties}
-    >
+    // Cannot use colours to reference the CSS variables since tailwind only supports static class names
+    // and we can't use an inline style since we need CSS selectors which require a stylesheet
+    <div className="flex flex-col w-screen h-screen [&_path.sea-region]:fill-[var(--sea)] [&_path]:stroke-[var(--board-country-border)] [&_g.supply-center-dot]:fill-[var(--supply-center)] [&_g.supply-center-dot_path]:stroke-[var(--supply-center-border)]">
       {timelines.map((timeline) => (
         <div className="flex" key={timeline}>
           {boards.map((board) => {
