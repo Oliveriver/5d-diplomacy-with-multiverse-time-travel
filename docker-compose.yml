@@ -9,4 +9,6 @@ services:
     environment:
       - "Provider=Sqlite"
       - "ConnectionStrings__Sqlite=Data Source=5dDiplomacy.db"
+    volumes:
+      - ./data/5dDiplomacy.db:/app/5dDiplomacy.db
     restart: always
