@@ -2,14 +2,12 @@ import baseColours from 'tailwindcss/colors';
 import { Colours } from './types';
 
 export const lightColours: Colours = {
-  uiForeground: baseColours.black,
-  uiBackground: baseColours.gray[300],
+  uiForeground: baseColours.black, // Text colour
+  uiBackground: baseColours.gray[300], // Background of UI elements
   uiPageBackground: baseColours.white, // Overriden on the homepage with an image
   uiOverlay: baseColours.white,
-  uiBorder: baseColours.gray[200],
   uiHighlight: baseColours.lime[500],
   uiError: baseColours.red[600],
-  uiTextColour: baseColours.black,
 
   iconForeground: baseColours.white,
   iconDelete: baseColours.red[500],
@@ -57,13 +55,11 @@ export const darkColours: Colours = {
 
   uiForeground: baseColours.white,
   uiBackground: baseColours.gray[800],
-  uiPageBackground: baseColours.slate[950],
-  uiOverlay: baseColours.gray[700],
-  uiBorder: baseColours.gray[700],
-  uiTextColour: baseColours.white,
+  uiPageBackground: baseColours.gray[950],
+  uiOverlay: baseColours.gray[800],
 
-  boardBackground: baseColours.slate[700],
-  boardCountryBorder: baseColours.black,
+  boardBackground: baseColours.gray[800],
+  boardCountryBorder: baseColours.gray[800],
 
   orderNew: baseColours.white,
   orderSuccess: baseColours.white,
@@ -71,8 +67,8 @@ export const darkColours: Colours = {
   sea: baseColours.sky[800],
   seaHover: baseColours.sky[900],
 
-  germanyStandard: baseColours.zinc[300],
-  germanyEmphasised: baseColours.zinc[400],
+  germanyStandard: baseColours.zinc[400],
+  germanyEmphasised: baseColours.zinc[300]
 };
 
 export const coloursVariables: Colours = {
@@ -80,10 +76,8 @@ export const coloursVariables: Colours = {
   uiBackground: '--ui-background',
   uiPageBackground: '--ui-page-background',
   uiOverlay: '--ui-overlay',
-  uiBorder: '--ui-border',
   uiHighlight: '--ui-highlight',
   uiError: '--ui-error',
-  uiTextColour: '--ui-text-colour',
   iconForeground: '--icon-foreground',
   iconDelete: '--icon-delete',
   supplyCenter: '--supply-center',

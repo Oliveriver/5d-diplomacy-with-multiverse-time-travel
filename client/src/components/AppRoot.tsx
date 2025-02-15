@@ -31,7 +31,7 @@ const AppRoot = () => {
     <div
       style={{
         ...cssVariables,
-        color: colours.uiTextColour,
+        color: colours.uiForeground,
         backgroundColor: colours.uiPageBackground,
       } as React.CSSProperties}
     >
