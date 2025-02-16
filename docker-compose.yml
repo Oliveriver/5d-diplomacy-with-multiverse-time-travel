@@ -8,5 +8,7 @@ services:
     build: server/
     environment:
       - "Provider=Sqlite"
-      - "ConnectionStrings__Sqlite=Data Source=5dDiplomacy.db"
+      - "ConnectionStrings__Sqlite=Data Source=./mount/5dDiplomacy.db"
+    volumes:
+      - ./server/mount:/app/mount
     restart: always
