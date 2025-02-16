@@ -11,6 +11,7 @@ const TextInput = ({ placeholder, onChange }: TextInputProps) => (
     className="w-64 h-16 p-4 border-4 rounded-xl text-lg"
     style={{
       backgroundColor: colours.uiBackground,
+      borderColor: colours.uiBorder,
     }}
     placeholder={placeholder}
     onChange={(event) => onChange(event.target.value)}

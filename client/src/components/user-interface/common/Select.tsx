@@ -20,9 +20,10 @@ const Select = <T extends string | number | undefined>({
 
   return (
     <div
-      className="w-64 pr-4 bg-white border-4 rounded-xl"
+      className="w-64 pr-4 border-4 rounded-xl"
       style={{
         backgroundColor: colours.uiBackground,
+        borderColor: colours.uiBorder,
       }}
     >
       <select

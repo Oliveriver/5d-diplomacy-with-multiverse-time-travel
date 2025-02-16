@@ -7,6 +7,7 @@ export const lightColours: Colours = {
   uiPageBackground: baseColours.white, // Overriden on the homepage with an image
   uiOverlay: baseColours.white,
   uiHighlight: baseColours.lime[500],
+  uiBorder: baseColours.gray[200], // Border of UI elements (buttons, inputs, etc.)
   uiError: baseColours.red[600],
 
   iconForeground: baseColours.white,
@@ -15,7 +16,7 @@ export const lightColours: Colours = {
   supplyCenterBorder: baseColours.white,
 
   boardBorder: baseColours.gray[200],
-  boardBackground: baseColours.white,
+  boardBackground: baseColours.white, // Also controls colour of impassable terrain
   boardArrowHead: baseColours.green[300],
   boardArrowBody: baseColours.green[200],
   boardCountryBorder: baseColours.white,
@@ -57,18 +58,37 @@ export const darkColours: Colours = {
   uiBackground: baseColours.gray[800],
   uiPageBackground: baseColours.gray[950],
   uiOverlay: baseColours.gray[800],
+  uiBorder: baseColours.gray[700],
 
-  boardBackground: baseColours.gray[800],
-  boardCountryBorder: baseColours.gray[800],
+  boardBorder: baseColours.gray[700],
+  boardBackground: baseColours.zinc[950],
+  boardCountryBorder: baseColours.zinc[950],
+  yearDivider: baseColours.indigo[900],
+  yearDividerText: baseColours.indigo[800],
 
   orderNew: baseColours.white,
   orderSuccess: baseColours.white,
 
-  sea: baseColours.sky[800],
-  seaHover: baseColours.sky[900],
+  sea: baseColours.sky[900],
+  seaHover: baseColours.sky[800],
 
-  germanyStandard: baseColours.zinc[400],
-  germanyEmphasised: baseColours.zinc[300]
+  unclaimedStandard: '#5D4532',
+  unclaimedEmphasised: '#6A4F39',
+
+  englandStandard: baseColours.fuchsia[700],
+  englandEmphasised: baseColours.fuchsia[600],
+  germanyStandard: baseColours.zinc[500],
+  germanyEmphasised: baseColours.zinc[400],
+  russiaStandard: baseColours.purple[600],
+  russiaEmphasised: baseColours.purple[500],
+  turkeyStandard: baseColours.amber[600],
+  turkeyEmphasised: baseColours.amber[500],
+  austriaStandard: baseColours.red[800],
+  austriaEmphasised: baseColours.red[700],
+  italyStandard: baseColours.emerald[600],
+  italyEmphasised: baseColours.emerald[500],
+  franceStandard: baseColours.blue[600],
+  franceEmphasised: baseColours.blue[500],
 };
 
 export const coloursVariables: Colours = {
@@ -77,6 +97,7 @@ export const coloursVariables: Colours = {
   uiPageBackground: '--ui-page-background',
   uiOverlay: '--ui-overlay',
   uiHighlight: '--ui-highlight',
+  uiBorder: '--ui-border',
   uiError: '--ui-error',
   iconForeground: '--icon-foreground',
   iconDelete: '--icon-delete',

@@ -4,6 +4,7 @@ export type Colours = {
   uiPageBackground: string,
   uiOverlay: string,
   uiHighlight: string,
+  uiBorder: string,
   uiError: string,
   iconForeground: string,
   iconDelete: string,
