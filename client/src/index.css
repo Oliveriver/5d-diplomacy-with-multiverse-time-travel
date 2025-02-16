@@ -4,23 +4,23 @@
 
 /* Sea colouring for mixed regions */
 svg[data-type="region"] path.sea-region {
-    fill: var(--sea);
+  fill: var(--sea);
 
-    [data-is-hovering="true"] & {
-        fill: var(--sea-hover);
-    }
+  [data-is-hovering="true"] & {
+    fill: var(--sea-hover);
+  }
 }
 
 /* Borders around each country */
 svg[data-type="region"] path {
-    stroke: var(--board-country-border);
+  stroke: var(--board-country-border);
 }
 
 /* Supply Center Dot Styling */
 svg[data-type="region"] g.supply-center-dot {
-    fill: var(--supply-center);
+  fill: var(--supply-center);
 
-    path {
-        stroke: var(--supply-center-border);
-    }
+  path {
+    stroke: var(--supply-center-border);
+  }
 }
