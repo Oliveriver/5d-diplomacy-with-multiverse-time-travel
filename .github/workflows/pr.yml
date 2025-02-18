@@ -14,6 +14,7 @@ jobs:
       timestamped_tag: true
       sha_tag: true
       latest_tag: true
+      image_name: '5ddwmt'
       component: 'client'
 
   build-server:
@@ -22,4 +23,5 @@ jobs:
       timestamped_tag: true
       sha_tag: true
       latest_tag: true
+      image_name: '5ddwmt'
       component: 'server'
