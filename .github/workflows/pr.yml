@@ -2,8 +2,35 @@ name: PR
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
   ci:
     uses: ./.github/workflows/ci.yml
+
+  generate-timestamped-tag:
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.generate-timestamped-tag.outputs.tags }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Generate timestamped tag
+        id: generate-timestamped-tag
+        run: date +%Y%m%d%H%M%S
+      - name: Set output
+        run: echo 'tags=["latest", "${{ steps.generate-timestamped-tag.outputs.timestamped-tag }}"]' >> $GITHUB_OUTPUT
+
+  build-client:
+    uses: ./.github/workflows/build-image.yml
+    needs: generate-timestamped-tag
+    with:
+      tags: ${{ needs.generate-timestamped-tag.outputs.tags }}
+      component: 'client'
+
+  build-server:
+    uses: ./.github/workflows/build-image.yml
+    needs: generate-timestamped-tag
+    with:
+      tags: ${{ needs.generate-timestamped-tag.outputs.tags }}
+      component: 'server'
