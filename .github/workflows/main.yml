@@ -10,6 +10,7 @@ jobs:
 
   build-client:
     uses: ./.github/workflows/build-image.yml
+    needs: ci
     with:
       timestamped_tag: true
       sha_tag: true
@@ -18,6 +19,7 @@ jobs:
       component: 'client'
 
   build-server:
+    needs: ci
     uses: ./.github/workflows/build-image.yml
     with:
       timestamped_tag: true
