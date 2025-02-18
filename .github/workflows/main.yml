@@ -2,40 +2,35 @@ name: Checks
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
-  check_server:
-    name: Check server
-    runs-on: windows-latest
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  generate-timestamped-tag:
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.generate-timestamped-tag.outputs.tags }}
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Install .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
-    - name: Build
-      run: cd server && dotnet build
-    - name: Test
-      run: cd server && dotnet test --blame-crash --blame-hang --verbosity normal
-  check_client:
-    name: Check client
-    runs-on: windows-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Install Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 20.x
-    - name: Install yarn
-      run: npm install --global yarn
-    - name: Install packages
-      run: cd client && yarn install
-    - name: Lint
-      run: cd client && yarn lint
-    - name: Build
-      run: cd client && yarn build
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Generate timestamped tag
+        id: generate-timestamped-tag
+        run: date +%Y%m%d%H%M%S
+      - name: Set output
+        run: echo 'tags=["latest", "${{ steps.generate-timestamped-tag.outputs.timestamped-tag }}"]' >> $GITHUB_OUTPUT
+
+  build-client:
+    uses: ./.github/workflows/build-image.yml
+    needs: generate-timestamped-tag
+    with:
+      tags: ${{ needs.generate-timestamped-tag.outputs.tags }}
+      component: 'client'
+
+  build-server:
+    uses: ./.github/workflows/build-image.yml
+    needs: generate-timestamped-tag
+    with:
+      tags: ${{ needs.generate-timestamped-tag.outputs.tags }}
+      component: 'server'
