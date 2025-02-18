@@ -1,0 +1,90 @@
+name: Build and push image
+
+on:
+  workflow_call:
+    inputs:
+      timestamped_tag:
+        required: false
+        type: boolean
+        description: 'Whether to build the image with a timestamped tag. If true, the current date and time will be used.'
+      sha_tag:
+        required: false
+        type: boolean
+        description: 'Whether to build the image with a SHA tag. If true, the current SHA will be used.'
+      latest_tag:
+        required: false
+        type: boolean
+        description: 'Whether to build the image with a latest tag. If true, the latest tag will be used.'
+      custom_tag:
+        required: false
+        type: string
+        description: 'A custom tag to build the image with. If provided, this tag will be used instead of the timestamped, SHA, or latest tag.'
+
+      image_name:
+        required: false
+        type: string
+        description: 'The name of the image to build. If not provided, the repository name will be used.'
+      component:
+        required: true
+        type: string
+        description: 'The component to build (client or server)'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Throw an error if no tag is provided
+        id: at-least-one-tag
+        run: |
+          if [ "${{ inputs.timestamped_tag }}" = "true" ] || [ "${{ inputs.sha_tag }}" = "true" ] || [ "${{ inputs.latest_tag }}" = "true" ] || [ -n "${{ inputs.custom_tag }}" ]; then
+            echo "at_least_one_tag=true" >> $GITHUB_OUTPUT
+          else
+            echo "error=No tag was provided" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up input name
+        id: input-name
+        run: |
+          if [ -z "${{ inputs.image_name }}" ]; then
+            echo "name=ghcr.io/${{ github.repository }}-${{ inputs.component }}" >> $GITHUB_OUTPUT
+          else
+            echo "name=ghcr.io/${{ github.repository_owner }}/${{ inputs.image_name }}-${{ inputs.component }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set up tags
+        id: tags
+        run: |
+          if [ "${{ inputs.timestamped_tag }}" = "true" ]; then
+            echo "timestamped_tag=${{steps.input-name.outputs.name}}:$(date +%Y%m%d%H%M%S)" >> $GITHUB_OUTPUT
+          fi
+          if [ "${{ inputs.sha_tag }}" = "true" ]; then
+            echo "sha_tag=${{steps.input-name.outputs.name}}:${{ github.sha }}" >> $GITHUB_OUTPUT
+          fi
+          if [ "${{ inputs.latest_tag }}" = "true" ]; then
+            echo "latest_tag=${{steps.input-name.outputs.name}}:latest" >> $GITHUB_OUTPUT
+          fi
+          if [ -n "${{ inputs.custom_tag }}" ]; then
+            echo "custom_tag=${{steps.input-name.outputs.name}}:${{ inputs.custom_tag }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build, tag, and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./${{ inputs.component }}
+          tags: |
+            ${{ steps.tags.outputs.timestamped_tag }}
+            ${{ steps.tags.outputs.sha_tag }}
+            ${{ steps.tags.outputs.latest_tag }}
+            ${{ steps.tags.outputs.custom_tag }}
+          push: true

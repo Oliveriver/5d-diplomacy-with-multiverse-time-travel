@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  workflow_call:
+
+jobs:
+  check_server:
+    name: Check server
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Build
+        run: cd server && dotnet build
+      - name: Test
+        run: cd server && dotnet test --blame-crash --blame-hang --verbosity normal
+  check_client:
+    name: Check client
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+      - name: Install yarn
+        run: npm install --global yarn
+      - name: Install packages
+        run: cd client && yarn install
+      - name: Lint
+        run: cd client && yarn lint
+      - name: Build
+        run: cd client && yarn build

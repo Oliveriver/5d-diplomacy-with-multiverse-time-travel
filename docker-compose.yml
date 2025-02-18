@@ -1,14 +1,18 @@
 services:
   frontend:
-    build: client/
+    # uncomment to build locally
+    # build: client/
+    image: ghcr.io/Oliveriver/5ddwmt-client:latest
     ports:
       - 5173:8080
     restart: always
   backend:
-    build: server/
+    # uncomment to build locally
+    # build: server/
+    image: ghcr.io/Oliveriver/5ddwmt-server:latest
     environment:
-      - "Provider=Sqlite"
-      - "ConnectionStrings__Sqlite=Data Source=./mount/5dDiplomacy.db"
+      - 'Provider=Sqlite'
+      - 'ConnectionStrings__Sqlite=Data Source=./mount/5dDiplomacy.db'
     volumes:
       - ./server/mount:/app/mount
     restart: always
