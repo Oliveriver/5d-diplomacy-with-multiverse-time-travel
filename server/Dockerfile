@@ -1,11 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
-ARG TARGETARCH
-
 WORKDIR /app
 
 COPY . /app
-RUN dotnet build -c Release -o bin -a $TARGETARCH
+RUN dotnet publish -c Release -o bin 
 
 RUN dotnet tool install --global dotnet-ef
 
