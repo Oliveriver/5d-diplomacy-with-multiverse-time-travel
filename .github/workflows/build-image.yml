@@ -82,6 +82,9 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./${{ inputs.component }}
+          platforms: |
+            linux/amd64
+            linux/arm64
           tags: |
             ${{ steps.tags.outputs.timestamped_tag }}
             ${{ steps.tags.outputs.sha_tag }}
