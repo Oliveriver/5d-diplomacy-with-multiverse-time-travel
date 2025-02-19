@@ -6,7 +6,7 @@ on:
 jobs:
   check_server:
     name: Check server
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
         run: cd server && dotnet test --blame-crash --blame-hang --verbosity normal
   check_client:
     name: Check client
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
