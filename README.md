@@ -30,7 +30,7 @@ Steps:
 
 - Open Docker and leave it running.
 - Open the CLI for your operating system and navigate inside the folder where you've downloaded this repository. If you don't know how to do this, [use this tutorial](https://www.freecodecamp.org/news/how-to-use-the-cli-beginner-guide/).
-- Via the CLI, run the command `docker compose build frontend backend` and wait for it to complete.
+- (Optional) If building locally, via the CLI, run the command `docker compose build frontend backend` and wait for it to complete.
 - Via the CLI, run the command `docker compose up -d` and wait for it to complete.
 - Wait an extra few seconds for the server to start up. If you experience errors creating a game in the next step, try waiting longer.
 - Access the game client at http://localhost:5173.

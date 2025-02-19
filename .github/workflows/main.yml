@@ -2,40 +2,28 @@ name: Checks
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
-  check_server:
-    name: Check server
-    runs-on: windows-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Install .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
-    - name: Build
-      run: cd server && dotnet build
-    - name: Test
-      run: cd server && dotnet test --blame-crash --blame-hang --verbosity normal
-  check_client:
-    name: Check client
-    runs-on: windows-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Install Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 20.x
-    - name: Install yarn
-      run: npm install --global yarn
-    - name: Install packages
-      run: cd client && yarn install
-    - name: Lint
-      run: cd client && yarn lint
-    - name: Build
-      run: cd client && yarn build
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  build-client:
+    uses: ./.github/workflows/build-image.yml
+    needs: ci
+    with:
+      timestamped_tag: true
+      sha_tag: true
+      latest_tag: true
+      image_name: '5ddwmt'
+      component: 'client'
+
+  build-server:
+    needs: ci
+    uses: ./.github/workflows/build-image.yml
+    with:
+      timestamped_tag: true
+      sha_tag: true
+      latest_tag: true
+      image_name: '5ddwmt'
+      component: 'server'
