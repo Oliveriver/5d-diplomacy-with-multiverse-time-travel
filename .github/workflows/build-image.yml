@@ -36,6 +36,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Create custom builder
+        run: |
+          docker buildx create \
+            --name container-builder \
+            --driver docker-container \
+            --bootstrap --use
+
       - name: Throw an error if no tag is provided
         id: at-least-one-tag
         run: |
@@ -81,6 +88,7 @@ jobs:
       - name: Build, tag, and push image
         uses: docker/build-push-action@v5
         with:
+          builder: container-builder
           context: ./${{ inputs.component }}
           platforms: |
             linux/amd64
