@@ -22,7 +22,7 @@ const Select = <T extends string | number | undefined>({
     <div
       className="w-64 pr-4 border-4 rounded-xl"
       style={{
-        backgroundColor: colours.uiBackground,
+        backgroundColor: colours.uiPageBackground,
         borderColor: colours.uiBorder,
       }}
     >

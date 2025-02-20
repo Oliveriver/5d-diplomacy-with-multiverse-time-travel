@@ -10,7 +10,7 @@ const TextInput = ({ placeholder, onChange }: TextInputProps) => (
     type="text"
     className="w-64 h-16 p-4 border-4 rounded-xl text-lg"
     style={{
-      backgroundColor: colours.uiBackground,
+      backgroundColor: colours.uiPageBackground,
       borderColor: colours.uiBorder,
     }}
     placeholder={placeholder}

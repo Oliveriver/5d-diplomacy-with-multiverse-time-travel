@@ -137,7 +137,7 @@ export const coloursVariables: Colours = {
 
 const coloursCssVariables = Object.entries(coloursVariables).reduce(
   (acc, [key, value]) => ({ ...acc, [key]: `var(${value})` }),
-{}) as Colours;
+  {},
+) as Colours;
 
 export default coloursCssVariables;
-
