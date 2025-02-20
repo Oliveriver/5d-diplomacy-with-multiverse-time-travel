@@ -38,7 +38,10 @@ const Board = ({ board, winner, isActive }: BoardProps) => {
         margin: boardSeparation / 2,
       }}
     >
-      <div style={{ backgroundColor: colours.boardBackground }}>
+      <div
+        className='rounded-xl'
+        style={{ backgroundColor: colours.boardBackground }}
+      >
         <div
           className="relative rounded-xl"
           style={{
