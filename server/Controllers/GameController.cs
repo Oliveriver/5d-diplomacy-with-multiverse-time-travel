@@ -99,7 +99,7 @@ public class GameController(
 
     [HttpGet]
     [Route("{gameId}/ws")]
-    public async Task GetWorldWebSockets([FromRoute] int gameId, [FromQuery] Nation player)
+    public async Task<ActionResult> GetWorldWebSockets([FromRoute] int gameId, [FromQuery] Nation player)
     {
         if (HttpContext.WebSockets.IsWebSocketRequest)
         {
@@ -111,10 +111,11 @@ public class GameController(
             webSocketConnectionManager.AddConnection(webSocket, socketFinishedTcs, gameId, player);
 
             await socketFinishedTcs.Task;
+            return Ok();
         }
         else
         {
-            HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+            return BadRequest("Request is not a WebSocket connection request");
         }
     }
 

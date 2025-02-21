@@ -4,6 +4,7 @@ using Factories;
 using Mappers;
 using Repositories;
 using System.Text.Json.Serialization;
+using Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,7 +55,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 app.UseWebSockets(new WebSocketOptions
 {
-    KeepAliveInterval = TimeSpan.FromSeconds(30)
+    KeepAliveInterval = TimeSpan.FromSeconds(Constants.WebSocketKeepAliveInterval)
 });
 app.MapControllers();
 app.Run();

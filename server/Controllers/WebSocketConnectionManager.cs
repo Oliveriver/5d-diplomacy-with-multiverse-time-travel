@@ -22,10 +22,10 @@ public class WebSocketConnectionManager
     public WebSocketConnectionManager(ILogger<WebSocketConnectionManager> logger, IOptions<JsonOptions> jsonOptions, IServiceProvider serviceProvider)
     {
         this.logger = logger;
-        Adjudicator.Adjudicated += SendUpdatedWorldData;
-
         jsonSerializerOptions = jsonOptions.Value.JsonSerializerOptions;
         this.serviceProvider = serviceProvider;
+
+        Adjudicator.Adjudicated += SendUpdatedWorldData;
     }
 
     public async void AddConnection(WebSocket socket, TaskCompletionSource<object> socketFinishedTcs, int gameId, Nation player)
@@ -91,7 +91,7 @@ public class WebSocketConnectionManager
                 }
                 else
                 {
-                    logger.LogError("Received invalid ping message: {Message}", received);
+                    logger.LogError("Expected ping message but received: '{Message}'", received);
                     break;
                 }
             }

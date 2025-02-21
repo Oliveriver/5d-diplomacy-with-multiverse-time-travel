@@ -3,6 +3,7 @@ import useWebSocket from 'react-use-websocket';
 import GameContext from '../../components/context/GameContext';
 import routes from '../../api/routes';
 import World from '../../types/world';
+import { webSocketPingInterval, webSocketTimeout } from '../../utils/constants';
 
 type WebSocketState = {
   error: Error | null;
@@ -13,7 +14,7 @@ type WebSocketState = {
 const useGetWorldWebSockets = () => {
   const { game } = useContext(GameContext);
 
-  const [wsState, setWsState] = useState<WebSocketState>({
+  const [webSocketState, setWebSocketState] = useState<WebSocketState>({
     error: null,
     connect: true,
     isConnecting: true,
@@ -29,10 +30,10 @@ const useGetWorldWebSockets = () => {
     url,
     {
       onOpen: () => {
-        setWsState((prev) => ({ ...prev, isConnecting: false }));
+        setWebSocketState((prev) => ({ ...prev, isConnecting: false }));
       },
       onClose: () => {
-        setWsState({
+        setWebSocketState({
           connect: false,
           isConnecting: false,
           error: Error('WebSocket failed to connect to backend server'),
@@ -40,23 +41,23 @@ const useGetWorldWebSockets = () => {
       },
       queryParams,
       heartbeat: {
-        timeout: 30000,
-        interval: 5000,
+        timeout: webSocketTimeout,
+        interval: webSocketPingInterval,
         returnMessage: 'pong',
       },
     },
-    wsState.connect,
+    webSocketState.connect,
   );
 
   const retry = () => {
-    setWsState({ connect: true, isConnecting: true, error: null });
+    setWebSocketState({ connect: true, isConnecting: true, error: null });
   };
 
   return {
     world: lastJsonMessage,
-    error: wsState.error,
+    error: webSocketState.error,
     retry,
-    isConnecting: wsState.isConnecting,
+    isConnecting: webSocketState.isConnecting,
   };
 };
 

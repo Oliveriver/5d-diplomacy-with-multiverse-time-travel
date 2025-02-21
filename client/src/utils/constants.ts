@@ -20,3 +20,5 @@ export const pastTurnOpacity = 0.6;
 // API
 
 export const refetchInterval = 2000;
+export const webSocketTimeout = 30000;
+export const webSocketPingInterval = 5000;
