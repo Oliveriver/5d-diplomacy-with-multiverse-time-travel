@@ -13,7 +13,8 @@ public class GameController(
     EntityMapper entityMapper,
     ModelMapper modelMapper,
     GameRepository gameRepository,
-    WorldRepository worldRepository) : ControllerBase
+    WorldRepository worldRepository,
+    WebSocketConnectionManager webSocketConnectionManager) : ControllerBase
 {
     private readonly ILogger<GameController> logger = logger;
     private readonly EntityMapper entityMapper = entityMapper;
@@ -93,6 +94,28 @@ public class GameController(
         {
             logger.LogWarning("Failed to find world with ID {GameId}", gameId);
             return NotFound($"No world with game ID {gameId} found");
+        }
+    }
+
+    [HttpGet]
+    [Route("{gameId}/ws")]
+    public async Task<ActionResult> GetWorldWebSockets([FromRoute] int gameId, [FromQuery] Nation player)
+    {
+        if (HttpContext.WebSockets.IsWebSocketRequest)
+        {
+            logger.LogInformation("WebSocket GetWorld connection request for game {GameId} as {Player}", gameId, player);
+
+            using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+            var socketFinishedTcs = new TaskCompletionSource<object>();
+
+            webSocketConnectionManager.AddConnection(webSocket, socketFinishedTcs, gameId, player);
+
+            await socketFinishedTcs.Task;
+            return Ok();
+        }
+        else
+        {
+            return BadRequest("Request is not a WebSocket connection request");
         }
     }
 
