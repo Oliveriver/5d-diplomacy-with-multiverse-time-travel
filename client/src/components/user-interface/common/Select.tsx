@@ -19,7 +19,13 @@ const Select = <T extends string | number | undefined>({
   const selectedDetails = options.find((v) => v.value === selectedValue);
 
   return (
-    <div className="w-64 pr-4 bg-white border-4 rounded-xl">
+    <div
+      className="w-64 pr-4 border-4 rounded-xl"
+      style={{
+        backgroundColor: colours.uiPageBackground,
+        borderColor: colours.uiBorder,
+      }}
+    >
       <select
         className="text-lg w-full bg-transparent p-4"
         style={{ color: selectedDetails?.color ?? colours.uiForeground }}

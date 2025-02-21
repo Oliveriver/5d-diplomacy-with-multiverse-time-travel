@@ -30,7 +30,7 @@ const BoardLayer = () => {
   );
 
   return (
-    <div className="flex flex-col w-screen h-screen">
+    <div className="flex flex-col w-screen h-screen ">
       {timelines.map((timeline) => (
         <div className="flex" key={timeline}>
           {boards.map((board) => {

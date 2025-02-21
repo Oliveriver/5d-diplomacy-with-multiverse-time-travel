@@ -9,7 +9,7 @@
    <g id="Layer 1" pointer-events="auto">
     <g id="Group" fill-rule="evenodd" stroke-linejoin="round" stroke-width="1.73">
      <path d="M 516.476,401.495 L 521.781,415.645 L 535.932,420.951 L 558.923,417.411 L 569.539,419.182 L 581.919,420.951 L 596.07,413.876 L 592.529,406.801 L 569.539,378.5 L 550.083,369.655 L 544.772,355.505 L 528.857,351.97 L 520.011,360.815 L 521.781,392.651 Z" fill="currentColor" stroke="#ffffff" marker-start="none" marker-end="none"/>
-     <g id="Group_1" stroke="none" fill="#ffffff">
+     <g class="supply-center-dot" stroke="none" fill="#ffffff">
       <g id="Group_2">
        <path d="M 539.462,390.88 C 539.462,394.782 536.294,397.951 532.392,397.951 C 528.49,397.951 525.321,394.782 525.321,390.88 C 525.321,386.979 528.49,383.81 532.392,383.81 C 536.294,383.81 539.462,386.979 539.462,390.88 Z" marker-start="none" marker-end="none"/>
       </g>

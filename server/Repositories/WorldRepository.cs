@@ -41,15 +41,24 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
 
     public async Task AddOrders(int gameId, Nation[] players, List<Order> orders)
     {
+        // TODO add a concurrency lock to prevent race conditions
+
         logger.LogInformation("Submitting orders for game {GameId}", gameId);
 
         var game = await context.Games.FindAsync(gameId)
             ?? throw new KeyNotFoundException("Game not found");
+
+        if (game.PlayersSubmitted.Intersect(players).Any())
+        {
+            logger.LogInformation("Found existing submission for players {Players}, ignoring new submission", players);
+            return;
+        }
+
+        game.PlayersSubmitted = [.. game.PlayersSubmitted, .. players];
+        await context.SaveChangesAsync();
+
         var world = await GetWorld(gameId);
         world.Orders.AddRange(orders);
-
-        var newPlayersSubmitted = players.Where(p => !game.PlayersSubmitted.Contains(p));
-        game.PlayersSubmitted = [.. game.PlayersSubmitted, .. newPlayersSubmitted];
 
         if (world.LivingPlayers.Count <= game.PlayersSubmitted.Count)
         {

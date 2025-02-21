@@ -85,6 +85,11 @@ const Region = ({ id, timeline, year, phase, owner, unit, isVisible = true }: Re
           color={colour}
           onMouseEnter={() => setIsHovering(canSelect)}
           onMouseLeave={() => setIsHovering(false)}
+          data-type="region"
+          data-owner={owner}
+          data-is-selected={isSelected}
+          data-is-hovering={isHovering}
+          data-region-type={type}
         />
       )}
       <div
