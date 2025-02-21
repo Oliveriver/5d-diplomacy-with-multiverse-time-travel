@@ -5,7 +5,8 @@ namespace Adjudication;
 
 public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
 {
-    private readonly List<Region> regions = regions;
+    private readonly Dictionary<string, Region> regionById = regions.ToDictionary(r => r.Id);
+    private readonly ILookup<string, Region> regionsByParentId = regions.Where(r => r.ParentId != null).ToLookup(r => r.ParentId!);
     private readonly bool hasStrictAdjacencies = hasStrictAdjacencies;
 
     public bool IsValidDirectMove(
@@ -64,18 +65,28 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
             return true;
         }
 
-        var locationRegion = regions.First(r => r.Id == location.RegionId);
-        var destinationRegion = regions.First(r => r.Id == destination.RegionId);
+        var locationRegion = regionById[location.RegionId];
+        var destinationRegion = regionById[destination.RegionId];
 
         if (allowDestinationSibling)
         {
-            var destinationRegionSiblings = regions.Where(r =>
-                r != destinationRegion
-                && (destinationRegion.ParentId != null || r.ParentId != null)
-                && (r.ParentId == destinationRegion.ParentId || r.ParentId == destinationRegion.Id || r.Id == destinationRegion.ParentId));
+            var destinationRegionSiblings = regionsByParentId[destinationRegion.Id];
+            if (destinationRegion.ParentId != null)
+            {
+                destinationRegionSiblings = destinationRegionSiblings.Concat(regionsByParentId[destinationRegion.ParentId]);
+                if (regionById.TryGetValue(destinationRegion.ParentId, out var parent))
+                {
+                    destinationRegionSiblings = destinationRegionSiblings.Append(parent);
+                }
+            }
 
             foreach (var siblingRegion in destinationRegionSiblings)
             {
+                if (siblingRegion == destinationRegion)
+                {
+                    continue;
+                }
+
                 var sibling = new Location
                 {
                     Timeline = destination.Timeline,
@@ -100,7 +111,12 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
                 return false;
             }
 
-            var destinationRegionChildren = regions.Where(r => r.ParentId == destination.RegionId);
+            var destinationRegionChildren = regionsByParentId[destination.RegionId];
+            if (!destinationRegionChildren.Any())
+            {
+                return false;
+            }
+
             connection = locationRegion.Connections.FirstOrDefault(c => c.Regions.Intersect(destinationRegionChildren).Any());
             if (connection == null)
             {
@@ -113,11 +129,20 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
 
     public bool EqualsOrIsRelated(Location location1, Location location2)
     {
-        var location1Region = regions.First(r => r.Id == location1.RegionId);
-        var location2Region = regions.First(r => r.Id == location2.RegionId);
+        var location1Region = regionById[location1.RegionId];
+        var location2Region = regionById[location2.RegionId];
 
-        var location1ParentRegion = regions.FirstOrDefault(r => r.Id == location1Region.ParentId);
-        var location2ParentRegion = regions.FirstOrDefault(r => r.Id == location2Region.ParentId);
+        Region? location1ParentRegion = null;
+        Region? location2ParentRegion = null;
+        if (location1Region.ParentId != null && regionById.TryGetValue(location1Region.ParentId, out var l1pr))
+        {
+            location1ParentRegion = l1pr;
+        }
+
+        if (location2Region.ParentId != null && regionById.TryGetValue(location2Region.ParentId, out var l2pr))
+        {
+            location2ParentRegion = l2pr;
+        }
 
         if (location1ParentRegion == null)
         {
@@ -174,7 +199,7 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
     {
         var location = unit.Location;
 
-        var locationRegion = regions.First(r => r.Id == location.RegionId);
+        var locationRegion = regionById[location.RegionId];
         var adjacentRegions = locationRegion.Connections
             .Where(c => CanTraverseConnection(unit, c))
             .Select(c => c.Regions.First(r => r != locationRegion));
