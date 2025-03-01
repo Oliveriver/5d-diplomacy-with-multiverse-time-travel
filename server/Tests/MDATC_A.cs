@@ -27,7 +27,7 @@ public class MDATC_A : AdjudicationTestBase
         var order = units.Get("Lon").Move("Lon", timeline: 2);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         order.Status.Should().Be(OrderStatus.Success);
@@ -52,7 +52,7 @@ public class MDATC_A : AdjudicationTestBase
         var order = units.Get("Smy").Move("Smy", timeline: 2);
 
         // Act
-        new Adjudicator(world, true, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, true, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         order.Status.Should().Be(OrderStatus.Success);
@@ -77,7 +77,7 @@ public class MDATC_A : AdjudicationTestBase
         var order = units.Get("Vie", timeline: 2).Move("Bud");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         order.Status.Should().Be(OrderStatus.Success);
@@ -102,7 +102,7 @@ public class MDATC_A : AdjudicationTestBase
         var order = units.Get("Tun", timeline: 2).Move("WES");
 
         // Act
-        new Adjudicator(world, true, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, true, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         order.Status.Should().Be(OrderStatus.Invalid);
@@ -127,7 +127,7 @@ public class MDATC_A : AdjudicationTestBase
         var order = units.Get("Lvp").Move("Edi", timeline: 2);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         order.Status.Should().Be(OrderStatus.Invalid);
@@ -152,7 +152,7 @@ public class MDATC_A : AdjudicationTestBase
         var order = units.Get("Spa_S", timeline: 2).Move("Spa_N");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         order.Status.Should().Be(OrderStatus.Invalid);
@@ -177,7 +177,7 @@ public class MDATC_A : AdjudicationTestBase
         var order = units.Get("Mun", phase: Phase.Fall).Move("Mun", timeline: 2);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         order.Status.Should().Be(OrderStatus.Invalid);
@@ -203,7 +203,7 @@ public class MDATC_A : AdjudicationTestBase
         var order = units.Get("Lon").Move("Lon", timeline: 3);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         order.Status.Should().Be(OrderStatus.Invalid);
@@ -236,7 +236,7 @@ public class MDATC_A : AdjudicationTestBase
         var frenchMove = units.Get("Par", year: 1902).Move("Gas", phase: Phase.Fall);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.Invalid);
@@ -271,7 +271,7 @@ public class MDATC_A : AdjudicationTestBase
         var order = units.Get("Sev", year: 1902).Move("Sev", phase: Phase.Winter);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         order.Status.Should().Be(OrderStatus.Invalid);
@@ -299,7 +299,7 @@ public class MDATC_A : AdjudicationTestBase
         var germanBuild = bottomBoard.Build(Nation.Germany, UnitType.Army, "Ber");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.Success);

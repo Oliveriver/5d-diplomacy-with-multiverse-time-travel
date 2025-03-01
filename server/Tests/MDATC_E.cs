@@ -16,7 +16,7 @@ public class MDATC_E : AdjudicationTestBase
 {
     private readonly List<string> allRegionIds;
 
-    public MDATC_E() => allRegionIds = [.. MapFactory.CreateRegions().Select(r => r.Id)];
+    public MDATC_E() => allRegionIds = [.. RegionMapFactory.CreateMap().RegionIds()];
 
     [Fact(DisplayName = "MDATC E.01. No winner when all centre counts below 18")]
     public void MDATC_E_1()
@@ -45,7 +45,7 @@ public class MDATC_E : AdjudicationTestBase
             ]);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         world.Winner.Should().BeNull();
@@ -78,7 +78,7 @@ public class MDATC_E : AdjudicationTestBase
             ]);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         world.Winner.Should().Be(Nation.England);
@@ -99,7 +99,7 @@ public class MDATC_E : AdjudicationTestBase
         bottomBoard.AddCentres([.. germanCentres]);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         world.Winner.Should().BeNull();
@@ -120,7 +120,7 @@ public class MDATC_E : AdjudicationTestBase
         bottomBoard.AddCentres([.. germanCentres]);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         world.Winner.Should().Be(Nation.England);
@@ -141,7 +141,7 @@ public class MDATC_E : AdjudicationTestBase
         presentBoard.AddCentres([.. presentCentres]);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         world.Winner.Should().BeNull();
@@ -162,7 +162,7 @@ public class MDATC_E : AdjudicationTestBase
         bottomBoard.AddCentres([.. bottomCentres]);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         world.Winner.Should().BeNull();
@@ -186,7 +186,7 @@ public class MDATC_E : AdjudicationTestBase
         bottomBoard.AddCentres([.. bottomCentres]);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         world.Winner.Should().Be(Nation.England);
@@ -207,7 +207,7 @@ public class MDATC_E : AdjudicationTestBase
         var order = units.Get("Par").Move("Bur");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         order.Status.Should().Be(OrderStatus.New);
 

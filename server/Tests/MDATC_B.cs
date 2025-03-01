@@ -33,7 +33,7 @@ public class MDATC_B : AdjudicationTestBase
         var order = units.Get("Mun", phase: Phase.Fall).Move("Tyr");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         order.Status.Should().Be(OrderStatus.Success);
@@ -78,7 +78,7 @@ public class MDATC_B : AdjudicationTestBase
         var germanSupport = units.Get("Mun", phase: Phase.Fall).Support(units.Get("Mun"), "Tyr");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         austrianHold.Status.Should().Be(OrderStatus.Success);
@@ -128,7 +128,7 @@ public class MDATC_B : AdjudicationTestBase
         var germanSupport = units.Get("Mun", phase: Phase.Fall).Support(units.Get("Mun"), "Tyr");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         austrianHold.Status.Should().Be(OrderStatus.Success);
@@ -180,7 +180,7 @@ public class MDATC_B : AdjudicationTestBase
         var germanMove = units.Get("Mun", phase: Phase.Fall).Move("Tyr");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         austrianHold.Status.Should().Be(OrderStatus.Success);
@@ -226,7 +226,7 @@ public class MDATC_B : AdjudicationTestBase
         var support = units.Get("Boh", phase: Phase.Fall).Support(units.Get("Mun"), "Tyr");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         hold.Status.Should().Be(OrderStatus.Success);
@@ -261,7 +261,7 @@ public class MDATC_B : AdjudicationTestBase
         var support = units.Get("Mun").Support(units.Get("Mun", timeline: 2), "Tyr", timeline: 2);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         move.Status.Should().Be(OrderStatus.Success);
@@ -318,7 +318,7 @@ public class MDATC_B : AdjudicationTestBase
         var austrianMove = units.Get("Boh", phase: Phase.Fall).Move("Mun");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         austrianMove.Status.Should().Be(OrderStatus.Failure);
@@ -392,7 +392,7 @@ public class MDATC_B : AdjudicationTestBase
         var frenchMove = units.Get("Par", phase: Phase.Fall).Move("Pic");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.Success);
@@ -456,7 +456,7 @@ public class MDATC_B : AdjudicationTestBase
         var support = units.Get("War", phase: Phase.Fall).Support(units.Get("Mos", phase: Phase.Fall), "Mos");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         move.Status.Should().Be(OrderStatus.Failure);
@@ -492,7 +492,7 @@ public class MDATC_B : AdjudicationTestBase
         var move = units.Get("Bel", phase: Phase.Fall).Move("Bel");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         move.Status.Should().Be(OrderStatus.Success);

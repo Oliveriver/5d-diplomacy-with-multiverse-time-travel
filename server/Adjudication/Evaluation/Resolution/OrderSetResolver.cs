@@ -3,11 +3,11 @@ using Enums;
 
 namespace Adjudication;
 
-public class OrderSetResolver(World world, List<Order> orders, List<Region> regions, AdjacencyValidator adjacencyValidator)
+public class OrderSetResolver(World world, List<Order> orders, RegionMap regionMap, AdjacencyValidator adjacencyValidator)
 {
     private readonly World world = world;
 
-    private readonly List<Region> regions = regions;
+    private readonly RegionMap regionMap = regionMap;
 
     private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
     private readonly OrderResolver orderResolver = new(orders, adjacencyValidator);
@@ -102,7 +102,7 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
     private void UpdateConvoyPaths()
     {
         var possibleConvoys = convoys.Where(c => c.CanProvidePath).ToList();
-        var convoyPathValidator = new ConvoyPathValidator(world, possibleConvoys, regions, adjacencyValidator);
+        var convoyPathValidator = new ConvoyPathValidator(world, possibleConvoys, regionMap, adjacencyValidator);
         foreach (var move in moves)
         {
             var newConvoyPath = convoyPathValidator.GetPossibleConvoys(move.Unit, move.Location, move.Destination);

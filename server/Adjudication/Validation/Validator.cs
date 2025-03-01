@@ -15,17 +15,17 @@ public class Validator
     private readonly List<Order> nonRetreats;
     private readonly List<Order> retreats;
 
-    private readonly List<Region> regions;
-    private readonly List<Centre> centres;
+    private readonly RegionMap regionMap;
+    private readonly Dictionary<string, Centre> originalCentresByRegionId;
 
     private readonly AdjacencyValidator adjacencyValidator;
     private readonly ConvoyPathValidator convoyPathValidator;
 
-    public Validator(World world, List<Region> regions, List<Centre> centres, AdjacencyValidator adjacencyValidator)
+    public Validator(World world, RegionMap regionMap, List<Centre> originalCentres, AdjacencyValidator adjacencyValidator)
     {
         this.world = world;
-        this.regions = regions;
-        this.centres = centres;
+        this.regionMap = regionMap;
+        originalCentresByRegionId = originalCentres.ToDictionary(c => c.Location.RegionId);
         this.adjacencyValidator = adjacencyValidator;
 
         nonRetreats = [.. world.Orders.Where(o => o.NeedsValidation && !o.Unit.MustRetreat)];
@@ -37,7 +37,7 @@ public class Validator
         builds = [.. nonRetreats.OfType<Build>()];
         disbands = [.. nonRetreats.OfType<Disband>()];
 
-        convoyPathValidator = new(world, convoys, regions, adjacencyValidator);
+        convoyPathValidator = new(world, convoys, regionMap, adjacencyValidator);
     }
 
     public void ValidateOrders()
@@ -111,12 +111,12 @@ public class Validator
     {
         foreach (var convoy in convoys)
         {
-            var locationRegion = regions.First(r => r.Id == convoy.Location.RegionId);
-            var midpointRegion = regions.First(r => r.Id == convoy.Midpoint.RegionId);
-            var destinationRegion = regions.First(r => r.Id == convoy.Destination.RegionId);
+            var locationRegion = regionMap.GetRegion(convoy.Location.RegionId);
+            var midpointRegion = regionMap.GetRegion(convoy.Midpoint.RegionId);
+            var destinationRegion = regionMap.GetRegion(convoy.Destination.RegionId);
 
-            var midpointRegionChildren = regions.Where(r => r.ParentId == midpointRegion.Id);
-            var destinationRegionChildren = regions.Where(r => r.ParentId == destinationRegion.Id);
+            var midpointRegionChildren = regionMap.GetChildRegions(midpointRegion.Id);
+            var destinationRegionChildren = regionMap.GetChildRegions(destinationRegion.Id);
 
             if (locationRegion.Type != RegionType.Sea
                 || midpointRegion.Type != RegionType.Coast
@@ -150,14 +150,9 @@ public class Validator
             }
 
             var board = world.Boards.FirstOrDefault(b => b.Contains(build.Location));
-            var region = regions.First(r => r.Id == build.Location.RegionId);
-            var parentRegion = regions.FirstOrDefault(r => r.Id == region.ParentId);
+            var region = regionMap.GetRegion(build.Location.RegionId);
 
-            var originalCentre = centres.FirstOrDefault(c =>
-                c.Location.RegionId == region.Id
-                || c.Location.RegionId == parentRegion?.Id);
-
-            if (board == null || originalCentre == null)
+            if (board == null || !originalCentresByRegionId.TryGetValue(region.Parent?.Id ?? region.Id, out var originalCentre))
             {
                 build.Status = OrderStatus.Invalid;
                 continue;

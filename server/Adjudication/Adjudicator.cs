@@ -13,17 +13,17 @@ public class Adjudicator
     private readonly Evaluator evaluator;
     private readonly Executor executor;
 
-    public Adjudicator(World world, bool hasStrictAdjacencies, MapFactory mapFactory, DefaultWorldFactory defaultWorldFactory)
+    public Adjudicator(World world, bool hasStrictAdjacencies, RegionMapFactory regionMapFactory, DefaultWorldFactory defaultWorldFactory)
     {
         this.world = world;
 
-        var regions = mapFactory.CreateRegions();
-        var centres = defaultWorldFactory.CreateCentres();
-        var adjacencyValidator = new AdjacencyValidator(regions, hasStrictAdjacencies);
+        var regionMap = regionMapFactory.CreateMap();
+        var originalCentres = defaultWorldFactory.CreateCentres();
+        var adjacencyValidator = new AdjacencyValidator(regionMap, hasStrictAdjacencies);
 
-        validator = new(world, regions, centres, adjacencyValidator);
-        evaluator = new(world, regions, adjacencyValidator);
-        executor = new(world, regions);
+        validator = new(world, regionMap, originalCentres, adjacencyValidator);
+        evaluator = new(world, regionMap, adjacencyValidator);
+        executor = new(world, regionMap);
     }
 
     public void Adjudicate()

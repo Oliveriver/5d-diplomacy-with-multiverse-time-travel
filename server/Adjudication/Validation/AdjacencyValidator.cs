@@ -3,10 +3,8 @@ using Enums;
 
 namespace Adjudication;
 
-public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
+public class AdjacencyValidator(RegionMap regionMap, bool hasStrictAdjacencies)
 {
-    private readonly Dictionary<string, Region> regionById = regions.ToDictionary(r => r.Id);
-    private readonly ILookup<string, Region> regionsByParentId = regions.Where(r => r.ParentId != null).ToLookup(r => r.ParentId!);
     private readonly bool hasStrictAdjacencies = hasStrictAdjacencies;
 
     public bool IsValidDirectMove(
@@ -65,19 +63,17 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
             return true;
         }
 
-        var locationRegion = regionById[location.RegionId];
-        var destinationRegion = regionById[destination.RegionId];
+        var locationRegion = regionMap.GetRegion(location.RegionId);
+        var destinationRegion = regionMap.GetRegion(destination.RegionId);
 
         if (allowDestinationSibling)
         {
-            var destinationRegionSiblings = regionsByParentId[destinationRegion.Id];
-            if (destinationRegion.ParentId != null)
+            var destinationRegionSiblings = regionMap.GetChildRegions(destinationRegion.Id);
+            if (destinationRegion.Parent != null)
             {
-                destinationRegionSiblings = destinationRegionSiblings.Concat(regionsByParentId[destinationRegion.ParentId]);
-                if (regionById.TryGetValue(destinationRegion.ParentId, out var parent))
-                {
-                    destinationRegionSiblings = destinationRegionSiblings.Append(parent);
-                }
+                destinationRegionSiblings = destinationRegionSiblings
+                    .Concat(regionMap.GetChildRegions(destinationRegion.Parent.Id))
+                    .Append(destinationRegion.Parent);
             }
 
             foreach (var siblingRegion in destinationRegionSiblings)
@@ -103,7 +99,7 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
             }
         }
 
-        var connection = locationRegion.Connections.FirstOrDefault(c => c.Regions.Any(r => r == destinationRegion));
+        var connection = regionMap.GetConnections(locationRegion).FirstOrDefault(c => c.Destination == destinationRegion);
         if (connection == null)
         {
             if (!allowDestinationChild)
@@ -111,13 +107,13 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
                 return false;
             }
 
-            var destinationRegionChildren = regionsByParentId[destination.RegionId];
-            if (!destinationRegionChildren.Any())
+            var destinationRegionChildren = regionMap.GetChildRegions(destination.RegionId).ToHashSet();
+            if (destinationRegionChildren.Count == 0)
             {
                 return false;
             }
 
-            connection = locationRegion.Connections.FirstOrDefault(c => c.Regions.Intersect(destinationRegionChildren).Any());
+            connection = regionMap.GetConnections(locationRegion).FirstOrDefault(c => destinationRegionChildren.Contains(c.Destination));
             if (connection == null)
             {
                 return false;
@@ -129,20 +125,11 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
 
     public bool EqualsOrIsRelated(Location location1, Location location2)
     {
-        var location1Region = regionById[location1.RegionId];
-        var location2Region = regionById[location2.RegionId];
+        var location1Region = regionMap.GetRegion(location1.RegionId);
+        var location2Region = regionMap.GetRegion(location2.RegionId);
 
-        Region? location1ParentRegion = null;
-        Region? location2ParentRegion = null;
-        if (location1Region.ParentId != null && regionById.TryGetValue(location1Region.ParentId, out var l1pr))
-        {
-            location1ParentRegion = l1pr;
-        }
-
-        if (location2Region.ParentId != null && regionById.TryGetValue(location2Region.ParentId, out var l2pr))
-        {
-            location2ParentRegion = l2pr;
-        }
+        var location1ParentRegion = location1Region.Parent;
+        var location2ParentRegion = location2Region.Parent;
 
         if (location1ParentRegion == null)
         {
@@ -199,10 +186,10 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
     {
         var location = unit.Location;
 
-        var locationRegion = regionById[location.RegionId];
-        var adjacentRegions = locationRegion.Connections
+        var locationRegion = regionMap.GetRegion(location.RegionId);
+        var adjacentRegions = regionMap.GetConnections(locationRegion)
             .Where(c => CanTraverseConnection(unit, c))
-            .Select(c => c.Regions.First(r => r != locationRegion));
+            .Select(c => c.Destination);
 
         return [.. adjacentRegions.Select(r => new Location
         {
@@ -213,7 +200,7 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
         })];
     }
 
-    private bool CanTraverseConnection(Unit unit, Connection connection)
+    private static bool CanTraverseConnection(Unit unit, Connection connection)
     {
         var isValidArmyMove = unit.Type == UnitType.Army && connection.Type != ConnectionType.Sea;
         var isValidFleetMove = unit.Type == UnitType.Fleet && connection.Type != ConnectionType.Land;

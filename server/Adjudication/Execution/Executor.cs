@@ -4,12 +4,12 @@ using Utilities;
 
 namespace Adjudication;
 
-public class Executor(World world, List<Region> regions)
+public class Executor(World world, RegionMap regionMap)
 {
     private readonly World world = world;
     private readonly List<Unit> originalRetreatingUnits = [.. world.Boards.SelectMany(b => b.Units).Where(u => u.MustRetreat)];
 
-    private readonly List<Region> regions = regions;
+    private readonly RegionMap regionMap = regionMap;
     private readonly MapComparer mapComparer = new([.. world.Orders.OfType<Build>()]);
 
     public void ExecuteOrders()
@@ -115,8 +115,8 @@ public class Executor(World world, List<Region> regions)
 
             if (phase == Phase.Winter)
             {
-                var region = regions.First(r => r.Id == centre.Location.RegionId);
-                var childRegions = regions.Where(r => r.ParentId == region.Id);
+                var region = regionMap.GetRegion(centre.Location.RegionId);
+                var childRegions = regionMap.GetChildRegions(region.Id);
 
                 var newOwner = units.FirstOrDefault(u =>
                     u.Location.RegionId == region.Id
