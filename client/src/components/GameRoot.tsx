@@ -11,6 +11,7 @@ import BoardArrowLayer from './world/arrows/BoardArrowLayer';
 import WorldContext from './context/WorldContext';
 import { getDefaultOffsetX, getDefaultOffsetY } from '../utils/navigationUtils';
 import BackgroundLayer from './world/BackgroundLayer';
+import { ScaleContextProvider } from './context/ScaleContext';
 
 const GameRoot = () => {
   const { world, isLoading, error, retry } = useContext(WorldContext);
@@ -29,17 +30,19 @@ const GameRoot = () => {
         doubleClick={{ disabled: true }}
         panning={{ excluded: ['input', 'select'], velocityDisabled: true }}
       >
-        {error && <WorldError error={error} retry={retry} isLoading={isLoading} />}
-        {!world && <WorldLoading />}
-        {!error && (
-          <TransformComponent>
-            <BackgroundLayer />
-            <BoardArrowLayer />
-            <BoardLayer />
-            <OrderLayer />
-          </TransformComponent>
-        )}
-        <Overlay />
+        <ScaleContextProvider>
+          {error && <WorldError error={error} retry={retry} isLoading={isLoading} />}
+          {!world && <WorldLoading />}
+          {!error && (
+            <TransformComponent>
+              <BackgroundLayer />
+              <BoardArrowLayer />
+              <BoardLayer />
+              <OrderLayer />
+            </TransformComponent>
+          )}
+          <Overlay />
+        </ScaleContextProvider>
       </TransformWrapper>
     </OrderEntryContextProvider>
   );

@@ -39,7 +39,6 @@ const Board = ({ board, winner, isActive }: BoardProps) => {
       }}
     >
       <div className="rounded-xl" style={{ backgroundColor: colours.boardBackground }}>
-        <p className="text-md absolute left-8 top-1 z-10">{getBoardName(board)}</p>
         <div
           className="relative rounded-xl"
           style={{
@@ -53,6 +52,7 @@ const Board = ({ board, winner, isActive }: BoardProps) => {
             boxShadow: winner && isActive ? `0px 0px 100px 50px ${getNationColour(winner)}` : '',
           }}
         >
+          <p className="text-md absolute z-10 -mt-7">{getBoardName(board)}</p>
           <Map board={board} />
           {!canMove && (
             <div
