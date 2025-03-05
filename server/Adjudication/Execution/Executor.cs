@@ -45,7 +45,7 @@ public class Executor(World world, List<Region> regions)
             var shouldSplitTimeline = existingNextBoards.All(b => !mapComparer.Equals(b, nextBoard));
             if (shouldSplitTimeline)
             {
-                var nextTimeline = world.Boards.Select(b => b.Timeline).Max() + 1;
+                var nextTimeline = world.Boards.Max(b => b.Timeline) + 1;
 
                 nextBoard.Timeline = nextTimeline;
 
