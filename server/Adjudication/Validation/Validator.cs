@@ -28,14 +28,14 @@ public class Validator
         this.centres = centres;
         this.adjacencyValidator = adjacencyValidator;
 
-        nonRetreats = world.Orders.Where(o => o.NeedsValidation && !o.Unit.MustRetreat).ToList();
-        retreats = world.Orders.Where(o => o.NeedsValidation && o.Unit.MustRetreat).ToList();
+        nonRetreats = [.. world.Orders.Where(o => o.NeedsValidation && !o.Unit.MustRetreat)];
+        retreats = [.. world.Orders.Where(o => o.NeedsValidation && o.Unit.MustRetreat)];
 
-        moves = nonRetreats.OfType<Move>().ToList();
-        supports = nonRetreats.OfType<Support>().ToList();
-        convoys = nonRetreats.OfType<Convoy>().ToList();
-        builds = nonRetreats.OfType<Build>().ToList();
-        disbands = nonRetreats.OfType<Disband>().ToList();
+        moves = [.. nonRetreats.OfType<Move>()];
+        supports = [.. nonRetreats.OfType<Support>()];
+        convoys = [.. nonRetreats.OfType<Convoy>()];
+        builds = [.. nonRetreats.OfType<Build>()];
+        disbands = [.. nonRetreats.OfType<Disband>()];
 
         convoyPathValidator = new(world, convoys, regions, adjacencyValidator);
     }

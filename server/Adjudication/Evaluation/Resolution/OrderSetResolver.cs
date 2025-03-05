@@ -14,9 +14,9 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
     private readonly DependencyCalculator dependencyCalculator = new(orders, adjacencyValidator);
     private readonly StrengthCalculator strengthCalculator = new(orders, adjacencyValidator);
 
-    private readonly List<Move> moves = orders.OfType<Move>().Where(m => m.Status != OrderStatus.Invalid).ToList();
-    private readonly List<Support> supports = orders.OfType<Support>().Where(s => s.Status != OrderStatus.Invalid).ToList();
-    private readonly List<Convoy> convoys = orders.OfType<Convoy>().Where(c => c.Status != OrderStatus.Invalid).ToList();
+    private readonly List<Move> moves = [.. orders.OfType<Move>().Where(m => m.Status != OrderStatus.Invalid)];
+    private readonly List<Support> supports = [.. orders.OfType<Support>().Where(s => s.Status != OrderStatus.Invalid)];
+    private readonly List<Convoy> convoys = [.. orders.OfType<Convoy>().Where(c => c.Status != OrderStatus.Invalid)];
 
     public void RunResolutionAlgorithm()
     {
@@ -67,7 +67,7 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
             UpdateOrderStrengths();
             UpdateSelfAttackingSupports();
 
-            newStatuses = orders.Select(o => o.Status).ToList();
+            newStatuses = [.. orders.Select(o => o.Status)];
         }
     }
 

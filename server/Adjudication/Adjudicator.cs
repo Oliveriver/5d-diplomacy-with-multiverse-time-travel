@@ -30,7 +30,7 @@ public class Adjudicator
     {
         if (world.Winner != null)
         {
-            world.Orders = world.Orders.Where(o => o.Status is not OrderStatus.New and not OrderStatus.RetreatNew).ToList();
+            world.Orders = [.. world.Orders.Where(o => o.Status is not OrderStatus.New and not OrderStatus.RetreatNew)];
             return;
         }
 

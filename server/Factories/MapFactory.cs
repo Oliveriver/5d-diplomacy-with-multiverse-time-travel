@@ -60,12 +60,12 @@ public class MapFactory
         {
             var regionConnections = connections.Where(c => c.Id.Split("-").Contains(region.Id));
 
-            if (regions.Where(r => r.Id == region.Id).Count() > 1)
+            if (regions.Count(r => r.Id == region.Id) > 1)
             {
                 throw new JsonException($"Non-unique ID {region.Id} found");
             }
 
-            if (regions.Where(r => r.Name == region.Name).Count() > 1)
+            if (regions.Count(r => r.Name == region.Name) > 1)
             {
                 throw new JsonException($"Non-unique name {region.Name} found");
             }
@@ -95,7 +95,7 @@ public class MapFactory
         {
             var connectionRegions = regions.Where(r => connection.Id.Split("-").Contains(r.Id));
 
-            if (connections.Where(c => c.Id == connection.Id).Count() > 1)
+            if (connections.Count(c => c.Id == connection.Id) > 1)
             {
                 throw new JsonException($"Non-unique ID {connection.Id} found");
             }

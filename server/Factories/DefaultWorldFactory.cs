@@ -71,7 +71,7 @@ public class DefaultWorldFactory
 
         foreach (var centre in centres)
         {
-            if (centres.Where(c => c.Location.RegionId == centre.Location.RegionId).Count() > 1)
+            if (centres.Count(c => c.Location.RegionId == centre.Location.RegionId) > 1)
             {
                 throw new JsonException($"Non-unique ID {centre.Location.RegionId} found");
             }
@@ -79,12 +79,12 @@ public class DefaultWorldFactory
 
         foreach (var unit in units)
         {
-            if (units.Where(u => u.Location.RegionId == unit.Location.RegionId).Count() > 1)
+            if (units.Count(u => u.Location.RegionId == unit.Location.RegionId) > 1)
             {
                 throw new JsonException($"Non-unique ID {unit.Location.RegionId} found");
             }
 
-            if (centres.Where(c => c.Location.RegionId == unit.Location.RegionId || unit.Location.RegionId.Split("_")[0] == c.Location.RegionId).Count() != 1)
+            if (centres.Count(c => c.Location.RegionId == unit.Location.RegionId || unit.Location.RegionId.Split("_")[0] == c.Location.RegionId) != 1)
             {
                 throw new JsonException($"Unit {unit.Location.RegionId} with invalid centre count found");
             }

@@ -113,13 +113,13 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region>
 
                     if (directConvoys.Any())
                     {
-                        return directConvoys.ToList();
+                        return [.. directConvoys];
                     }
                 }
 
                 if (unit.Type == UnitType.Fleet)
                 {
-                    return convoys.Where(c => c.Unit == unit).ToList();
+                    return [.. convoys.Where(c => c.Unit == unit)];
                 }
             }
 

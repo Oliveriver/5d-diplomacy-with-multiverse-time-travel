@@ -69,7 +69,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, List<Regio
                 continue;
             }
 
-            var canEscape = CanEscape(unit, stationaryOrders, moves.ToList());
+            var canEscape = CanEscape(unit, stationaryOrders, [.. moves]);
 
             if (canEscape)
             {

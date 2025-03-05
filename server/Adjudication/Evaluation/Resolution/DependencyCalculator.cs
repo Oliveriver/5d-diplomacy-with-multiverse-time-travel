@@ -7,8 +7,8 @@ public class DependencyCalculator(List<Order> orders, AdjacencyValidator adjacen
 {
     private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
 
-    private readonly List<Move> moves = orders.OfType<Move>().Where(m => m.Status != OrderStatus.Invalid).ToList();
-    private readonly List<Support> supports = orders.OfType<Support>().Where(s => s.Status != OrderStatus.Invalid).ToList();
+    private readonly List<Move> moves = [.. orders.OfType<Move>().Where(m => m.Status != OrderStatus.Invalid)];
+    private readonly List<Support> supports = [.. orders.OfType<Support>().Where(s => s.Status != OrderStatus.Invalid)];
 
     public List<Order> GetDependents(Order order)
         => order switch
@@ -21,7 +21,7 @@ public class DependencyCalculator(List<Order> orders, AdjacencyValidator adjacen
         };
 
     private List<Order> GetHoldDependents(Hold hold)
-        => supports.Where(s => s.Destination == hold.Location).Cast<Order>().ToList();
+        => [.. supports.Where(s => s.Destination == hold.Location).Cast<Order>()];
 
     private List<Order> GetMoveDependents(Move move)
     {

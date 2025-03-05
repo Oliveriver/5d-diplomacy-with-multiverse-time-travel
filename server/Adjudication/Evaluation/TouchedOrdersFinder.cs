@@ -23,7 +23,7 @@ public class TouchedOrdersFinder(World world, AdjacencyValidator adjacencyValida
             or OrderStatus.RetreatFailure
             or OrderStatus.RetreatInvalid).ToList();
 
-        return hasRetreats ? retreats : depthFirstSearch.TouchedOrders.Except(retreats).ToList();
+        return hasRetreats ? retreats : [.. depthFirstSearch.TouchedOrders.Except(retreats)];
     }
 
     private class DepthFirstSearch(World world, List<Order> newOrders, AdjacencyValidator adjacencyValidator)

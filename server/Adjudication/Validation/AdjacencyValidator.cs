@@ -179,13 +179,13 @@ public class AdjacencyValidator(List<Region> regions, bool hasStrictAdjacencies)
             .Where(c => CanTraverseConnection(unit, c))
             .Select(c => c.Regions.First(r => r != locationRegion));
 
-        return adjacentRegions.Select(r => new Location
+        return [.. adjacentRegions.Select(r => new Location
         {
             Timeline = location.Timeline,
             Year = location.Year,
             Phase = location.Phase,
             RegionId = r.Id,
-        }).ToList();
+        })];
     }
 
     private bool CanTraverseConnection(Unit unit, Connection connection)
