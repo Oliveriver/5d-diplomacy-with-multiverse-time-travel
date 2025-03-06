@@ -21,8 +21,7 @@ public abstract class Order
     [NotMapped]
     public virtual bool NeedsValidation => Status is OrderStatus.New or OrderStatus.RetreatNew;
 
-    [NotMapped]
-    public virtual List<Location> TouchedLocations => [Location];
+    public virtual Location[] TouchedLocations() => [Location];
 
     [NotMapped]
     public OrderStrength HoldStrength { get; set; } = new();

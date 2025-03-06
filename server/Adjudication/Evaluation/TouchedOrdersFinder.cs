@@ -52,9 +52,9 @@ public class TouchedOrdersFinder(World world, AdjacencyValidator adjacencyValida
 
         private bool AreTouching(Order order1, Order order2)
         {
-            foreach (var location1 in order1.TouchedLocations)
+            foreach (var location1 in order1.TouchedLocations())
             {
-                foreach (var location2 in order2.TouchedLocations)
+                foreach (var location2 in order2.TouchedLocations())
                 {
                     if (adjacencyValidator.EqualsOrIsRelated(location1, location2))
                     {

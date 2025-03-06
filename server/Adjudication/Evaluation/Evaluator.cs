@@ -82,7 +82,7 @@ public class Evaluator
                 order.Status = OrderStatus.New;
             }
 
-            var touchedBoards = world.Boards.Where(b => order.TouchedLocations.Any(l => b.Contains(l))).ToList();
+            var touchedBoards = world.Boards.Where(b => order.TouchedLocations().Any(l => b.Contains(l))).ToList();
             foreach (var board in touchedBoards)
             {
                 board.MightAdvance = true;
