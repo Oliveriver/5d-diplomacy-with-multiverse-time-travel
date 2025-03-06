@@ -42,7 +42,7 @@ public class Validator
 
     public void ValidateOrders()
     {
-        if (world.HasRetreats)
+        if (world.HasRetreats())
         {
             ValidateRetreats();
 
