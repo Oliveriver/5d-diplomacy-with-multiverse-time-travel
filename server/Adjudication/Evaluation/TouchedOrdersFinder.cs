@@ -17,13 +17,17 @@ public class TouchedOrdersFinder(World world, AdjacencyValidator adjacencyValida
             depthFirstSearch.AddTouchedOrders(order);
         }
 
-        var retreats = depthFirstSearch.TouchedOrders.Where(o =>
-            o.Status is OrderStatus.RetreatNew
+        static bool IsRetreat(Order o) => o.Status
+            is OrderStatus.RetreatNew
             or OrderStatus.RetreatSuccess
             or OrderStatus.RetreatFailure
-            or OrderStatus.RetreatInvalid).ToList();
+            or OrderStatus.RetreatInvalid;
 
-        return hasRetreats ? retreats : [.. depthFirstSearch.TouchedOrders.Except(retreats)];
+        return [..
+            hasRetreats
+                ? depthFirstSearch.TouchedOrders.Where(IsRetreat)
+                : depthFirstSearch.TouchedOrders.Where(o => !IsRetreat(o))
+            ];
     }
 
     private class DepthFirstSearch(World world, List<Order> newOrders, AdjacencyValidator adjacencyValidator)
@@ -32,17 +36,13 @@ public class TouchedOrdersFinder(World world, AdjacencyValidator adjacencyValida
 
         private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
 
-        public List<Order> TouchedOrders { get; } = [.. newOrders];
+        public HashSet<Order> TouchedOrders { get; } = [.. newOrders];
 
         public void AddTouchedOrders(Order order)
         {
-            if (!TouchedOrders.Contains(order))
-            {
-                TouchedOrders.Add(order);
-            }
+            TouchedOrders.Add(order);
 
-            var adjacentOrders = world.Orders.Where(o => o != order && AreTouching(order, o));
-            var newAdjacentOrders = adjacentOrders.Where(o => !TouchedOrders.Contains(o));
+            var newAdjacentOrders = world.Orders.Where(o => !TouchedOrders.Contains(o) && AreTouching(order, o));
 
             foreach (var newOrder in newAdjacentOrders)
             {
