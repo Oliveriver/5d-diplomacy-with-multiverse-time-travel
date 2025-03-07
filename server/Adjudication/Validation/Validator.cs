@@ -138,7 +138,7 @@ public class Validator
 
     private void ValidateBuilds()
     {
-        var uniqueBuilds = builds.DistinctBy(b => b.Location).ToList();
+        var uniqueBuilds = builds.DistinctBy(b => b.Location).ToHashSet();
         var duplicateBuilds = builds.Where(b => !uniqueBuilds.Contains(b)).ToList();
 
         foreach (var build in uniqueBuilds)
@@ -183,7 +183,7 @@ public class Validator
 
     private void ValidateDisbands()
     {
-        var uniqueDisbands = disbands.DistinctBy(d => d.Location).ToList();
+        var uniqueDisbands = disbands.DistinctBy(d => d.Location).ToHashSet();
         var duplicateDisbands = disbands.Where(d => !uniqueDisbands.Contains(d)).ToList();
 
         foreach (var disband in uniqueDisbands)
