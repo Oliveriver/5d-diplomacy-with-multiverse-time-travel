@@ -32,7 +32,7 @@ public class DATC_C : AdjudicationTestBase
         var move3 = units.Get("Smy").Move("Ank");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         move1.Status.Should().Be(OrderStatus.Success);
@@ -70,7 +70,7 @@ public class DATC_C : AdjudicationTestBase
         var support = units.Get("Bul").Support(units.Get("Ank"), "Con");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         move1.Status.Should().Be(OrderStatus.Success);
@@ -110,7 +110,7 @@ public class DATC_C : AdjudicationTestBase
         var move4 = units.Get("Bul").Move("Con");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         move1.Status.Should().Be(OrderStatus.Failure);
@@ -156,7 +156,7 @@ public class DATC_C : AdjudicationTestBase
         var italianMove = units.Get("Nap").Move("ION");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         austrianMove1.Status.Should().Be(OrderStatus.Success);
@@ -210,7 +210,7 @@ public class DATC_C : AdjudicationTestBase
         var italianSupport = units.Get("Tun").Support(units.Get("Nap"), "ION");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         austrianMove1.Status.Should().Be(OrderStatus.Failure);
@@ -259,7 +259,7 @@ public class DATC_C : AdjudicationTestBase
         var frenchConvoy = units.Get("ENG").Convoy(units.Get("Bel"), "Lon");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.Success);
@@ -301,7 +301,7 @@ public class DATC_C : AdjudicationTestBase
         var frenchConvoy = units.Get("ENG").Convoy(units.Get("Bel"), "Lon");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.Failure);
@@ -345,7 +345,7 @@ public class DATC_C : AdjudicationTestBase
         var austrianMove = units.Get("Ser").Move("Bul");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         turkishMove1.Status.Should().Be(OrderStatus.Failure);
@@ -389,7 +389,7 @@ public class DATC_C : AdjudicationTestBase
         var austrianMove2 = units.Get("Bul").Move("Con");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         turkishMove.Status.Should().Be(OrderStatus.Failure);

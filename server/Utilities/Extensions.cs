@@ -49,4 +49,9 @@ public static class Extensions
 
         return chosenItems;
     }
+
+    public static IEnumerable<T> Duplicates<T>(this IEnumerable<T> source) => source
+        .GroupBy(x => x)
+        .Where(g => g.Count() > 1)
+        .Select(g => g.Key);
 }

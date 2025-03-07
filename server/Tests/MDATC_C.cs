@@ -34,7 +34,7 @@ public class MDATC_C : AdjudicationTestBase
         var order = units.Get("Lon", phase: Phase.Fall).Move("Wal");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         order.Status.Should().Be(OrderStatus.RetreatInvalid);
@@ -61,7 +61,7 @@ public class MDATC_C : AdjudicationTestBase
         var order = units.Get("Lon").Move("Lon", timeline: 2);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         order.Status.Should().Be(OrderStatus.RetreatInvalid);
@@ -93,7 +93,7 @@ public class MDATC_C : AdjudicationTestBase
         var italianMove = units.Get("ADR", timeline: 2).Move("Alb");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.RetreatSuccess);
@@ -139,7 +139,7 @@ public class MDATC_C : AdjudicationTestBase
         var order = units.Get("Tyr").Move("Boh");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         order.Status.Should().Be(OrderStatus.RetreatSuccess);

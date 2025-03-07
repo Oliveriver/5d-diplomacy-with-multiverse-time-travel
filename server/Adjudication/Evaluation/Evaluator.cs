@@ -13,14 +13,14 @@ public class Evaluator
     private readonly AdjustmentEvaluator adjustmentEvaluator;
     private readonly RetreatEvaluator retreatEvaulator;
 
-    public Evaluator(World world, List<Region> regions, AdjacencyValidator adjacencyValidator)
+    public Evaluator(World world, RegionMap regionMap, AdjacencyValidator adjacencyValidator)
     {
         this.world = world;
         touchedOrdersFinder = new(world, adjacencyValidator);
 
         var activeOrders = GetActiveOrders();
 
-        movementEvaulator = new(world, activeOrders, regions, adjacencyValidator);
+        movementEvaulator = new(world, activeOrders, regionMap, adjacencyValidator);
         adjustmentEvaluator = new(world, activeOrders);
         retreatEvaulator = new(world, activeOrders, adjacencyValidator);
 

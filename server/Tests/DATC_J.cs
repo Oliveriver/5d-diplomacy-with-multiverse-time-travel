@@ -34,7 +34,7 @@ public class DATC_J : AdjudicationTestBase
         var disband2 = units.Get("Par", phase: Phase.Winter).Disband();
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         var disband1Status = disband1.Status;
@@ -73,7 +73,7 @@ public class DATC_J : AdjudicationTestBase
         var disband2 = units.Get("Par", phase: Phase.Winter).Disband();
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         disband1.Status.Should().Be(OrderStatus.Success);
