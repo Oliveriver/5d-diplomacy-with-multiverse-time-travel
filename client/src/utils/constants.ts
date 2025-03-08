@@ -17,6 +17,15 @@ export const orderArrowStartSeparation = 20;
 export const orderArrowEndSeparation = 10;
 export const pastTurnOpacity = 0.6;
 
+// Enable showing maps as rasterised images instead of SVGs. Improves UI responsiveness when zoomed out, but disables interactivity.
+export const rasteriseEnabled = true;
+// At what zoom level under which we display the images instead of the SVGs.
+export const rasteriseScaleThreshold = 0.2;
+// Size factor of the generated image at the threshold. 1 generates full resolution, 0.5 would be half resolution. Larger sizes improve quality, smaller reduces memory usage.
+export const rasteriseFactor = 1;
+// true = show SVGs as a fallback whilst the rasters generate; false = show empty map whilst rasters generate.
+export const rasteriseDisplayFallback = true;
+
 // API
 
 export const refetchInterval = 2000;

@@ -1,14 +1,67 @@
 import { getNationColour } from '../../../types/enums/nation';
 import Unit from '../../../types/unit';
 import UnitType from '../../../types/enums/unitType';
-import { unitWidth } from '../../../utils/constants';
+import { rasteriseFactor, rasteriseScaleThreshold, unitWidth } from '../../../utils/constants';
 import ArmyIcon from '../../../assets/icons/ArmyIcon.svg?react';
 import FleetIcon from '../../../assets/icons/FleetIcon.svg?react';
+import ArmyIconRaw from '../../../assets/icons/ArmyIcon.svg?raw';
+import FleetIconRaw from '../../../assets/icons/FleetIcon.svg?raw';
 
 type UnitIconProps = {
   unit: Unit;
   scaleFactor?: number;
   variant?: 'world' | 'overlay';
+};
+
+export const rasteriseUnitIcon = (
+  { unit, scaleFactor = 1, variant = 'world' }: UnitIconProps,
+  left: number,
+  bottom: number,
+  canvas: HTMLCanvasElement,
+  context: CanvasRenderingContext2D,
+  onComplete: () => void,
+) => {
+  const rasterAdjustment = rasteriseScaleThreshold * rasteriseFactor;
+
+  const isWorldVariant = variant === 'world';
+  let svg = unit.type === UnitType.Army ? ArmyIconRaw : FleetIconRaw;
+
+  const width = unitWidth * scaleFactor * rasterAdjustment;
+  const margin = isWorldVariant ? -width / 2 : 0;
+
+  const image = new Image();
+  image.onload = () => {
+    URL.revokeObjectURL(image.src);
+    context.drawImage(
+      image,
+      left * rasterAdjustment + margin,
+      canvas.height - bottom * rasterAdjustment + margin,
+      width,
+      width,
+    );
+    onComplete();
+  };
+
+  // When drawing to canvas, CSS won't be applied, we'll need to apply the same effects manually.
+  const computedStyle = window.getComputedStyle(canvas);
+
+  // Apply the SVG colour attribute.
+  let regionColour = getNationColour(unit.owner);
+  regionColour = regionColour.replace('var(', '').replace(')', '');
+  regionColour = computedStyle.getPropertyValue(regionColour);
+  svg = svg.replace('"currentColor"', `"${regionColour}"`);
+
+  // Apply CSS rules for fonts.
+  const svgDoc = new DOMParser().parseFromString(svg, 'image/svg+xml');
+  svgDoc
+    .querySelectorAll('text')
+    .forEach((e) => e.setAttribute('font-family', 'ui-sans-serif, system-ui, sans-serif'));
+  svg = new XMLSerializer().serializeToString(svgDoc);
+
+  // Create a URL we can load as the image source.
+  const blob = new Blob([svg], { type: 'image/svg+xml' });
+  const url = URL.createObjectURL(blob);
+  image.src = url;
 };
 
 const UnitIcon = ({ unit, scaleFactor = 1, variant = 'world' }: UnitIconProps) => {
