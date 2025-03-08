@@ -66,9 +66,9 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
 
             game.PlayersSubmitted = [];
 
+            world.Iteration++;
             var adjudicator = new Adjudicator(world, game.HasStrictAdjacencies, regionMapFactory, defaultWorldFactory);
             adjudicator.Adjudicate();
-            world.Iteration++;
 
             logger.LogInformation("Adjudicated game {GameId}", gameId);
         }

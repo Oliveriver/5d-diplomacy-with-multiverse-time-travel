@@ -13,6 +13,9 @@ public class Adjudicator
     private readonly Evaluator evaluator;
     private readonly Executor executor;
 
+    public delegate void AdjudicationEvent(World world);
+    public static event AdjudicationEvent? Adjudicated;
+
     public Adjudicator(World world, bool hasStrictAdjacencies, RegionMapFactory regionMapFactory, DefaultWorldFactory defaultWorldFactory)
     {
         this.world = world;
@@ -43,6 +46,8 @@ public class Adjudicator
         {
             world.Winner = winner;
         }
+
+        Adjudicated?.Invoke(world);
     }
 
     private Nation? GetWinner()

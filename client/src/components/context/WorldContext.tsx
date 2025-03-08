@@ -1,19 +1,10 @@
-import {
-  createContext,
-  PropsWithChildren,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react';
 import World from '../../types/world';
 import Order, { OrderStatus } from '../../types/order';
-import useGetWorld from '../../hooks/api/useGetWorld';
-import useGetIteration from '../../hooks/api/useGetIteration';
 import useSubmitOrders from '../../hooks/api/useSubmitOrders';
-import { refetchInterval } from '../../utils/constants';
 import GameContext from './GameContext';
 import Nation from '../../types/enums/nation';
+import useGetWorldWebSockets from '../../hooks/api/useGetWorldWebSockets';
 
 type WorldContextState = {
   world: World | null;
@@ -36,31 +27,17 @@ const WorldContext = createContext(initialWorldContextState);
 export const WorldContextProvider = ({ children }: PropsWithChildren) => {
   const { game } = useContext(GameContext);
 
-  const { world, isLoading, error: worldError, refetch: refetchWorld } = useGetWorld();
-  const { error: iterationError, refetch: refetchIteration } = useGetIteration();
+  const { world, error: worldError, isConnecting, retry } = useGetWorldWebSockets();
   const { submitOrders, isPending: isSubmitting, error: submissionError } = useSubmitOrders();
 
-  const [isRefetching, setIsRefetching] = useState(false);
+  const [isWaitingForUpdate, setIsWaitingForUpdate] = useState(false);
+
+  useEffect(() => {
+    setIsWaitingForUpdate(false);
+  }, [world]);
 
   const isWaitingForAdjudication =
     world?.orders.some((order) => order.status === OrderStatus.New) ?? false;
-
-  const refetchUntilUpdate = useCallback(async () => {
-    setIsRefetching(true);
-    const currentIteration = world?.iteration;
-    const refetched = await refetchIteration();
-    if (refetched.error || currentIteration !== refetched.data) {
-      setIsRefetching(false);
-      const worldQuery = await refetchWorld();
-      return worldQuery.data;
-    }
-
-    await new Promise((resolve) => {
-      setTimeout(resolve, refetchInterval);
-    });
-
-    return refetchUntilUpdate();
-  }, [world?.iteration, refetchIteration, refetchWorld]);
 
   const contextValue = useMemo(
     () => ({
@@ -68,25 +45,24 @@ export const WorldContextProvider = ({ children }: PropsWithChildren) => {
       submitOrders: async (orders: Order[]) => {
         if (!game || !world) return;
         const players = game.player ? [game.player] : Object.values(Nation);
+        setIsWaitingForUpdate(true);
         await submitOrders({ gameId: game.id, players, orders });
-        await refetchUntilUpdate();
       },
-      isLoading: isLoading || isSubmitting || isRefetching || isWaitingForAdjudication,
-      error: worldError || submissionError || iterationError,
-      retry: () => refetchUntilUpdate(),
+      isLoading: isSubmitting || isConnecting || isWaitingForAdjudication || isWaitingForUpdate,
+      error: worldError || submissionError,
+      retry,
     }),
     [
       game,
       world,
       submitOrders,
-      isLoading,
       isSubmitting,
-      isRefetching,
       isWaitingForAdjudication,
+      isWaitingForUpdate,
+      isConnecting,
       worldError,
       submissionError,
-      iterationError,
-      refetchUntilUpdate,
+      retry,
     ],
   );
 
