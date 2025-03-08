@@ -16,7 +16,7 @@ public class MDATC_E : AdjudicationTestBase
 {
     private readonly List<string> allRegionIds;
 
-    public MDATC_E() => allRegionIds = MapFactory.CreateRegions().Select(r => r.Id).ToList();
+    public MDATC_E() => allRegionIds = [.. RegionMapFactory.CreateMap().RegionIds()];
 
     [Fact(DisplayName = "MDATC E.01. No winner when all centre counts below 18")]
     public void MDATC_E_1()
@@ -45,7 +45,7 @@ public class MDATC_E : AdjudicationTestBase
             ]);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         world.Winner.Should().BeNull();
@@ -78,7 +78,7 @@ public class MDATC_E : AdjudicationTestBase
             ]);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         world.Winner.Should().Be(Nation.England);
@@ -95,11 +95,11 @@ public class MDATC_E : AdjudicationTestBase
         var englishCentres = allRegionIds[..18].Select(r => (Nation.England, r));
         var germanCentres = allRegionIds.Slice(16, 18).Select(r => (Nation.Germany, r));
 
-        topBoard.AddCentres(englishCentres.ToList());
-        bottomBoard.AddCentres(germanCentres.ToList());
+        topBoard.AddCentres([.. englishCentres]);
+        bottomBoard.AddCentres([.. germanCentres]);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         world.Winner.Should().BeNull();
@@ -116,11 +116,11 @@ public class MDATC_E : AdjudicationTestBase
         var englishCentres = allRegionIds[..19].Select(r => (Nation.England, r));
         var germanCentres = allRegionIds.Slice(16, 18).Select(r => (Nation.Germany, r));
 
-        topBoard.AddCentres(englishCentres.ToList());
-        bottomBoard.AddCentres(germanCentres.ToList());
+        topBoard.AddCentres([.. englishCentres]);
+        bottomBoard.AddCentres([.. germanCentres]);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         world.Winner.Should().Be(Nation.England);
@@ -137,11 +137,11 @@ public class MDATC_E : AdjudicationTestBase
         var pastCentres = allRegionIds[..9].Select(r => (Nation.England, r));
         var presentCentres = allRegionIds.Slice(9, 9).Select(r => (Nation.England, r));
 
-        pastBoard.AddCentres(pastCentres.ToList());
-        presentBoard.AddCentres(presentCentres.ToList());
+        pastBoard.AddCentres([.. pastCentres]);
+        presentBoard.AddCentres([.. presentCentres]);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         world.Winner.Should().BeNull();
@@ -158,11 +158,11 @@ public class MDATC_E : AdjudicationTestBase
         var topCentres = allRegionIds[..9].Select(r => (Nation.England, r));
         var bottomCentres = allRegionIds.Slice(6, 9).Select(r => (Nation.England, r));
 
-        topBoard.AddCentres(topCentres.ToList());
-        bottomBoard.AddCentres(bottomCentres.ToList());
+        topBoard.AddCentres([.. topCentres]);
+        bottomBoard.AddCentres([.. bottomCentres]);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         world.Winner.Should().BeNull();
@@ -181,12 +181,12 @@ public class MDATC_E : AdjudicationTestBase
         var middleCentres = allRegionIds.Slice(6, 6).Select(r => (Nation.England, r));
         var bottomCentres = allRegionIds.Slice(12, 6).Select(r => (Nation.England, r));
 
-        topBoard.AddCentres(topCentres.ToList());
-        middleBoard.AddCentres(middleCentres.ToList());
-        bottomBoard.AddCentres(bottomCentres.ToList());
+        topBoard.AddCentres([.. topCentres]);
+        middleBoard.AddCentres([.. middleCentres]);
+        bottomBoard.AddCentres([.. bottomCentres]);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         world.Winner.Should().Be(Nation.England);
@@ -207,7 +207,7 @@ public class MDATC_E : AdjudicationTestBase
         var order = units.Get("Par").Move("Bur");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         order.Status.Should().Be(OrderStatus.New);
 

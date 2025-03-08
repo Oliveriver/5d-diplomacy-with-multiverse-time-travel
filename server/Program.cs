@@ -32,13 +32,12 @@ switch (provider)
 }
 
 builder.Services.AddSingleton<WebSocketConnectionManager>();
-
 builder.Services.AddScoped<EntityMapper>();
 builder.Services.AddScoped<ModelMapper>();
 builder.Services.AddScoped<GameRepository>();
 builder.Services.AddScoped<WorldRepository>();
-builder.Services.AddScoped<MapFactory>();
-builder.Services.AddScoped<DefaultWorldFactory>();
+builder.Services.AddSingleton<RegionMapFactory>();
+builder.Services.AddSingleton<DefaultWorldFactory>();
 
 var app = builder.Build();
 

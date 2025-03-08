@@ -34,7 +34,7 @@ public class DATC_E : AdjudicationTestBase
         var russianMove = units.Get("Pru").Move("Ber");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         germanMove1.Status.Should().Be(OrderStatus.Success);
@@ -73,7 +73,7 @@ public class DATC_E : AdjudicationTestBase
         var germanSupport = units.Get("Mun").Support(units.Get("Ber"), "Kie");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         germanMove1.Status.Should().Be(OrderStatus.Failure);
@@ -109,7 +109,7 @@ public class DATC_E : AdjudicationTestBase
         var englishMove = units.Get("Kie").Move("Ber");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         germanMove.Status.Should().Be(OrderStatus.Failure);
@@ -159,7 +159,7 @@ public class DATC_E : AdjudicationTestBase
         var austrianSupport = units.Get("Kie").Support(units.Get("Ruh"), "Hol");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         germanMove.Status.Should().Be(OrderStatus.Failure);
@@ -225,7 +225,7 @@ public class DATC_E : AdjudicationTestBase
         var austrianSupport = units.Get("Kie").Support(units.Get("Ruh"), "Hol");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         germanMove.Status.Should().Be(OrderStatus.Failure);
@@ -286,7 +286,7 @@ public class DATC_E : AdjudicationTestBase
         var austrianSupport = units.Get("Kie").Support(units.Get("Ruh"), "Hol");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         germanMove.Status.Should().Be(OrderStatus.Failure);
@@ -336,7 +336,7 @@ public class DATC_E : AdjudicationTestBase
         var russianSupport = units.Get("SKA").Support(units.Get("Nwy"), "NTH");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishHold.Status.Should().Be(OrderStatus.Success);
@@ -384,7 +384,7 @@ public class DATC_E : AdjudicationTestBase
         var russianSupport = units.Get("SKA").Support(units.Get("Nwy"), "NTH");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.Failure);
@@ -432,7 +432,7 @@ public class DATC_E : AdjudicationTestBase
         var russianSupport = units.Get("SKA").Support(units.Get("Nwy"), "NTH");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.Success);
@@ -482,7 +482,7 @@ public class DATC_E : AdjudicationTestBase
         var russianSupport = units.Get("SKA").Support(units.Get("Nwy"), "NTH");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.Failure);
@@ -534,7 +534,7 @@ public class DATC_E : AdjudicationTestBase
         var italianSupport = units.Get("WES").Support(units.Get("Por"), "Spa_N");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         frenchMove.Status.Should().Be(OrderStatus.Success);
@@ -582,7 +582,7 @@ public class DATC_E : AdjudicationTestBase
         var russianSupport = units.Get("Rum").Support(units.Get("Gal"), "Bud");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         austrianMove.Status.Should().Be(OrderStatus.Failure);
@@ -630,7 +630,7 @@ public class DATC_E : AdjudicationTestBase
         var russianSupport = units.Get("Nwy").Support(units.Get("NWG"), "NTH");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.Failure);
@@ -672,7 +672,7 @@ public class DATC_E : AdjudicationTestBase
         var russianMove = units.Get("Edi").Move("Lvp");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.Failure);
@@ -720,7 +720,7 @@ public class DATC_E : AdjudicationTestBase
         var russianSupport = units.Get("BAL").Support(units.Get("Pru"), "Ber");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.Failure);

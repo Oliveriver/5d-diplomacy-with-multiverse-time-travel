@@ -33,7 +33,7 @@ public class DATC_I : AdjudicationTestBase
         var build3 = board.Build(Nation.Germany, UnitType.Army, "Mun");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         build1.Status.Should().Be(OrderStatus.Invalid);
@@ -76,7 +76,7 @@ public class DATC_I : AdjudicationTestBase
         var build = board.Build(Nation.Russia, UnitType.Fleet, "Mos");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         build.Status.Should().Be(OrderStatus.Invalid);
@@ -103,7 +103,7 @@ public class DATC_I : AdjudicationTestBase
         var build = board.Build(Nation.Germany, UnitType.Army, "Ber");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         build.Status.Should().Be(OrderStatus.Invalid);
@@ -130,7 +130,7 @@ public class DATC_I : AdjudicationTestBase
         var build = board.Build(Nation.Russia, UnitType.Fleet, "Stp_N");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         build.Status.Should().Be(OrderStatus.Invalid);
@@ -156,7 +156,7 @@ public class DATC_I : AdjudicationTestBase
         var build = board.Build(Nation.Germany, UnitType.Army, "Ber");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         build.Status.Should().Be(OrderStatus.Invalid);
@@ -178,7 +178,7 @@ public class DATC_I : AdjudicationTestBase
         var build = board.Build(Nation.Germany, UnitType.Army, "War");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         build.Status.Should().Be(OrderStatus.Invalid);
@@ -205,7 +205,7 @@ public class DATC_I : AdjudicationTestBase
         var build2 = board.Build(Nation.Russia, UnitType.Army, "Mos");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         build1.Status.Should().Be(OrderStatus.Success);

@@ -3,12 +3,12 @@ using Enums;
 
 namespace Adjudication;
 
-public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region> regions, AdjacencyValidator adjacencyValidator)
+public class ConvoyPathValidator(World world, List<Convoy> convoys, RegionMap regionMap, AdjacencyValidator adjacencyValidator)
 {
     private readonly World world = world;
     private readonly List<Convoy> convoys = convoys;
 
-    private readonly List<Region> regions = regions;
+    private readonly RegionMap regionMap = regionMap;
     private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
 
     public List<Convoy> GetPossibleConvoys(Unit unit, Location location, Location destination)
@@ -18,13 +18,13 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region>
             return [];
         }
 
-        var startRegion = regions.First(r => r.Id == location.RegionId);
-        var endRegion = regions.First(r => r.Id == destination.RegionId);
+        var startRegion = regionMap.GetRegion(location.RegionId);
+        var endRegion = regionMap.GetRegion(destination.RegionId);
 
         var startsOnCoast = startRegion.Type == RegionType.Coast
-            || regions.Where(r => r.ParentId == startRegion.Id).Any(r => r.Type == RegionType.Coast);
+            || regionMap.GetChildRegions(startRegion.Id).Any(r => r.Type == RegionType.Coast);
         var endsOnCoast = endRegion.Type == RegionType.Coast
-            || regions.Where(r => r.ParentId == endRegion.Id).Any(r => r.Type == RegionType.Coast);
+            || regionMap.GetChildRegions(endRegion.Id).Any(r => r.Type == RegionType.Coast);
 
         if (!startsOnCoast || !endsOnCoast)
         {
@@ -38,7 +38,7 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region>
 
         if (successfulConvoysInPath.Count != 0)
         {
-            var successfulDepthFirstSearch = new DepthFirstConvoySearch(successfulConvoysInPath, adjacencyValidator, regions);
+            var successfulDepthFirstSearch = new DepthFirstConvoySearch(successfulConvoysInPath, adjacencyValidator, regionMap);
             var successfulConvoyPath = successfulDepthFirstSearch.GetPossibleConvoys(unit, location, destination);
             if (successfulConvoyPath.Count > 0)
             {
@@ -55,7 +55,7 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region>
             return [];
         }
 
-        var depthFirstSearch = new DepthFirstConvoySearch(convoysInPath, adjacencyValidator, regions);
+        var depthFirstSearch = new DepthFirstConvoySearch(convoysInPath, adjacencyValidator, regionMap);
         return depthFirstSearch.GetPossibleConvoys(unit, location, destination);
     }
 
@@ -66,13 +66,13 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region>
             return false;
         }
 
-        var startRegion = regions.First(r => r.Id == location.RegionId);
-        var endRegion = regions.First(r => r.Id == destination.RegionId);
+        var startRegion = regionMap.GetRegion(location.RegionId);
+        var endRegion = regionMap.GetRegion(destination.RegionId);
 
         var startsOnCoast = startRegion.Type == RegionType.Coast
-            || regions.Where(r => r.ParentId == startRegion.Id).Any(r => r.Type == RegionType.Coast);
+            || regionMap.GetChildRegions(startRegion.Id).Any(r => r.Type == RegionType.Coast);
         var endsOnCoast = endRegion.Type == RegionType.Coast
-            || regions.Where(r => r.ParentId == endRegion.Id).Any(r => r.Type == RegionType.Coast);
+            || regionMap.GetChildRegions(endRegion.Id).Any(r => r.Type == RegionType.Coast);
 
         if (!startsOnCoast || !endsOnCoast)
         {
@@ -89,15 +89,15 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region>
             return false;
         }
 
-        var depthFirstSearch = new DepthFirstFleetSearch(fleets, adjacencyValidator, regions);
+        var depthFirstSearch = new DepthFirstFleetSearch(fleets, adjacencyValidator, regionMap);
         return depthFirstSearch.CouldHaveConvoyed(unit, location, destination);
     }
 
-    private class DepthFirstConvoySearch(List<Convoy> convoys, AdjacencyValidator adjacencyValidator, List<Region> regions)
+    private class DepthFirstConvoySearch(List<Convoy> convoys, AdjacencyValidator adjacencyValidator, RegionMap regionMap)
     {
         private readonly List<Convoy> convoys = convoys;
         private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
-        private readonly List<Region> regions = regions;
+        private readonly RegionMap regionMap = regionMap;
 
         private readonly List<Convoy> visitedConvoys = [];
 
@@ -113,13 +113,13 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region>
 
                     if (directConvoys.Any())
                     {
-                        return directConvoys.ToList();
+                        return [.. directConvoys];
                     }
                 }
 
                 if (unit.Type == UnitType.Fleet)
                 {
-                    return convoys.Where(c => c.Unit == unit).ToList();
+                    return [.. convoys.Where(c => c.Unit == unit)];
                 }
             }
 
@@ -128,7 +128,7 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region>
             {
                 visitedConvoys.Add(convoy);
 
-                var region = regions.First(r => r.Id == convoy.Location.RegionId);
+                var region = regionMap.GetRegion(convoy.Location.RegionId);
                 if (region.Type != RegionType.Sea)
                 {
                     return [];
@@ -149,11 +149,11 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region>
         }
     }
 
-    private class DepthFirstFleetSearch(List<Unit> fleets, AdjacencyValidator adjacencyValidator, List<Region> regions)
+    private class DepthFirstFleetSearch(List<Unit> fleets, AdjacencyValidator adjacencyValidator, RegionMap regionMap)
     {
         private readonly List<Unit> fleets = fleets;
         private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
-        private readonly List<Region> regions = regions;
+        private readonly RegionMap regionMap = regionMap;
 
         private readonly List<Unit> visitedFleets = [];
 
@@ -169,7 +169,7 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, List<Region>
             {
                 visitedFleets.Add(fleet);
 
-                var region = regions.First(r => r.Id == fleet.Location.RegionId);
+                var region = regionMap.GetRegion(fleet.Location.RegionId);
                 if (region.Type != RegionType.Sea)
                 {
                     return false;

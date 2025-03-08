@@ -3,20 +3,20 @@ using Enums;
 
 namespace Adjudication;
 
-public class OrderSetResolver(World world, List<Order> orders, List<Region> regions, AdjacencyValidator adjacencyValidator)
+public class OrderSetResolver(World world, List<Order> orders, RegionMap regionMap, AdjacencyValidator adjacencyValidator)
 {
     private readonly World world = world;
 
-    private readonly List<Region> regions = regions;
+    private readonly RegionMap regionMap = regionMap;
 
     private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
     private readonly OrderResolver orderResolver = new(orders, adjacencyValidator);
     private readonly DependencyCalculator dependencyCalculator = new(orders, adjacencyValidator);
     private readonly StrengthCalculator strengthCalculator = new(orders, adjacencyValidator);
 
-    private readonly List<Move> moves = orders.OfType<Move>().Where(m => m.Status != OrderStatus.Invalid).ToList();
-    private readonly List<Support> supports = orders.OfType<Support>().Where(s => s.Status != OrderStatus.Invalid).ToList();
-    private readonly List<Convoy> convoys = orders.OfType<Convoy>().Where(c => c.Status != OrderStatus.Invalid).ToList();
+    private readonly List<Move> moves = [.. orders.OfType<Move>().Where(m => m.Status != OrderStatus.Invalid)];
+    private readonly List<Support> supports = [.. orders.OfType<Support>().Where(s => s.Status != OrderStatus.Invalid)];
+    private readonly List<Convoy> convoys = [.. orders.OfType<Convoy>().Where(c => c.Status != OrderStatus.Invalid)];
 
     public void RunResolutionAlgorithm()
     {
@@ -67,7 +67,7 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
             UpdateOrderStrengths();
             UpdateSelfAttackingSupports();
 
-            newStatuses = orders.Select(o => o.Status).ToList();
+            newStatuses = [.. orders.Select(o => o.Status)];
         }
     }
 
@@ -102,7 +102,7 @@ public class OrderSetResolver(World world, List<Order> orders, List<Region> regi
     private void UpdateConvoyPaths()
     {
         var possibleConvoys = convoys.Where(c => c.CanProvidePath).ToList();
-        var convoyPathValidator = new ConvoyPathValidator(world, possibleConvoys, regions, adjacencyValidator);
+        var convoyPathValidator = new ConvoyPathValidator(world, possibleConvoys, regionMap, adjacencyValidator);
         foreach (var move in moves)
         {
             var newConvoyPath = convoyPathValidator.GetPossibleConvoys(move.Unit, move.Location, move.Destination);

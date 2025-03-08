@@ -16,24 +16,24 @@ public class Adjudicator
     public delegate void AdjudicationEvent(World world);
     public static event AdjudicationEvent? Adjudicated;
 
-    public Adjudicator(World world, bool hasStrictAdjacencies, MapFactory mapFactory, DefaultWorldFactory defaultWorldFactory)
+    public Adjudicator(World world, bool hasStrictAdjacencies, RegionMapFactory regionMapFactory, DefaultWorldFactory defaultWorldFactory)
     {
         this.world = world;
 
-        var regions = mapFactory.CreateRegions();
-        var centres = defaultWorldFactory.CreateCentres();
-        var adjacencyValidator = new AdjacencyValidator(regions, hasStrictAdjacencies);
+        var regionMap = regionMapFactory.CreateMap();
+        var originalCentres = defaultWorldFactory.CreateCentres();
+        var adjacencyValidator = new AdjacencyValidator(regionMap, hasStrictAdjacencies);
 
-        validator = new(world, regions, centres, adjacencyValidator);
-        evaluator = new(world, regions, adjacencyValidator);
-        executor = new(world, regions);
+        validator = new(world, regionMap, originalCentres, adjacencyValidator);
+        evaluator = new(world, regionMap, adjacencyValidator);
+        executor = new(world, regionMap);
     }
 
     public void Adjudicate()
     {
         if (world.Winner != null)
         {
-            world.Orders = world.Orders.Where(o => o.Status is not OrderStatus.New and not OrderStatus.RetreatNew).ToList();
+            world.Orders = [.. world.Orders.Where(o => o.Status is not OrderStatus.New and not OrderStatus.RetreatNew)];
             return;
         }
 

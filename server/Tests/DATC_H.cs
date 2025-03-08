@@ -35,7 +35,7 @@ public class DATC_H : AdjudicationTestBase
         var turkishMove = units.Get("Gre").Move("Alb");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         austrianMove.Status.Should().Be(OrderStatus.RetreatFailure);
@@ -73,7 +73,7 @@ public class DATC_H : AdjudicationTestBase
         var russianSupport = units.Get("Hol").Support(units.Get("Edi"), "NTH");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.RetreatFailure);
@@ -104,7 +104,7 @@ public class DATC_H : AdjudicationTestBase
         var englishConvoy = units.Get("NTH").Convoy(units.Get("Hol"), "Yor");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.RetreatInvalid);
@@ -137,7 +137,7 @@ public class DATC_H : AdjudicationTestBase
         var englishMove2 = units.Get("NTH").Move("NWG");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove1.Status.Should().Be(OrderStatus.RetreatSuccess);
@@ -174,7 +174,7 @@ public class DATC_H : AdjudicationTestBase
         var move = units.Get("Ank").Move("BLA");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         move.Status.Should().Be(OrderStatus.RetreatFailure);
@@ -214,7 +214,7 @@ public class DATC_H : AdjudicationTestBase
         var move = units.Get("Vie").Move("Boh");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         move.Status.Should().Be(OrderStatus.RetreatFailure);
@@ -250,7 +250,7 @@ public class DATC_H : AdjudicationTestBase
         var move2 = units.Get("Vie").Move("Tyr");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         move1.Status.Should().Be(OrderStatus.RetreatFailure);
@@ -284,7 +284,7 @@ public class DATC_H : AdjudicationTestBase
         var russianMove2 = units.Get("Hol").Move("NTH");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.RetreatFailure);
@@ -325,7 +325,7 @@ public class DATC_H : AdjudicationTestBase
         var move = units.Get("Kie").Move("Ber");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         move.Status.Should().Be(OrderStatus.RetreatSuccess);
@@ -372,7 +372,7 @@ public class DATC_H : AdjudicationTestBase
         var germanMove = units.Get("Pru").Move("Ber");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.RetreatFailure);
@@ -419,7 +419,7 @@ public class DATC_H : AdjudicationTestBase
         var italianMove = units.Get("Mar").Move("Gas");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         italianMove.Status.Should().Be(OrderStatus.RetreatSuccess);
@@ -475,7 +475,7 @@ public class DATC_H : AdjudicationTestBase
         var englishMove = units.Get("Lvp").Move("Edi");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.RetreatSuccess);
@@ -516,7 +516,7 @@ public class DATC_H : AdjudicationTestBase
         var move = units.Get("Pic").Move("Lon");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         move.Status.Should().Be(OrderStatus.RetreatInvalid);
@@ -553,7 +553,7 @@ public class DATC_H : AdjudicationTestBase
         var frenchMove = units.Get("Bur").Move("Bel");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishMove.Status.Should().Be(OrderStatus.RetreatFailure);
@@ -586,7 +586,7 @@ public class DATC_H : AdjudicationTestBase
         var frenchSupport = units.Get("MAO").Support(units.Get("Spa_S"), "Por");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishHold.Status.Should().Be(OrderStatus.Failure);
@@ -628,7 +628,7 @@ public class DATC_H : AdjudicationTestBase
         var move = units.Get("WES").Move("Spa_S");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         move.Status.Should().Be(OrderStatus.RetreatFailure);

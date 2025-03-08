@@ -31,7 +31,7 @@ public class MDATC_D : AdjudicationTestBase
         var order = units.Get("Mar", year: 1902).Move("Mar", phase: Phase.Fall);
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         order.Status.Should().Be(OrderStatus.Success);
@@ -76,7 +76,7 @@ public class MDATC_D : AdjudicationTestBase
         var germanHold = units.Get("Hol", phase: Phase.Fall).Hold();
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         englishConvoy.Status.Should().Be(OrderStatus.Success);
@@ -152,7 +152,7 @@ public class MDATC_D : AdjudicationTestBase
         var move = units.Get("Lon", year: 1902, phase: Phase.Fall).Move("Nwy");
 
         // Act
-        new Adjudicator(world, false, MapFactory, DefaultWorldFactory).Adjudicate();
+        new Adjudicator(world, false, RegionMapFactory, DefaultWorldFactory).Adjudicate();
 
         // Assert
         move.Status.Should().Be(OrderStatus.Success);

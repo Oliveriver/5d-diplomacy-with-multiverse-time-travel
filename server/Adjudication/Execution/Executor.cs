@@ -4,13 +4,13 @@ using Utilities;
 
 namespace Adjudication;
 
-public class Executor(World world, List<Region> regions)
+public class Executor(World world, RegionMap regionMap)
 {
     private readonly World world = world;
-    private readonly List<Unit> originalRetreatingUnits = world.Boards.SelectMany(b => b.Units).Where(u => u.MustRetreat).ToList();
+    private readonly HashSet<Unit> originalRetreatingUnits = [.. world.Boards.SelectMany(b => b.Units).Where(u => u.MustRetreat)];
 
-    private readonly List<Region> regions = regions;
-    private readonly MapComparer mapComparer = new(world.Orders.OfType<Build>().ToList());
+    private readonly RegionMap regionMap = regionMap;
+    private readonly MapComparer mapComparer = new([.. world.Orders.OfType<Build>()]);
 
     public void ExecuteOrders()
     {
@@ -45,7 +45,7 @@ public class Executor(World world, List<Region> regions)
             var shouldSplitTimeline = existingNextBoards.All(b => !mapComparer.Equals(b, nextBoard));
             if (shouldSplitTimeline)
             {
-                var nextTimeline = world.Boards.Select(b => b.Timeline).Max() + 1;
+                var nextTimeline = world.Boards.Max(b => b.Timeline) + 1;
 
                 nextBoard.Timeline = nextTimeline;
 
@@ -74,11 +74,14 @@ public class Executor(World world, List<Region> regions)
         var year = previousBoard.Year;
         var phase = previousBoard.Phase.NextPhase();
 
-        var retreats = world.Orders.Where(o => o.Status is OrderStatus.RetreatSuccess or OrderStatus.RetreatFailure or OrderStatus.RetreatInvalid);
+        var retreatUnits = world.Orders
+            .Where(o => o.Status is OrderStatus.RetreatSuccess or OrderStatus.RetreatFailure or OrderStatus.RetreatInvalid)
+            .Select(o => o.Unit)
+            .ToHashSet();
 
         var holds = world.Orders.Where(o =>
             (o is not Move || o.Status != OrderStatus.Success && o.Status != OrderStatus.RetreatSuccess)
-            && !retreats.Any(r => r.Unit == o.Unit)
+            && !retreatUnits.Contains(o.Unit)
             && previousBoard.Contains(o.Location)
             && !originalRetreatingUnits.Contains(o.Unit));
         var incomingMoves = world.Orders.OfType<Move>().Where(m =>
@@ -115,8 +118,8 @@ public class Executor(World world, List<Region> regions)
 
             if (phase == Phase.Winter)
             {
-                var region = regions.First(r => r.Id == centre.Location.RegionId);
-                var childRegions = regions.Where(r => r.ParentId == region.Id);
+                var region = regionMap.GetRegion(centre.Location.RegionId);
+                var childRegions = regionMap.GetChildRegions(region.Id);
 
                 var newOwner = units.FirstOrDefault(u =>
                     u.Location.RegionId == region.Id
@@ -146,16 +149,23 @@ public class Executor(World world, List<Region> regions)
         var year = previousBoard.Year + 1;
         var phase = Phase.Spring;
 
-        var localOrders = world.Orders.Where(o => previousBoard.Contains(o.Location));
+        var localOrders = world.Orders.Where(o => previousBoard.Contains(o.Location)).ToList();
 
-        var builds = localOrders.OfType<Build>();
-        var disbands = localOrders.OfType<Disband>();
+        var builds = localOrders.OfType<Build>().ToList();
+        var unsuccessfulBuildUnits = builds
+            .Where(b => b.Status != OrderStatus.Success)
+            .Select(b => b.Unit)
+            .ToHashSet();
+        var successfulDisbandLocations = localOrders.OfType<Disband>()
+            .Where(d => d.Status == OrderStatus.Success)
+            .Select(d => d.Location)
+            .ToHashSet();
 
         var units = previousBoard.Units
             .Concat(builds.Where(b => b.Status == OrderStatus.Success).Select(b => b.Unit))
             .Where(u =>
-                !disbands.Any(d => d.Location == u.Location && d.Status == OrderStatus.Success)
-                && !builds.Any(b => b.Unit == u && b.Status != OrderStatus.Success))
+                !successfulDisbandLocations.Contains(u.Location)
+                && !unsuccessfulBuildUnits.Contains(u))
             .Distinct()
             .Select(u => u.Clone())
             .ToList();

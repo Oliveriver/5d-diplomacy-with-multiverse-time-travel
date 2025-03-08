@@ -3,7 +3,7 @@ using Enums;
 
 namespace Adjudication;
 
-public class MovementEvaluator(World world, List<Order> activeOrders, List<Region> regions, AdjacencyValidator adjacencyValidator)
+public class MovementEvaluator(World world, List<Order> activeOrders, RegionMap regionMap, AdjacencyValidator adjacencyValidator)
 {
     private readonly World world = world;
     private readonly List<Order> activeOrders = activeOrders;
@@ -14,7 +14,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, List<Regio
     {
         LinkSupports();
 
-        var orderSetResolver = new OrderSetResolver(world, activeOrders, regions, adjacencyValidator);
+        var orderSetResolver = new OrderSetResolver(world, activeOrders, regionMap, adjacencyValidator);
         orderSetResolver.RunResolutionAlgorithm();
 
         IdentifyRetreats();
@@ -69,7 +69,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, List<Regio
                 continue;
             }
 
-            var canEscape = CanEscape(unit, stationaryOrders, moves.ToList());
+            var canEscape = CanEscape(unit, stationaryOrders, [.. moves]);
 
             if (canEscape)
             {
