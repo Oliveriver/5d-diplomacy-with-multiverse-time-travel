@@ -7,25 +7,21 @@ import World, { findUnit } from '../types/world';
 import Order from '../types/order';
 import InputMode from '../types/enums/inputMode';
 import regions from '../data/regions';
-import { getActiveBoards } from '../types/board';
 import GameContext from '../components/context/GameContext';
 import Nation from '../types/enums/nation';
 import Unit from '../types/unit';
 
-const isRetreatTurn = (world: World) =>
-  world.boards.some((board) => Object.values(board.units).some((unit) => unit.mustRetreat));
-
 const canSelectMajorLocation = (
   player: Nation | null,
-  world: World,
   currentOrder: Order | null,
   currentMode: InputMode,
   unit: Unit | undefined,
   isActiveBoard: boolean,
+  isRetreatTurn: boolean,
 ) => {
   if (currentMode === InputMode.Build) return false;
 
-  if (isRetreatTurn(world)) {
+  if (isRetreatTurn) {
     const canStartRetreat =
       (currentOrder === null || currentOrder.unit === null) &&
       (currentMode === InputMode.None ||
@@ -61,8 +57,9 @@ const canSelectMinorLocation = (
   owner: Nation | undefined,
   unit: Unit | undefined,
   isActiveBoard: boolean,
+  isRetreatTurn: boolean,
 ) => {
-  if (!isActiveBoard || isRetreatTurn(world)) return false;
+  if (!isActiveBoard || isRetreatTurn) return false;
 
   const coasts = Object.keys(regions).filter(
     (region) => region !== location.region && region.includes(location.region),
@@ -98,16 +95,16 @@ const useSelectLocation = (
   unit: Unit | undefined,
 ): boolean => {
   const { game } = useContext(GameContext);
-  const { world, isLoading } = useContext(WorldContext);
+  const { world, isLoading, boardState } = useContext(WorldContext);
   const { currentOrder, currentMode } = useContext(OrderEntryContext);
 
-  if (!game || !world || isLoading) return false;
+  if (!game || !world || isLoading || !boardState) return false;
 
   const { player } = game;
   const { timeline, year, phase } = location;
   const isActiveBoard =
     !world.winner &&
-    getActiveBoards(world.boards).some(
+    boardState.activeBoards.some(
       (board) => board.timeline === timeline && board.year === year && board.phase === phase,
     );
 
@@ -121,8 +118,16 @@ const useSelectLocation = (
         owner,
         unit,
         isActiveBoard,
+        boardState.isRetreatTurn,
       )
-    : canSelectMajorLocation(player, world, currentOrder, currentMode, unit, isActiveBoard);
+    : canSelectMajorLocation(
+        player,
+        currentOrder,
+        currentMode,
+        unit,
+        isActiveBoard,
+        boardState.isRetreatTurn,
+      );
 };
 
 export default useSelectLocation;

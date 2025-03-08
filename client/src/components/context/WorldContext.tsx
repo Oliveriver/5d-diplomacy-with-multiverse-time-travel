@@ -14,6 +14,12 @@ import useSubmitOrders from '../../hooks/api/useSubmitOrders';
 import { refetchInterval } from '../../utils/constants';
 import GameContext from './GameContext';
 import Nation from '../../types/enums/nation';
+import Board, { getActiveBoards } from '../../types/board';
+
+type BoardState = {
+  activeBoards: Board[];
+  isRetreatTurn: boolean;
+};
 
 type WorldContextState = {
   world: World | null;
@@ -21,6 +27,7 @@ type WorldContextState = {
   isLoading: boolean;
   error: Error | null;
   retry: () => unknown;
+  boardState: BoardState | null;
 };
 
 const initialWorldContextState: WorldContextState = {
@@ -29,6 +36,7 @@ const initialWorldContextState: WorldContextState = {
   isLoading: true,
   error: null,
   retry: () => {},
+  boardState: null,
 };
 
 const WorldContext = createContext(initialWorldContextState);
@@ -62,7 +70,7 @@ export const WorldContextProvider = ({ children }: PropsWithChildren) => {
     return refetchUntilUpdate();
   }, [world?.iteration, refetchIteration, refetchWorld]);
 
-  const contextValue = useMemo(
+  const contextValue = useMemo<WorldContextState>(
     () => ({
       world,
       submitOrders: async (orders: Order[]) => {
@@ -74,6 +82,12 @@ export const WorldContextProvider = ({ children }: PropsWithChildren) => {
       isLoading: isLoading || isSubmitting || isRefetching || isWaitingForAdjudication,
       error: worldError || submissionError || iterationError,
       retry: () => refetchUntilUpdate(),
+      boardState: world && {
+        activeBoards: getActiveBoards(world.boards),
+        isRetreatTurn: world.boards.some((board) =>
+          Object.values(board.units).some((unit) => unit.mustRetreat),
+        ),
+      },
     }),
     [
       game,
