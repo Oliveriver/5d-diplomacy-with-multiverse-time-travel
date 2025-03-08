@@ -11,8 +11,7 @@ public class Convoy : Order
     [NotMapped]
     public override bool NeedsValidation => Status is OrderStatus.Invalid or OrderStatus.New or OrderStatus.RetreatNew;
 
-    [NotMapped]
-    public override List<Location> TouchedLocations => [Location, Midpoint, Destination];
+    public override Location[] TouchedLocations() => [Location, Midpoint, Destination];
 
     [NotMapped]
     public bool CanProvidePath { get; set; } = true;

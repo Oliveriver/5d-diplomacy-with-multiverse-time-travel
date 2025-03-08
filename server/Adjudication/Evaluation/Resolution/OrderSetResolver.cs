@@ -248,9 +248,9 @@ public class OrderSetResolver(World world, List<Order> orders, RegionMap regionM
 
         var isConsistent = order.Status == status;
 
-        foreach (var modifiedOrder in orders)
+        for (var i = 0; i < orders.Count; i++)
         {
-            modifiedOrder.Status = initialStatuses[orders.IndexOf(modifiedOrder)];
+            orders[i].Status = initialStatuses[i];
         }
 
         return isConsistent;

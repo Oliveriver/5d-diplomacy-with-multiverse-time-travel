@@ -52,7 +52,7 @@ public class AdjustmentEvaluator(World world, List<Order> activeOrders)
 
     private void RemoveExcessiveBuilds(List<Build> nationBuilds, int adjustmentCount)
     {
-        var successes = random.ChooseRandomItems(nationBuilds, adjustmentCount);
+        var successes = random.ChooseRandomItems(nationBuilds, adjustmentCount).ToHashSet();
 
         foreach (var build in nationBuilds)
         {
@@ -62,7 +62,7 @@ public class AdjustmentEvaluator(World world, List<Order> activeOrders)
 
     private void RemoveExcessiveDisbands(List<Disband> nationDisbands, int adjustmentCount)
     {
-        var successes = random.ChooseRandomItems(nationDisbands, -adjustmentCount);
+        var successes = random.ChooseRandomItems(nationDisbands, -adjustmentCount).ToHashSet();
 
         foreach (var disband in nationDisbands)
         {

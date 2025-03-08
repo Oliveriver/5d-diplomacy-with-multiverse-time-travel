@@ -6,8 +6,7 @@ public class Move : Order
 {
     public Location Destination { get; set; } = null!;
 
-    [NotMapped]
-    public override List<Location> TouchedLocations => [Location, Destination];
+    public override Location[] TouchedLocations() => [Location, Destination];
 
     [NotMapped]
     public List<Convoy> ConvoyPath { get; set; } = [];

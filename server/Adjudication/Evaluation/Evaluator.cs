@@ -13,11 +13,14 @@ public class Evaluator
     private readonly AdjustmentEvaluator adjustmentEvaluator;
     private readonly RetreatEvaluator retreatEvaulator;
 
+    private readonly bool hasRetreats;
+
     public Evaluator(World world, RegionMap regionMap, AdjacencyValidator adjacencyValidator)
     {
         this.world = world;
         touchedOrdersFinder = new(world, adjacencyValidator);
 
+        hasRetreats = world.HasRetreats();
         var activeOrders = GetActiveOrders();
 
         movementEvaulator = new(world, activeOrders, regionMap, adjacencyValidator);
@@ -32,7 +35,7 @@ public class Evaluator
 
     public void EvaluateOrders()
     {
-        if (world.HasRetreats)
+        if (hasRetreats)
         {
             retreatEvaulator.EvaluateRetreats();
         }
@@ -49,7 +52,7 @@ public class Evaluator
     {
         var newOrders = world.Orders.Where(o => o.Status is OrderStatus.New or OrderStatus.RetreatNew).ToList();
 
-        if (!world.HasRetreats)
+        if (!hasRetreats)
         {
             var idleUnits = world.ActiveBoards
                 .Where(b => b.Phase != Phase.Winter)
@@ -70,16 +73,16 @@ public class Evaluator
             }
         }
 
-        var activeOrders = touchedOrdersFinder.GetTouchedOrders(newOrders, world.HasRetreats);
+        var activeOrders = touchedOrdersFinder.GetTouchedOrders(newOrders, hasRetreats);
 
         foreach (var order in activeOrders)
         {
-            if (!world.HasRetreats && order.Status != OrderStatus.Invalid)
+            if (!hasRetreats && order.Status != OrderStatus.Invalid)
             {
                 order.Status = OrderStatus.New;
             }
 
-            var touchedBoards = world.Boards.Where(b => order.TouchedLocations.Any(l => b.Contains(l))).ToList();
+            var touchedBoards = world.Boards.Where(b => order.TouchedLocations().Any(l => b.Contains(l))).ToList();
             foreach (var board in touchedBoards)
             {
                 board.MightAdvance = true;

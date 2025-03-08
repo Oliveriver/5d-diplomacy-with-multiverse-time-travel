@@ -14,7 +14,7 @@ public class Executor(World world, RegionMap regionMap)
 
     public void ExecuteOrders()
     {
-        if (world.HasRetreats)
+        if (world.HasRetreats())
         {
             return;
         }
