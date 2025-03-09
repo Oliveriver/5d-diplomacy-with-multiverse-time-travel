@@ -1,7 +1,9 @@
-﻿using Adjudication;
+﻿using System.Data;
+using Adjudication;
 using Context;
 using Entities;
 using Enums;
+using Exceptions;
 using Factories;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,15 +18,30 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
 
     public async Task<World> GetWorld(int gameId)
     {
+        await using var transaction = await context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+        var world = await GetWorld(gameId, false);
+        await transaction.CommitAsync();
+        return world;
+    }
+
+    private async Task<World> GetWorld(int gameId, bool tracking)
+    {
         logger.LogInformation("Querying world for game {GameId}", gameId);
 
-        var world = await context.Worlds
+        // Should be called within a serializable transaction.
+        var worldQuery = context.Worlds
             .Include(w => w.Boards).ThenInclude(b => b.Centres)
             .Include(w => w.Boards).ThenInclude(b => b.Units)
             .Include(w => w.Orders).ThenInclude(o => o.Unit)
-            .AsSplitQuery() // TODO wrap database operations in shared lock to prevent concurrency issues
-            .FirstOrDefaultAsync(w => w.GameId == gameId)
-            ?? throw new KeyNotFoundException("World not found");
+            .AsSplitQuery();
+
+        if (!tracking)
+        {
+            worldQuery = worldQuery.AsNoTracking();
+        }
+
+        var world = await worldQuery.FirstOrDefaultAsync(w => w.GameId == gameId)
+            ?? throw new GameNotFoundException();
 
         return world;
     }
@@ -33,20 +50,24 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
     {
         logger.LogInformation("Querying iteration for game {GameId}", gameId);
 
-        var world = await context.Worlds.FirstOrDefaultAsync(w => w.GameId == gameId)
-            ?? throw new KeyNotFoundException("World not found");
+        await using var transaction = await context.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+        var iteration = await context.Worlds
+            .Where(w => w.GameId == gameId)
+            .Select(w => (int?)w.Iteration)
+            .FirstOrDefaultAsync()
+            ?? throw new GameNotFoundException();
+        await transaction.CommitAsync();
 
-        return world.Iteration;
+        return iteration;
     }
 
     public async Task AddOrders(int gameId, Nation[] players, List<Order> orders)
     {
-        // TODO add a concurrency lock to prevent race conditions
-
         logger.LogInformation("Submitting orders for game {GameId}", gameId);
 
+        await using var transaction = await context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
         var game = await context.Games.FindAsync(gameId)
-            ?? throw new KeyNotFoundException("Game not found");
+            ?? throw new GameNotFoundException();
 
         if (game.PlayersSubmitted.Intersect(players).Any())
         {
@@ -55,9 +76,8 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
         }
 
         game.PlayersSubmitted = [.. game.PlayersSubmitted, .. players];
-        await context.SaveChangesAsync();
 
-        var world = await GetWorld(gameId);
+        var world = await GetWorld(gameId, true);
         world.Orders.AddRange(orders);
 
         if (world.LivingPlayers.Count <= game.PlayersSubmitted.Count)
@@ -74,5 +94,6 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
         }
 
         await context.SaveChangesAsync();
+        await transaction.CommitAsync();
     }
 }
