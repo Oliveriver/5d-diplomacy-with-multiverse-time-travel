@@ -42,7 +42,7 @@ const JoinGamePage = ({ setViewOption }: JoinGameProps) => {
 
   return (
     <div className="flex flex-col w-screen h-screen items-center gap-4 pt-24">
-      <img alt="Logo" src="./logo.png" className="w-64 pb-8" />
+      <img alt="Logo" src="./logo.png" className="w-64 h-64 mb-8" />
       <TextInput placeholder="Game ID" onChange={onGameIdChanged} />
       <Select
         options={[
