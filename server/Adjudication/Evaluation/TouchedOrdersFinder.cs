@@ -1,5 +1,4 @@
 ﻿using Entities;
-using Enums;
 
 namespace Adjudication;
 
@@ -17,16 +16,10 @@ public class TouchedOrdersFinder(World world, AdjacencyValidator adjacencyValida
             depthFirstSearch.AddTouchedOrders(order);
         }
 
-        static bool IsRetreat(Order o) => o.Status
-            is OrderStatus.RetreatNew
-            or OrderStatus.RetreatSuccess
-            or OrderStatus.RetreatFailure
-            or OrderStatus.RetreatInvalid;
-
         return [..
             hasRetreats
-                ? depthFirstSearch.TouchedOrders.Where(IsRetreat)
-                : depthFirstSearch.TouchedOrders.Where(o => !IsRetreat(o))
+                ? depthFirstSearch.TouchedOrders.Where(o => o.IsRetreat())
+                : depthFirstSearch.TouchedOrders.Where(o => !o.IsRetreat())
             ];
     }
 

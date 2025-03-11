@@ -40,13 +40,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, RegionMap 
 
         List<Order> stationaryOrders = [.. holds, .. supports, .. convoys, .. moves.Where(m => m.Status is OrderStatus.Failure or OrderStatus.Invalid)];
 
-        var existingRetreats = world.Orders
-            .Where(o => o.Status
-                is OrderStatus.RetreatNew
-                or OrderStatus.RetreatSuccess
-                or OrderStatus.RetreatFailure
-                or OrderStatus.RetreatInvalid)
-            .ToList();
+        var existingRetreats = world.Orders.Where(o => o.IsRetreat()).ToList();
 
         foreach (var order in activeOrders)
         {

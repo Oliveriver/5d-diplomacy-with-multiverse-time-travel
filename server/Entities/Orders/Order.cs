@@ -30,4 +30,10 @@ public abstract class Order
     public List<Support> Supports { get; set; } = [];
 
     public abstract override string ToString();
+
+    public bool IsRetreat() => Status
+        is OrderStatus.RetreatNew
+        or OrderStatus.RetreatSuccess
+        or OrderStatus.RetreatFailure
+        or OrderStatus.RetreatInvalid;
 }
