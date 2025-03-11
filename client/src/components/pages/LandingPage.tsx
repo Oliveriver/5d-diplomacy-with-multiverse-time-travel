@@ -65,6 +65,8 @@ const LandingPage = ({ setViewOption }: LandingPageProps) => (
     <img
       alt="The Time Machinations"
       src="./landing-image-foreground.png"
+      width={1159}
+      height={1496}
       className="py-4 max-h-screen max-w-[50%] object-scale-down"
     />
   </div>
