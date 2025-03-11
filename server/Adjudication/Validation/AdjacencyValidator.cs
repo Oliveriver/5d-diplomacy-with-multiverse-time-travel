@@ -125,61 +125,17 @@ public class AdjacencyValidator(RegionMap regionMap, bool hasStrictAdjacencies)
 
     public bool EqualsOrIsRelated(Location location1, Location location2)
     {
+        if (location1.Timeline != location2.Timeline ||
+            location1.Year != location2.Year ||
+            location1.Phase != location2.Phase)
+        {
+            return false;
+        }
+
         var location1Region = regionMap.GetRegion(location1.RegionId);
         var location2Region = regionMap.GetRegion(location2.RegionId);
 
-        var location1ParentRegion = location1Region.Parent;
-        var location2ParentRegion = location2Region.Parent;
-
-        if (location1ParentRegion == null)
-        {
-            if (location2ParentRegion == null)
-            {
-                return location1 == location2;
-            }
-
-            var location2Parent = new Location
-            {
-                Timeline = location2.Timeline,
-                Year = location2.Year,
-                Phase = location2.Phase,
-                RegionId = location2ParentRegion.Id,
-            };
-
-            return location1 == location2Parent;
-        }
-        else if (location2ParentRegion == null)
-        {
-            var location1Parent = new Location
-            {
-                Timeline = location1.Timeline,
-                Year = location1.Year,
-                Phase = location1.Phase,
-                RegionId = location1ParentRegion.Id,
-            };
-
-            return location2 == location1Parent;
-        }
-        else
-        {
-            var location1Parent = new Location
-            {
-                Timeline = location1.Timeline,
-                Year = location1.Year,
-                Phase = location1.Phase,
-                RegionId = location1ParentRegion.Id,
-            };
-
-            var location2Parent = new Location
-            {
-                Timeline = location2.Timeline,
-                Year = location2.Year,
-                Phase = location2.Phase,
-                RegionId = location2ParentRegion.Id,
-            };
-
-            return location1Parent == location2Parent;
-        }
+        return (location1Region.Parent ?? location1Region) == (location2Region.Parent ?? location2Region);
     }
 
     public List<Location> GetAdjacentRegions(Unit unit)

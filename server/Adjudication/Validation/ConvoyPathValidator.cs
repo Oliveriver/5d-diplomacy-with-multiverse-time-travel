@@ -99,7 +99,7 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, RegionMap re
         private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
         private readonly RegionMap regionMap = regionMap;
 
-        private readonly List<Convoy> visitedConvoys = [];
+        private readonly HashSet<Convoy> visitedConvoys = [];
 
         public List<Convoy> GetPossibleConvoys(Unit unit, Location location, Location destination)
         {
@@ -155,7 +155,7 @@ public class ConvoyPathValidator(World world, List<Convoy> convoys, RegionMap re
         private readonly AdjacencyValidator adjacencyValidator = adjacencyValidator;
         private readonly RegionMap regionMap = regionMap;
 
-        private readonly List<Unit> visitedFleets = [];
+        private readonly HashSet<Unit> visitedFleets = [];
 
         public bool CouldHaveConvoyed(Unit unit, Location location, Location destination)
         {
