@@ -38,7 +38,10 @@ const Select = <T extends string | number | undefined>({
             key={option.text}
             value={option.value}
             className="text-lg"
-            style={{ color: option.color ?? colours.uiForeground }}
+            style={{
+              color: option.color ?? colours.uiForeground,
+              backgroundColor: colours.uiPageBackground,
+            }}
             title={option.hint}
           >
             {option.text}
