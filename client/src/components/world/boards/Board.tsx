@@ -14,6 +14,7 @@ import Nation, { getNationColour } from '../../../types/enums/nation';
 import colours from '../../../utils/colours';
 import OrderEntryContext from '../../context/OrderEntryContext';
 import { OrderType } from '../../../types/order';
+import WorldContext from '../../context/WorldContext';
 
 type BoardProps = {
   board: BoardData;
@@ -24,8 +25,13 @@ type BoardProps = {
 const Board = ({ board, winner, isActive }: BoardProps) => {
   const { phase } = board;
 
+  const { boardState } = useContext(WorldContext);
   const { currentOrder } = useContext(OrderEntryContext);
-  const canMove = isActive || (currentOrder !== null && currentOrder.$type !== OrderType.Build);
+
+  const canMove =
+    (isActive && !boardState?.isRetreatTurn) ||
+    (currentOrder !== null && currentOrder.$type !== OrderType.Build) ||
+    Object.values(board.units).some((unit) => unit.mustRetreat);
 
   const width = phase === Phase.Winter ? minorBoardWidth : majorBoardWidth;
 

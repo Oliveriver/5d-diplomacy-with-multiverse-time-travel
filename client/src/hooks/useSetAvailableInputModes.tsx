@@ -13,13 +13,11 @@ const useSetAvailableInputModes = () => {
     world && !isLoading && !error && boardState?.activeBoards ? boardState.activeBoards : [];
   const winner = world?.winner;
 
-  const hasRetreats = activeBoardsOrEmpty.some((board) =>
-    Object.values(board.units).some((unit) => unit.mustRetreat),
-  );
   const hasMajorBoard =
     !winner && activeBoardsOrEmpty.some((board) => board.phase !== Phase.Winter);
   const hasMinorBoard =
     !winner && activeBoardsOrEmpty.some((board) => board.phase === Phase.Winter);
+  const hasRetreats = boardState?.isRetreatTurn;
 
   useEffect(() => {
     const retreatModes = [InputMode.Move, InputMode.Disband];

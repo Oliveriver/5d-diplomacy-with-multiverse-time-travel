@@ -94,13 +94,13 @@ const UnitIcon = ({ unit, scaleFactor = 1, variant = 'world' }: UnitIconProps) =
           width,
           height: width,
           margin: isWorldVariant ? -width / 2 : 0,
-          zIndex: unit.mustRetreat ? 30 : 10,
+          zIndex: unit.mustRetreat ? 60 : 10,
           position: isWorldVariant ? 'absolute' : 'relative',
           pointerEvents: isWorldVariant ? 'none' : 'auto',
         }}
       />
       {isWorldVariant && unit.mustRetreat && (
-        <div style={{ boxShadow: '0px 0px 35px 35px red', zIndex: 5, position: 'relative' }} />
+        <div style={{ boxShadow: '0px 0px 40px 40px red', zIndex: 55, position: 'relative' }} />
       )}
     </>
   );
