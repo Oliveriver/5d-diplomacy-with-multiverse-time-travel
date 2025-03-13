@@ -1,33 +1,12 @@
 import { useTransformContext } from 'react-zoom-pan-pinch';
-import { useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { initialScale } from '../../utils/constants';
 import { getDefaultOffsetX, getDefaultOffsetY } from '../../utils/navigationUtils';
+import ScaleContext from '../context/ScaleContext';
 
 const CoordinateDisplay = () => {
-  const { setTransformState, onChangeCallbacks } = useTransformContext();
-
-  const [scale, setScale] = useState(initialScale);
-  const [positionX, setPositionX] = useState(getDefaultOffsetX());
-  const [positionY, setPositionY] = useState(getDefaultOffsetY());
-
-  useEffect(() => {
-    const callback = ({
-      state,
-    }: {
-      state: { scale: number; positionX: number; positionY: number };
-    }) => {
-      if (scale !== state.scale || positionX !== state.positionX || positionY !== state.positionY) {
-        setScale(state.scale);
-        setPositionX(state.positionX);
-        setPositionY(state.positionY);
-      }
-    };
-
-    onChangeCallbacks.add(callback);
-    return () => {
-      onChangeCallbacks.delete(callback);
-    };
-  }, [onChangeCallbacks, scale, positionX, positionY]);
+  const { setTransformState } = useTransformContext();
+  const { scale, positionX, positionY } = useContext(ScaleContext);
 
   const coordinateText = `${scale} (${positionX}, ${positionY})`;
 
