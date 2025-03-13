@@ -80,6 +80,24 @@ public class GameController(
     }
 
     [HttpGet]
+    [Route("{gameId}/players/submitted")]
+    public async Task<ActionResult<List<Nation>>> GetPlayersSubmitted([FromRoute] int gameId)
+    {
+        logger.LogInformation("Fetching submitted players for game {GameId}", gameId);
+
+        try
+        {
+            var game = await gameRepository.GetGame(gameId);
+            return Ok(game.PlayersSubmitted);
+        }
+        catch (GameNotFoundException)
+        {
+            logger.LogError("Attempted to find submitted players for non-existent game {GameId}", gameId);
+            return NotFound($"No game with ID {gameId} found");
+        }
+    }
+
+    [HttpGet]
     [Route("{gameId}")]
     public async Task<ActionResult<World>> GetWorld([FromRoute] int gameId, [FromQuery] Nation player)
     {

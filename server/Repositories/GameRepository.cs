@@ -1,10 +1,10 @@
-﻿using System.Data;
-using Context;
+﻿using Context;
 using Entities;
 using Enums;
 using Exceptions;
 using Factories;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using Utilities;
 
 namespace Repositories;
@@ -15,6 +15,14 @@ public class GameRepository(ILogger<GameRepository> logger, GameContext context,
     private readonly GameContext context = context;
     private readonly DefaultWorldFactory defaultWorldFactory = defaultWorldFactory;
     private readonly Random random = new();
+
+    public async Task<Game> GetGame(int id)
+    {
+        logger.LogInformation("Fetching game {Id}", id);
+
+        var game = await context.Games.FindAsync(id) ?? throw new GameNotFoundException();
+        return game;
+    }
 
     public async Task<(Game game, Nation player)> CreateNormalGame(Nation? player, bool hasStrictAdjacencies)
     {

@@ -4,6 +4,7 @@ import useCreateGame from '../../hooks/api/useCreateGame';
 import useJoinGame from '../../hooks/api/useJoinGame';
 import queryClient from '../../api/queryClient';
 import GameState from '../../types/context/gameState';
+import useGetPlayersSubmitted from '../../hooks/api/useGetPlayersSubmitted';
 
 const initialGameState: GameState = {
   game: null,
@@ -12,6 +13,7 @@ const initialGameState: GameState = {
   exitGame: () => {},
   isLoading: false,
   error: null,
+  playersSubmitted: [],
 };
 
 const GameContext = createContext(initialGameState);
@@ -32,9 +34,13 @@ export const GameContextProvider = ({ children }: PropsWithChildren) => {
     reset: resetJoin,
   } = useJoinGame();
 
+  const game = created ?? joined;
+
+  const { playersSubmitted } = useGetPlayersSubmitted(game);
+
   const contextValue = useMemo(
     () => ({
-      game: created ?? joined,
+      game,
       createGame: async (
         isSandbox: boolean,
         player: Nation | null,
@@ -49,10 +55,10 @@ export const GameContextProvider = ({ children }: PropsWithChildren) => {
       },
       isLoading: isCreating || isJoining,
       error: createError ?? joinError,
+      playersSubmitted,
     }),
     [
-      created,
-      joined,
+      game,
       createGame,
       joinGame,
       resetCreate,
@@ -61,6 +67,7 @@ export const GameContextProvider = ({ children }: PropsWithChildren) => {
       isJoining,
       createError,
       joinError,
+      playersSubmitted,
     ],
   );
 

@@ -5,9 +5,12 @@ import WorldContext from '../context/WorldContext';
 import GameDetails from './GameDetails';
 import { filterUnique } from '../../utils/listUtils';
 import PlayerListItem from './PlayerListItem';
+import GameContext from '../context/GameContext';
 
 const PlayerList = () => {
+  const { playersSubmitted } = useContext(GameContext);
   const { world, boardState } = useContext(WorldContext);
+
   const scrollRef = useRef<HTMLDivElement>(null);
   const [expandedPlayers, setExpandedPlayers] = useState<Nation[]>([]);
 
@@ -43,11 +46,14 @@ const PlayerList = () => {
       >
         {playerCentres.map(({ player, centres }) => {
           const isExpanded = expandedPlayers.includes(player);
+          const hasSubmitted = playersSubmitted.includes(player);
+
           return (
             <PlayerListItem
               key={player}
               player={player}
               centres={centres}
+              hasSubmitted={hasSubmitted}
               winner={winner}
               isExpanded={isExpanded}
               toggleExpand={() =>

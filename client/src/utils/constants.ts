@@ -28,4 +28,5 @@ export const rasteriseDisplayFallback = true;
 
 // API
 
-export const refetchInterval = 2000;
+export const iterationRefetchInterval = 2000;
+export const playersSubmittedRefetchInterval = 10000;

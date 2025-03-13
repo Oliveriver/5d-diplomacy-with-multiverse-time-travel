@@ -12,6 +12,7 @@ type GameState = {
   exitGame: () => void;
   isLoading: boolean;
   error: Error | null;
+  playersSubmitted: Nation[];
 };
 
 export default GameState;

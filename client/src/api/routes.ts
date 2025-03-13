@@ -6,6 +6,7 @@ const routes = {
   getWorld: (gameId: number) => `${baseUrl}/game/${gameId}`,
   submitOrders: (gameId: number) => `${baseUrl}/game/${gameId}/orders`,
   getIteration: (gameId: number) => `${baseUrl}/game/${gameId}/iteration`,
+  getPlayersSubmitted: (gameId: number) => `${baseUrl}/game/${gameId}/players/submitted`,
 };
 
 export default routes;
