@@ -6,6 +6,7 @@ import colours from '../../utils/colours';
 type PlayerListItemProps = {
   player: Nation;
   centres: string[];
+  showSubmissionIndicator: boolean;
   hasSubmitted: boolean;
   winner: Nation | null;
   isExpanded: boolean;
@@ -15,6 +16,7 @@ type PlayerListItemProps = {
 const PlayerListItem = ({
   player,
   centres,
+  showSubmissionIndicator,
   hasSubmitted,
   winner,
   isExpanded,
@@ -33,14 +35,16 @@ const PlayerListItem = ({
           color: colour,
         }}
       >
-        <div
-          title={hasSubmitted ? 'Submitted' : 'Not submitted'}
-          className="w-4 h-4 rounded-full mr-4 border-2"
-          style={{
-            backgroundColor: hasSubmitted && !winner ? colours.uiHighlight : colours.uiBorder,
-            borderColor: colours.uiBorder,
-          }}
-        />
+        {showSubmissionIndicator && (
+          <div
+            title={hasSubmitted ? 'Submitted' : 'Not submitted'}
+            className="w-4 h-4 rounded-full mr-4 border-2"
+            style={{
+              backgroundColor: hasSubmitted && !winner ? colours.uiHighlight : colours.uiBorder,
+              borderColor: colours.uiBorder,
+            }}
+          />
+        )}
         <p className="min-w-20 text-start">{player}</p>
         <p className="min-w-16 font-bold text-end">
           {`${centreCount}/${victoryRequiredCentreCount}`}
@@ -49,7 +53,10 @@ const PlayerListItem = ({
       </div>
       {isExpanded &&
         centres.map((centre) => (
-          <p className="text-sm ml-8 -mt-1" style={{ color: colour }}>
+          <p
+            className="text-sm -mt-1"
+            style={{ color: colour, marginLeft: showSubmissionIndicator ? 32 : 0 }}
+          >
             {centre}
           </p>
         ))}

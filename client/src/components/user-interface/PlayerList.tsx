@@ -8,7 +8,7 @@ import PlayerListItem from './PlayerListItem';
 import GameContext from '../context/GameContext';
 
 const PlayerList = () => {
-  const { playersSubmitted } = useContext(GameContext);
+  const { game, playersSubmitted } = useContext(GameContext);
   const { world, boardState } = useContext(WorldContext);
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -53,6 +53,7 @@ const PlayerList = () => {
               key={player}
               player={player}
               centres={centres}
+              showSubmissionIndicator={game !== null && game.player !== null}
               hasSubmitted={hasSubmitted}
               winner={winner}
               isExpanded={isExpanded}
