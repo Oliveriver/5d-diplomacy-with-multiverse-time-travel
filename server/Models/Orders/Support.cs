@@ -6,4 +6,5 @@ public class Support(OrderStatus status, Unit unit, Location location, Location 
 {
     public Location SupportLocation { get; set; } = supportLocation;
     public Location Destination { get; set; } = destination;
+    public override string ToString() => $"Support {Location} from {SupportLocation} to {Destination}: {Status}";
 }

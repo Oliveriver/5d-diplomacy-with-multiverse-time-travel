@@ -5,6 +5,8 @@ import CopyIcon from '../../assets/icons/CopyIcon.svg?react';
 import DownloadIcon from '../../assets/icons/DownloadIcon.svg?react';
 import GameContext from '../context/GameContext';
 import WorldContext from '../context/WorldContext';
+import SaveFile from '../../types/saveFile';
+import { OrderStatus } from '../../types/order';
 
 const GameDetails = () => {
   const { game } = useContext(GameContext);
@@ -17,7 +19,18 @@ const GameDetails = () => {
 
   const adjacencySettingText = `Adjacencies: ${game.hasStrictAdjacencies ? 'Strict' : 'Loose'}`;
 
-  const gameJsonFile = URL.createObjectURL(new Blob([JSON.stringify(world, null, 2)]));
+  let gameJsonFile: string | null = null;
+  if (world) {
+    const saveFile: SaveFile = {
+      hasStrictAdjacencies: game.hasStrictAdjacencies,
+      iteration: world.iteration,
+      orders: world.orders.filter(
+        (o) => o.status !== OrderStatus.New && o.status !== OrderStatus.RetreatNew,
+      ),
+    };
+
+    gameJsonFile = URL.createObjectURL(new Blob([JSON.stringify(saveFile, null, 2)]));
+  }
 
   return (
     <div
@@ -36,17 +49,19 @@ const GameDetails = () => {
         >
           <CopyIcon />
         </button>
-        <a
-          aria-label="Download game as JSON"
-          className="opacity-30 hover:opacity-70 ml-6"
-          href={gameJsonFile}
-          download="game.json"
-          target="_blank"
-          rel="noreferrer"
-          title="Download game as JSON"
-        >
-          <DownloadIcon />
-        </a>
+        {gameJsonFile && (
+          <a
+            aria-label="Download game as JSON"
+            className="opacity-30 hover:opacity-70 ml-6"
+            href={gameJsonFile}
+            download="game.json"
+            target="_blank"
+            rel="noreferrer"
+            title="Download game as JSON"
+          >
+            <DownloadIcon />
+          </a>
+        )}
       </div>
       <p
         className="font-bold text-lg"

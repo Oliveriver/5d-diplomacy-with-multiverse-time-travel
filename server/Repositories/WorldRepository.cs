@@ -5,16 +5,23 @@ using Entities;
 using Enums;
 using Exceptions;
 using Factories;
+using Mappers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Repositories;
 
-public class WorldRepository(ILogger<WorldRepository> logger, GameContext context, RegionMapFactory regionMapFactory, DefaultWorldFactory defaultWorldFactory)
+public class WorldRepository(
+    ILogger<WorldRepository> logger,
+    GameContext context,
+    RegionMapFactory regionMapFactory,
+    DefaultWorldFactory defaultWorldFactory,
+    ModelMapper modelMapper)
 {
     private readonly ILogger<WorldRepository> logger = logger;
     private readonly GameContext context = context;
     private readonly RegionMapFactory regionMapFactory = regionMapFactory;
     private readonly DefaultWorldFactory defaultWorldFactory = defaultWorldFactory;
+    private readonly ModelMapper modelMapper = modelMapper;
 
     public async Task<World> GetWorld(int gameId)
     {
@@ -39,7 +46,7 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
         return iteration;
     }
 
-    public async Task AddOrders(int gameId, Nation[] players, List<Order> orders)
+    public async Task AddOrders(int gameId, Nation[] players, IEnumerable<Models.Order> orders)
     {
         logger.LogInformation("Submitting orders for game {GameId}", gameId);
 
@@ -56,7 +63,7 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
         game.PlayersSubmitted = [.. game.PlayersSubmitted, .. players];
 
         var world = await GetWorldInternal(gameId, true);
-        world.Orders.AddRange(orders);
+        world.Orders.AddRange(orders.Select(o => modelMapper.MapOrder(world, o)));
 
         if (world.LivingPlayers.Count <= game.PlayersSubmitted.Count)
         {
@@ -69,6 +76,32 @@ public class WorldRepository(ILogger<WorldRepository> logger, GameContext contex
             world.Iteration++;
 
             logger.LogInformation("Adjudicated game {GameId}", gameId);
+        }
+
+        await context.SaveChangesAsync();
+        await transaction.CommitAsync();
+    }
+
+    public async Task AddOrdersForMultipleIterations(int gameId, int targetIteration, Func<World, IEnumerable<Models.Order>> getOrdersForIteration)
+    {
+        logger.LogInformation("Submitting orders for multiple iterations for game {GameId}", gameId);
+
+        await using var transaction = await context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+        var game = await context.Games.FindAsync(gameId)
+            ?? throw new GameNotFoundException();
+
+        game.PlayersSubmitted = [];
+
+        var world = await GetWorldInternal(gameId, true);
+
+        while (world.Iteration < targetIteration)
+        {
+            var orders = getOrdersForIteration(world);
+            world.Orders.AddRange(orders.Select(o => modelMapper.MapOrder(world, o)));
+
+            var adjudicator = new Adjudicator(world, game.HasStrictAdjacencies, regionMapFactory, defaultWorldFactory);
+            adjudicator.Adjudicate();
+            world.Iteration++;
         }
 
         await context.SaveChangesAsync();

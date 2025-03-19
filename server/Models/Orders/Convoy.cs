@@ -6,4 +6,5 @@ public class Convoy(OrderStatus status, Unit unit, Location location, Location d
 {
     public Location ConvoyLocation { get; set; } = convoyLocation;
     public Location Destination { get; set; } = destination;
+    public override string ToString() => $"Convoy {Location} from {ConvoyLocation} to {Destination}: {Status}";
 }

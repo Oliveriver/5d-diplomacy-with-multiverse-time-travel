@@ -1,17 +1,12 @@
-﻿using Context;
-using Microsoft.EntityFrameworkCore;
+﻿namespace Mappers;
 
-namespace Mappers;
-
-public class ModelMapper(GameContext context)
+public class ModelMapper
 {
-    private readonly GameContext context = context;
-
-    public async Task<Entities.Order> MapOrder(int gameId, Models.Order order)
+    public Entities.Order MapOrder(Entities.World world, Models.Order order)
     {
         var status = order.Status;
         var location = MapLocation(order.Location);
-        var unit = await MapUnit(gameId, location, order.Unit);
+        var unit = MapUnit(world, location, order.Unit);
 
         return order switch
         {
@@ -66,25 +61,15 @@ public class ModelMapper(GameContext context)
         };
     }
 
-    public async Task<Entities.Unit> MapUnit(int gameId, Entities.Location location, Models.Unit unit)
+    public Entities.Unit MapUnit(Entities.World world, Entities.Location location, Models.Unit unit)
     {
-        var existingUnit = await context.Units
-            .Where(u => u.Board.World.GameId == gameId)
-            .FirstOrDefaultAsync(u => u.Location == location);
+        var board = world.Boards.Single(b => b.Contains(location));
+        var existingUnit = board.Units.SingleOrDefault(u => u.Location == location);
 
-        if (existingUnit != null)
-        {
-            return existingUnit;
-        }
-
-        var board = (await context.Boards
-            .Where(b => b.World.GameId == gameId)
-            .ToListAsync())
-            .First(b => b.Contains(location));
-
-        return new()
+        return existingUnit ?? new()
         {
             BoardId = board.Id,
+            Board = board,
             Location = location,
             Owner = unit.Owner,
             Type = unit.Type,

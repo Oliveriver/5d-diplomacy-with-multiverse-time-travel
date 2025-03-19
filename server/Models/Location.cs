@@ -8,4 +8,5 @@ public class Location(int timeline, int year, Phase phase, string region)
     public int Year { get; set; } = year;
     public Phase Phase { get; set; } = phase;
     public string Region { get; set; } = region;
+    public override string ToString() => $"({Timeline}, {Year}, {Phase}, {Region})";
 }
