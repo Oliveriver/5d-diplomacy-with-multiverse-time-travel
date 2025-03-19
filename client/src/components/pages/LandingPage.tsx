@@ -21,6 +21,11 @@ const LandingPage = ({ setViewOption }: LandingPageProps) => (
           minWidth={184}
           onClick={() => setViewOption(SetupViewOption.Join)}
         />
+        <Button
+          text="Load Game"
+          minWidth={184}
+          onClick={() => setViewOption(SetupViewOption.Load)}
+        />
       </div>
       <LinkGroup
         heading="Created by"

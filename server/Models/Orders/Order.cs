@@ -14,4 +14,12 @@ public abstract class Order(OrderStatus status, Unit unit, Location location)
     public OrderStatus Status { get; set; } = status;
     public Unit Unit { get; set; } = unit;
     public Location Location { get; set; } = location;
+
+    public abstract override string ToString();
+
+    public bool IsRetreat() => Status
+        is OrderStatus.RetreatNew
+        or OrderStatus.RetreatSuccess
+        or OrderStatus.RetreatFailure
+        or OrderStatus.RetreatInvalid;
 }

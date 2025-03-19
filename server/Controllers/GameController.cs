@@ -1,9 +1,11 @@
+using System.Text.Json;
 using Enums;
 using Exceptions;
 using Mappers;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Repositories;
+using Utilities;
 
 namespace Controllers;
 
@@ -12,13 +14,11 @@ namespace Controllers;
 public class GameController(
     ILogger<GameController> logger,
     EntityMapper entityMapper,
-    ModelMapper modelMapper,
     GameRepository gameRepository,
     WorldRepository worldRepository) : ControllerBase
 {
     private readonly ILogger<GameController> logger = logger;
     private readonly EntityMapper entityMapper = entityMapper;
-    private readonly ModelMapper modelMapper = modelMapper;
     private readonly GameRepository gameRepository = gameRepository;
     private readonly WorldRepository worldRepository = worldRepository;
 
@@ -76,6 +76,85 @@ public class GameController(
         {
             logger.LogWarning("Failed to join game {GameId}", gameId);
             return BadRequest(error.Message);
+        }
+    }
+
+    [HttpPost]
+    [Route("load")]
+    public async Task<ActionResult<Game>> LoadGame([FromForm] GameLoadRequest request)
+    {
+        var isSandbox = request.IsSandbox;
+        var player = request.Player;
+
+        if (isSandbox && player != null)
+        {
+            logger.LogError("Attempted to create sandbox game with nation {Player} specified", player);
+            return BadRequest("Sandbox must be created with no player specified");
+        }
+
+        SaveFile? saveFile;
+        try
+        {
+            await using var stream = request.File.OpenReadStream();
+            saveFile = await JsonSerializer.DeserializeAsync<SaveFile>(stream, Constants.JsonOptions);
+        }
+        catch (JsonException)
+        {
+            return BadRequest("Failed to deserialise uploaded JSON file");
+        }
+
+        if (saveFile == null)
+        {
+            return BadRequest("Uploaded JSON file was deserialised to null");
+        }
+
+        const int MaxIteration = 200 * 3;
+        if (saveFile.Iteration > MaxIteration)
+        {
+            return BadRequest($"Uploaded JSON file has {saveFile.Iteration} iterations, maximum for loading is {MaxIteration}.");
+        }
+
+        foreach (var order in saveFile.Orders)
+        {
+            order.Status = order.IsRetreat() ? OrderStatus.RetreatNew : OrderStatus.New;
+        }
+
+        async Task AddOrders(int gameId)
+        {
+            var processedOrders = new List<Order>(saveFile.Orders.Length);
+            var ordersByBoardLocation = saveFile.Orders.ToLookup(o => (o.Location.Timeline, o.Location.Year, o.Location.Phase, IsRetreat: o.IsRetreat()));
+
+            await worldRepository.AddOrdersForMultipleIterations(gameId, saveFile.Iteration, world =>
+            {
+                var hasRetreats = world.HasRetreats();
+                var currentOrders = world.ActiveBoards.SelectMany(b => ordersByBoardLocation[(b.Timeline, b.Year, b.Phase, hasRetreats)]).ToList();
+                processedOrders.AddRange(currentOrders);
+                return currentOrders;
+            });
+
+            var unprocessedOrders = saveFile.Orders.Except(processedOrders).ToList();
+            if (unprocessedOrders.Count > 0)
+            {
+                logger.LogWarning(
+                    "{Count} unprocessed orders during load\n{UnprocessedOrders}",
+                    unprocessedOrders.Count,
+                    string.Join("\n", unprocessedOrders));
+            }
+        }
+
+        var hasStrictAdjacencies = saveFile.HasStrictAdjacencies;
+
+        if (isSandbox)
+        {
+            var game = await gameRepository.CreateSandboxGame(hasStrictAdjacencies);
+            await AddOrders(game.Id);
+            return Ok(new Game(game.Id, game.HasStrictAdjacencies));
+        }
+        else
+        {
+            var (game, chosenPlayer) = await gameRepository.CreateNormalGame(player, hasStrictAdjacencies);
+            await AddOrders(game.Id);
+            return Ok(new Game(game.Id, game.HasStrictAdjacencies, chosenPlayer));
         }
     }
 
@@ -149,14 +228,7 @@ public class GameController(
 
         try
         {
-            var mappedOrders = new List<Entities.Order>();
-            foreach (var order in orders)
-            {
-                var mappedOrder = await modelMapper.MapOrder(gameId, order);
-                mappedOrders.Add(mappedOrder);
-            }
-
-            await worldRepository.AddOrders(gameId, players, mappedOrders);
+            await worldRepository.AddOrders(gameId, players, orders);
             return Ok();
         }
         catch (GameNotFoundException)

@@ -20,7 +20,7 @@ public class GameRepository(ILogger<GameRepository> logger, GameContext context,
     {
         logger.LogInformation("Fetching game {Id}", id);
 
-        var game = await context.Games.FindAsync(id) ?? throw new GameNotFoundException();
+        var game = await context.Games.AsNoTracking().SingleOrDefaultAsync(g => g.Id == id) ?? throw new GameNotFoundException();
         return game;
     }
 

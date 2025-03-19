@@ -1,5 +1,5 @@
 <svg width="16" height="16">
-  <path d="M 2,14 14,14" stroke="black" stroke-linecap="round"/>
-  <path d="M 8.5,2 8.5,10" stroke="black" stroke-linecap="round"/>
-  <path d="M 6,6 8.5,10 11,6 8.5,10" stroke="black" stroke-linecap="round"/>
+  <path d="M 2,14 14,14" stroke="currentcolor" stroke-linecap="round"/>
+  <path d="M 8.5,2 8.5,10" stroke="currentcolor" stroke-linecap="round"/>
+  <path d="M 6,6 8.5,10 11,6 8.5,10" stroke="currentcolor" stroke-linecap="round"/>
 </svg>

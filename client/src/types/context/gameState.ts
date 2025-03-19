@@ -9,6 +9,7 @@ type GameState = {
     hasStrictAdjacencies: boolean,
   ) => Promise<void>;
   joinGame: (gameId: number, isSandbox: boolean, player: Nation | null) => Promise<void>;
+  loadGame: (isSandbox: boolean, player: Nation | null, file: File) => Promise<void>;
   exitGame: () => void;
   isLoading: boolean;
   error: Error | null;
