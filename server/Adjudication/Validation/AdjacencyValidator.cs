@@ -123,6 +123,14 @@ public class AdjacencyValidator(RegionMap regionMap, bool hasStrictAdjacencies)
         return CanTraverseConnection(unit, connection);
     }
 
+    public Location ParentLocation(Location location)
+    {
+        var region = regionMap.GetRegion(location.RegionId);
+        return region.Parent == null
+            ? location
+            : new Location { Timeline = location.Timeline, Year = location.Year, Phase = location.Phase, RegionId = region.Parent.Id };
+    }
+
     public bool EqualsOrIsRelated(Location location1, Location location2)
     {
         if (location1.Timeline != location2.Timeline ||
