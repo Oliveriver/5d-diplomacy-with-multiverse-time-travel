@@ -95,6 +95,11 @@ public class OrderResolver(List<Order> orders, AdjacencyValidator adjacencyValid
                 move.Status = OrderStatus.Success;
             }
 
+            if (destinationMove.Status == OrderStatus.Failure)
+            {
+                move.Status = OrderStatus.Failure;
+            }
+
             return;
         }
 
