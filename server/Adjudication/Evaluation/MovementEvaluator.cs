@@ -26,7 +26,7 @@ public class MovementEvaluator(World world, List<Order> activeOrders, RegionMap 
 
         foreach (var support in supports)
         {
-            var supportedOrder = activeOrders.First(o => o.Location == support.Midpoint);
+            var supportedOrder = activeOrders.First(o => adjacencyValidator.EqualsOrIsRelated(o.Location, support.Midpoint));
             supportedOrder.Supports.Add(support);
         }
     }
