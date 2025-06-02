@@ -29,7 +29,7 @@ public class Validator
         this.adjacencyValidator = adjacencyValidator;
 
         nonRetreats = [.. world.Orders.Where(o => o.NeedsValidation && !o.Unit.MustRetreat)];
-        retreats = [.. world.Orders.Where(o => o.NeedsValidation && o.Unit.MustRetreat)];
+        retreats = [.. world.Orders.Where(o => o.Status is OrderStatus.RetreatNew && o.Unit.MustRetreat)];
 
         moves = [.. nonRetreats.OfType<Move>()];
         supports = [.. nonRetreats.OfType<Support>()];
