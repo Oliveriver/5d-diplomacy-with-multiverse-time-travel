@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . /app
 RUN dotnet build -c Release -o bin
 
-RUN dotnet tool install --global dotnet-ef
+RUN dotnet tool install --global dotnet-ef --version 9.0.11
 
 RUN echo "#!/bin/sh" >> /app/docker-entrypoint.sh \
   && echo "~/.dotnet/tools/dotnet-ef database update --context SqliteGameContext" >> /app/docker-entrypoint.sh \
