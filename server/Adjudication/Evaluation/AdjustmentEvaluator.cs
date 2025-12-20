@@ -15,6 +15,11 @@ public class AdjustmentEvaluator(World world, List<Order> activeOrders)
     {
         var boards = world.ActiveBoards.Where(b => b.Phase == Phase.Winter);
 
+        var activeBuildUnits = activeOrders
+            .OfType<Build>()
+            .Select(b => b.Unit)
+            .ToHashSet();
+
         foreach (var board in boards)
         {
             board.MightAdvance = true;
@@ -28,20 +33,18 @@ public class AdjustmentEvaluator(World world, List<Order> activeOrders)
 
             foreach (var nation in Constants.Nations)
             {
-                EvaluateBoardForNation(board, nation, boardBuilds, boardDisbands);
+                EvaluateBoardForNation(board, nation, boardBuilds, boardDisbands, activeBuildUnits);
             }
         }
     }
 
-    private void EvaluateBoardForNation(Board board, Nation nation, List<Build> boardBuilds, List<Disband> boardDisbands)
+    private void EvaluateBoardForNation(Board board, Nation nation, List<Build> boardBuilds, List<Disband> boardDisbands, HashSet<Unit> activeBuildUnits)
     {
         var nationBuilds = boardBuilds.Where(b => b.Unit.Owner == nation).ToList();
         var nationDisbands = boardDisbands.Where(d => d.Unit.Owner == nation).ToList();
 
         var centreCount = board.Centres.Count(c => c.Owner == nation);
-        var unitCount = board.Units.Count(u =>
-            !activeOrders.OfType<Build>().Any(o => o.Unit == u)
-            && u.Owner == nation);
+        var unitCount = board.Units.Count(u => u.Owner == nation && !activeBuildUnits.Contains(u));
 
         var adjustmentCount = centreCount - unitCount;
 

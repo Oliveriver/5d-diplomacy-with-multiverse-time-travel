@@ -74,6 +74,7 @@ public class Evaluator
         }
 
         var activeOrders = touchedOrdersFinder.GetTouchedOrders(newOrders, hasRetreats);
+        var boardsByLocation = world.Boards.ToDictionary(b => (b.Timeline, b.Year, b.Phase));
 
         foreach (var order in activeOrders)
         {
@@ -82,10 +83,12 @@ public class Evaluator
                 order.Status = OrderStatus.New;
             }
 
-            var touchedBoards = world.Boards.Where(b => order.TouchedLocations().Any(l => b.Contains(l))).ToList();
-            foreach (var board in touchedBoards)
+            foreach (var location in order.TouchedLocations())
             {
-                board.MightAdvance = true;
+                if (boardsByLocation.TryGetValue((location.Timeline, location.Year, location.Phase), out var touchedBoard))
+                {
+                    touchedBoard.MightAdvance = true;
+                }
             }
         }
 
