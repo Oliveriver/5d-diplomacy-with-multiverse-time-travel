@@ -20,6 +20,7 @@ import {
 } from '../../../utils/constants';
 import WorkQueueContext from '../../context/WorkQueueContext';
 import ScaleContext from '../../context/ScaleContext';
+import DarkModeContext from '../../context/DarkModeContext';
 
 type MapProps = {
   board: Board;
@@ -80,6 +81,7 @@ const Map = ({ board, isShowingCoasts = false }: MapProps) => {
   const { world } = useContext(WorldContext);
   const { currentMode, currentOrder } = useContext(OrderEntryContext);
   const { scale } = useContext(ScaleContext);
+  const isDarkMode = useContext(DarkModeContext);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -96,7 +98,7 @@ const Map = ({ board, isShowingCoasts = false }: MapProps) => {
   }, []);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [rasterised, setRasterised] = useState(false);
+  const [rasterisedInDarkMode, setRasterisedInDarkMode] = useState<boolean | null>(null);
   const rasteriseQueue = useContext(WorkQueueContext);
 
   useEffect(() => {
@@ -106,7 +108,7 @@ const Map = ({ board, isShowingCoasts = false }: MapProps) => {
       (onComplete) => {
         if (
           canvasRef.current === null ||
-          canvasRef.current.getAttribute('data-rendered') !== null
+          canvasRef.current.getAttribute('data-dark-mode') === isDarkMode.toString()
         ) {
           onComplete();
           return;
@@ -143,8 +145,8 @@ const Map = ({ board, isShowingCoasts = false }: MapProps) => {
             () => {
               regionsLeft--;
               if (regionsLeft === 0) {
-                canvas.setAttribute('data-rendered', 'true');
-                setRasterised(true);
+                canvas.setAttribute('data-dark-mode', isDarkMode.toString());
+                setRasterisedInDarkMode(isDarkMode);
                 onComplete();
               }
             },
@@ -164,8 +166,9 @@ const Map = ({ board, isShowingCoasts = false }: MapProps) => {
         return xDist * xDist + yDist * yDist;
       },
     );
-  }, [board, currentMode, currentOrder, isShowingCoasts, rasteriseQueue, world]);
+  }, [board, currentMode, currentOrder, isShowingCoasts, rasteriseQueue, world, isDarkMode]);
 
+  const isRasterisedForCurrentMode = rasterisedInDarkMode === isDarkMode;
   const showRasterised = rasteriseEnabled && scale < rasteriseScaleThreshold;
 
   const mapRegions = useMemo(
@@ -180,11 +183,12 @@ const Map = ({ board, isShowingCoasts = false }: MapProps) => {
             className="absolute w-full h-full"
             ref={canvasRef}
             style={{
-              visibility: rasterised && (showRasterised || !isVisible) ? 'visible' : 'hidden',
+              visibility:
+                isRasterisedForCurrentMode && (showRasterised || !isVisible) ? 'visible' : 'hidden',
             }}
           />
         )}
-        {(showRasterised && (rasterised || !rasteriseDisplayFallback)) || !isVisible
+        {(showRasterised && (isRasterisedForCurrentMode || !rasteriseDisplayFallback)) || !isVisible
           ? null // Remove SVGs from DOM, to improve responsiveness when zoomed out or map offscreen.
           : getRegions(board, isShowingCoasts, world, currentMode, currentOrder).map((props) => (
             <Region key={props.id} {...props} />
@@ -197,7 +201,7 @@ const Map = ({ board, isShowingCoasts = false }: MapProps) => {
       currentOrder,
       isShowingCoasts,
       isVisible,
-      rasterised,
+      isRasterisedForCurrentMode,
       showRasterised,
       world,
     ],
